@@ -8,6 +8,7 @@ gem "decidim", "0.23.1"
 # gem "decidim-consultations", "0.23.1"
 # gem "decidim-initiatives", "0.23.1"
 # gem "decidim-templates", "0.23.1"
+gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: :main
 
 gem "bootsnap", "~> 1.3"
 
