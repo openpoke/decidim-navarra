@@ -1,0 +1,37 @@
+---
+# @title_es Instalar los paquetes básicos
+# @title_en Install base packages
+# @input yum install -y #{yum>name | join: ' '}
+- name: install base packages
+  yum:
+    name:
+      - git
+      - tree
+      - htop
+      - vim
+      - psmisc
+      - gnupg
+      - zip
+      - ntp
+      - ruby-devel
+      - ImageMagick
+      - postgresql-libs
+      - screen
+      - curl
+      - nodejs
+      - tmux
+      - libicu-devel
+      - ca-certificates
+      - npm
+      - net-tools
+      - zlib-devel
+      - readline-devel
+      - the_silver_searcher
+      - nodejs-bindings
+      - node-gyp
+      # - node-pre-gyp
+      - python3-psycopg2
+      - python3-pip
+    state: latest
+    update_cache: true
+  become: true

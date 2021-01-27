@@ -1,0 +1,24 @@
+# frozen_string_literal: true
+
+lock "3.8.0"
+
+set :application, "{{app_id}}"
+set :repo_url, "{{app_repo_url}}"
+
+set :linked_files, fetch(:linked_files, []).push(*%w(
+  config/database.yml
+  .rbenv-vars
+))
+set :linked_dirs, fetch(:linked_dirs, []).push(*%w(
+  log
+  tmp/pids
+  tmp/cache
+  tmp/sockets
+  vendor/bundle
+  public/system
+  public/cache
+  public/uploads
+  public/assets
+))
+set :sidekiq_config, -> { File.join(release_path, "config", "sidekiq.yml") }
+set :passenger_restart_with_touch, true

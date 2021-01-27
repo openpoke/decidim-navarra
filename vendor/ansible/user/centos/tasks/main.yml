@@ -1,0 +1,52 @@
+---
+- include_vars: populate_vars.yml
+
+- name: Group "www-data" exists
+  group:
+    name: www-data
+    state: present
+
+- name: Create populate user
+  user:
+    name={{ populate_user }}
+    password={{ populate_user_password | password_hash('sha512') }}
+    groups=root,www-data
+    append=yes
+    shell=/bin/bash
+
+- name: Create directories
+  file: state=directory path={{item}} owner={{ populate_user }} group={{ populate_user}} mode=0700
+  with_items:
+    - /home/{{ populate_user }}/.ssh
+
+- name: Set PWD as populate_user
+  become: yes
+  lineinfile: destfile=/etc/bashrc line="PWD=/home/{{ populate_user }}" state=present
+
+- name: Setup authorized_keys file
+  template:
+    src: authorized_keys.j2
+    dest: /home/{{ populate_user }}/.ssh/authorized_keys
+    owner: "{{ populate_user }}"
+    group: root
+    mode: 0600
+
+- name: generate SSH key
+  user:
+    name: "{{ populate_user }}"
+    generate_ssh_key: yes
+    ssh_key_type: rsa
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_rsa
+    force: no
+
+- name: get key content
+  command: "cat /home/{{populate_user}}/.ssh/id_rsa.pub"
+  register: ssh_key
+
+- name: Set authorized key took from file
+  become: yes
+  lineinfile: destfile=/home/{{populate_user}}/.ssh/authorized_keys regexp="^#local user" line="#local user\n{{ ssh_key.stdout }}" state=present
+
+- name: Restarting daemons
+  command: systemctl daemon-reload

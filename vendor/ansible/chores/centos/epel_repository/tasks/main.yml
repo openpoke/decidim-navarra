@@ -1,0 +1,14 @@
+---
+# @title_es Añadir repositorio EPEL
+# @title_en Add EPEL repository
+# @comment_es Añadir el repositorio de paquetes EPEL (URL #{yum_repository>baseurl}) al sistema
+# @comment_en Add EPEL package (URL #{yum_repository>baseurl}) to the system
+# @input yum-config-manager --add-repo #{yum_repository>baseurl}
+- name: Add EPEL repository
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+    gpgcheck: no
+    repo_gpgcheck: no
+    enabled: yes

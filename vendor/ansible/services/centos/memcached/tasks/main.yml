@@ -1,0 +1,48 @@
+# @title_es Instalar Memcached
+# @title_en Install Memcached
+# @input yum install -y memcached
+- name: Install memcached
+  become: true
+  package: pkg=memcached
+       state=present
+
+# @title_es Crear carpeta para el pid
+# @title_en Create directory fir the pid file
+# @input mkdir #{file>path} -o #{file>owner} -g #{file>group}
+- name: Create directory for pid file
+  become: true
+  file:
+    state: directory
+    path: /var/run/memcached
+    owner: memcached
+    group: memcached
+
+# @title_es Añadir linea en #{lineinfile>dest} para crear el pidfile
+# @title_en Add line in #{lineinfile>dest} to create pidfile
+# @input #{lineinfile>line}
+- name: Change config options to create pidfile
+  become: true
+  lineinfile:
+    dest: /etc/sysconfig/memcached
+    regexp: '^OPTIONS='
+    line: 'OPTIONS="-l 127.0.0.1 -P /var/run/memcached/memcached.pid"'
+
+# @title_es Arrancar memcached
+# @title_en Run memcached
+# @input systemctl start #{service>name}
+- name: Enable and start memcached
+  become: true
+  service:
+    name: memcached
+    enabled: yes
+    state: started
+
+# @title_es Habilitar memcached en monit
+# @title_en Enable memcached in monit
+# @comment_es Añadir en `#{copy>dest}/#{copy>src}`
+# @comment_en Add in `#{copy>dest}/#{copy>src}`
+# @input f{memcached.monit}
+- name: monit config
+  become: true
+  copy: src=memcached.monit dest=/etc/monit.d/
+  notify: Restart Monit

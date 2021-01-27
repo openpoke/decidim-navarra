@@ -1,0 +1,27 @@
+{{app_base_path}}/shared/log/{{rails_env}}.log {
+    daily
+    rotate {{logrotate_frequency}}
+    compress
+    dateext
+    dateformat -%Y%m%d-{{hostname}}
+    missingok
+    notifempty
+    sharedscripts
+    postrotate
+        touch {{app_base_path}}/current/tmp/restart.txt
+    endscript
+}
+
+{{app_base_path}}/shared/log/sidekiq.log {
+    daily
+    rotate {{logrotate_frequency}}
+    compress
+    dateext
+    dateformat -%Y%m%d-{{hostname}}
+    missingok
+    notifempty
+    sharedscripts
+    postrotate
+        monit restart -g {{app_id}}-sidekiq
+    endscript
+}

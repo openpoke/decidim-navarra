@@ -1,0 +1,4 @@
+---
+- include: ../../base/centos/handlers/main.yml
+- include: ../../services/centos/nginx/handlers/nginx.yml
+- include: ../../services/centos/monit/handlers/main.yml

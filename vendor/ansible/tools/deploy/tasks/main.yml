@@ -1,0 +1,117 @@
+---
+# @title_es Crear directorios de deploy
+# @title_en #{name}
+# @input mkdir /home/{{app_user}}/deploy/{{app_id}}/config -o {{app_user}} -g {{app_group}} -m #{file>mode}
+# mkdir /home/{{app_user}}/deploy/{{app_id}}/log -o {{app_user}} -g {{app_group}} -m #{file>mode}
+- name: Create deploy directory
+  become: yes
+  file:
+    state: directory
+    path: "/home/{{app_user}}/deploy/{{app_id}}/{{item}}"
+    owner: "{{app_user}}"
+    group: "{{app_group}}"
+    mode: 0774
+  with_items: ["config", "log"]
+
+# @title_es Crear directorio de config/deploy
+# @title_en #{name}
+# @input mkdir /home/{{app_user}}/deploy/{{app_id}}/config/deploy -o {{app_user}} -g {{app_group}} -m #{file>mode}
+- name: Create config/deploy directory
+  become: yes
+  file:
+    state: directory
+    path: "/home/{{app_user}}/deploy/{{app_id}}/config/deploy"
+    owner: "{{app_user}}"
+    group: "{{app_group}}"
+    mode: 0774
+
+# @title_es Crear Capfile
+# @title_en #{name}
+# @input # /home/{{app_user}}/deploy/{{app_id}}/Capfile
+# f{Capfile}
+- name: Create Capfile
+  become: yes
+  copy:
+    src: Capfile
+    dest: "/home/{{app_user}}/deploy/{{app_id}}/Capfile"
+    owner: "{{app_user}}"
+    group: "{{app_group}}"
+    mode: 0774
+
+# @title_es Crear .ruby-version
+# @title_en #{name}
+# @input # /home/{{app_user}}/deploy/{{app_id}}/.ruby-version
+# f{ruby-version}
+- name: Create project .ruby-version
+  become: yes
+  copy:
+    src: ruby-version
+    dest: "/home/{{app_user}}/deploy/{{app_id}}/.ruby-version"
+    owner: "{{app_user}}"
+    group: "{{app_group}}"
+    mode: 0774
+
+# @title_es Crear Gemfile
+# @title_en #{name}
+# @input # /home/{{app_user}}/deploy/{{app_id}}/Gemfile
+# f{Gemfile}
+- name: Create Gemfile
+  become: yes
+  copy:
+    src: Gemfile
+    dest: "/home/{{app_user}}/deploy/{{app_id}}/Gemfile"
+    owner: "{{app_user}}"
+    group: "{{app_group}}"
+    mode: 0774
+
+# @title_es Lanzar bundle install
+# @title_en #{name}
+# @input cd #{args>chdir} && bundle install --path=./vendor/bundle
+- name: Run bundle install
+  become: yes
+  become_user: "{{ app_user }}"
+  command:  bash -lc "bundle install --path=./vendor/bundle"
+  args:
+    chdir: "/home/{{app_user}}/deploy/{{app_id}}"
+    creates: "/home/{{app_user}}/deploy/{{app_id}}/Gemfile.lock"
+
+# @title_es Crear config/deploy.rb
+# @title_en #{name}
+# @input # /home/{{app_user}}/deploy/{{app_id}}/config/deploy.rb
+# f{deploy.rb.j2}
+- name: Create config/deploy.rb
+  become: yes
+  template:
+    src: deploy.rb.j2
+    dest: "/home/{{app_user}}/deploy/{{app_id}}/config/deploy.rb"
+    owner: "{{app_user}}"
+    group: "{{app_group}}"
+    mode: 0774
+
+# @title_es Crear el archivo de entorno de la app
+# @title_en Create app environment file
+# @comment_es Usar staging.rb o production.rb según el entorno que estemos instalando
+# @comment_en Use staging.rb or production.rb depending on the environment we're currently installing
+# @input # /home/{{app_user}}/deploy/{{app_id}}/config/deploy/(staging|production).rb
+# f{environment.rb}
+- name: Create config/deploy/staging|production.rb
+  become: yes
+  template:
+    src: environment.rb.j2
+    dest: "/home/{{app_user}}/deploy/{{app_id}}/config/deploy/{{env}}.rb"
+    owner: "{{app_user}}"
+    group: "{{app_group}}"
+    mode: 0774
+
+# @title_es Desplegar la app por primera vez
+# @title_en Deploy the app for the first time
+# @comment_es Usar staging o production según el entorno que estemos instalando
+# @comment_en Use staging or production depending on the environment we're currently installing
+# @input cd #{args>chdir} && bundle exec cap (staging|production) deploy
+- name: Deploy app if current folder does not exist
+  become: yes
+  become_user: "{{ app_user }}"
+  command: bash -lc "bundle exec cap {{ env }} deploy"
+  args:
+    chdir: "/home/{{app_user}}/deploy/{{app_id}}"
+    creates: /var/www/{{app_id}}/current

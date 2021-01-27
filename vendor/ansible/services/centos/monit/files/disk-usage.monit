@@ -1,0 +1,2 @@
+check device root with path /
+  if space usage > 70% then alert

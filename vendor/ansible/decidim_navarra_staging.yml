@@ -1,0 +1,65 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  become: yes
+  roles:
+    ### Handlers
+    - { role: 'handlers' }
+    ### Provision
+    - { role: 'chores/centos/epel_repository' }
+    - { role: 'chores/centos/install_base_packages' }
+    - { role: 'packages/common/yarn' }
+    - { role: 'chores/centos/set_timezone' }
+    - { role: 'user/centos' }
+    ### Services
+    - { role: 'chores/common/hostname' }
+    - { role: 'packages/centos/fullstaq-ruby', ruby_versions: ['fullstaq-ruby-2.6.6', 'fullstaq-ruby-2.7.1'] }
+    - { role: 'services/centos/monit', monit_services: ['sshd', 'cron', 'disk-usage'] }
+    - { role: 'services/centos/memcached' }
+    - { role: 'services/centos/nginx' }
+    # - { role: 'services/centos/postgresql_server' }
+    - { role: 'services/centos/postgresql_client' }
+    - { role: 'services/centos/redis_server', redis_user: centos }
+    ### Site
+    - { role: 'sites/decidim' }
+    - { role: 'tools/deploy' }
+  vars:
+    app_id: decidim
+    app_git_branch: staging
+    app_group: www-data
+    app_repo_url: "https://gesfuentes.admon-cfnavarra.es/git/r/presidencia/WebParticipacionCiudadana.git"
+    app_user: centos
+    backup_databases:
+      - decidim
+    backups_folder: /backup
+    backups_user: centos
+    databases:
+      - decidim
+    env: staging
+    geocoder_lookup_app_code:
+    geocoder_lookup_app_id:
+    hostname: decidim-navarra-staging
+    include_passenger: true
+    include_firewalld: false
+    memcache_listen_address: "127.0.0.1"
+    memcache_memory: 256
+    populate_user: centos
+    postgres_bind_address: "127.0.0.1"
+    postgres_version: 11
+    rails_env: staging
+    rbenv_user: centos
+    redis_bind_address: "127.0.0.1"
+    redis_url: redis://127.0.0.1:6379/0
+    rollbar_access_token:
+    sites_domains:
+      - desparticipa.admon-cfnavarra.es
+    ssl_certificate_name: decidim
+    ansible_python_interpreter: /usr/bin/python
+    populate_user_password: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      34623866336636323164343262303136373864343235383933383264316236363631353938653464
+      3064663334626166653265623233616161633163633633320a613038323338353364313235613364
+      36343031303933306333663034343032376163323635613734626361613561383633653233616535
+      3737393963646538340a376438656234306138363232653565663264393630636637363362386536
+      35336435323566316538643836366361356238343539313032343335333336626434
+
