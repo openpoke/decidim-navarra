@@ -1,33 +1,29 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   'true': 'foo'
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 en:
-  hello: "Hello world"
+  activemodel:
+    attributes:
+      census_authorization_handler:
+        date_of_birth: Date of birth
+        document_number: Document number
+        document_type: Document type
+        first_surname: First surname
+        name: Name
+        personal_data_access_consent: I give my consent for the Identity data to be consulted
+        province_id: Province
+        second_surname: Second surname
+  census_authorization:
+    form:
+      date_select:
+        day: Day
+        month: Month
+        year: Year
+  decidim:
+    census_authorization_handler:
+      document_types:
+        nif: NIF
+        nie: NIE
+        passport: Passport
+      invalid_census_service_verification: Unidentified Resident or Wrong Territorial Area of Residence
+    authorization_handlers:
+      census_authorization_handler:
+        explanation: Census data verification
+        name: Census
