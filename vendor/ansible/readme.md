@@ -8,29 +8,19 @@
   - python3
   - ansible: `pip3 install ansible`
   - passlib: `pip3 install passlib`
-4. Git clone this repository (TODO: repository URL)
-
-## Steps
-
-The installation process is divided in three steps:
-
-- provision: executed as root, it installs base packages, setups the firewall and creates a regular user (centos)
-- services: executed as centos, it installs the basic services: nginx, passenger, ruby, postgres, monit and redis
-- sites: executed as centos, it prepares the server to run Decidim
+4. Git clone decidim repository (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git). The ansible recipes and support files necessary for their execution are in vendor/ansible folder. Review the documentation at docs/installation_es.md
 
 ### Staging server
 
-1. `bin/decidium_staging_provision.sh`
-2. `bin/decidium_staging_services.sh`
-3. `bin/decidium_staging_site.sh`
+`ansible-playbook decidim_navarra_staging.yml --ask-vault-pass`
 
 ### Production server
 
-1. `bin/decidium_production_provision.sh`
-2. `bin/decidium_production_services.sh`
-3. `bin/decidium_production_site.sh`
+`ansible-playbook decidim_navarra_production.yml --ask-vault-pass`
 
 ## Vagrant
+
+For development purposes tFor development purposes we recommend the use of Vagrant
 
 - Install vagrant from https://www.vagrantup.com/downloads
 - Install VirtualBox https://www.virtualbox.org/wiki/Downloads
