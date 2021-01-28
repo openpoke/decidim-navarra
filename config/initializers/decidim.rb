@@ -282,3 +282,7 @@ end
 
 Rails.application.config.i18n.available_locales = Decidim.available_locales
 Rails.application.config.i18n.default_locale = Decidim.default_locale
+
+Decidim::Verifications.register_workflow(:census_authorization_handler) do |auth|
+  auth.form = "CensusAuthorizationHandler"
+end
