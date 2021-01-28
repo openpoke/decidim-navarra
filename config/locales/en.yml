@@ -1,3 +1,4 @@
+---
 en:
   activemodel:
     attributes:
@@ -7,7 +8,8 @@ en:
         document_type: Document type
         first_surname: First surname
         name: Name
-        personal_data_access_consent: I give my consent for the Identity data to be consulted
+        personal_data_access_consent: I give my consent for the Identity data to be
+          consulted
         province_id: Province
         second_surname: Second surname
   census_authorization:
@@ -17,13 +19,14 @@ en:
         month: Month
         year: Year
   decidim:
-    census_authorization_handler:
-      document_types:
-        nif: NIF
-        nie: NIE
-        passport: Passport
-      invalid_census_service_verification: Unidentified Resident or Wrong Territorial Area of Residence
     authorization_handlers:
       census_authorization_handler:
         explanation: Census data verification
         name: Census
+    census_authorization_handler:
+      document_types:
+        nie: NIE
+        nif: NIF
+        passport: Passport
+      invalid_census_service_verification: Unidentified Resident or Wrong Territorial
+        Area of Residence
