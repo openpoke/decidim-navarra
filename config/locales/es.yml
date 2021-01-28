@@ -1,3 +1,4 @@
+---
 es:
   activemodel:
     attributes:
@@ -7,7 +8,8 @@ es:
         document_type: Tipo de documento
         first_surname: Primer apellido
         name: Nombre
-        personal_data_access_consent: Doy mi consentimiento para que se consulten los datos de Identidad
+        personal_data_access_consent: Doy mi consentimiento para que se consulten
+          los datos de Identidad
         province_id: Provincia
         second_surname: Segundo apellido
   census_authorization:
@@ -17,13 +19,14 @@ es:
         month: Mes
         year: Año
   decidim:
-    census_authorization_handler:
-      document_types:
-        nif: NIF
-        nie: NIE
-        passport: Pasaporte
-      invalid_census_service_verification: Titular no Identificado o Ámbito Territorial de Residencia Incorrecto
     authorization_handlers:
       census_authorization_handler:
         explanation: Verificación de datos padronales
         name: Padrón
+    census_authorization_handler:
+      document_types:
+        nie: NIE
+        nif: NIF
+        passport: Pasaporte
+      invalid_census_service_verification: Titular no Identificado o Ámbito Territorial
+        de Residencia Incorrecto
