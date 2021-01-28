@@ -16,9 +16,11 @@ gem "uglifier", "~> 4.1"
 
 gem "faker", "~> 1.9"
 
+gem "faraday"
 gem "wicked_pdf", "~> 1.4"
 gem "sidekiq", "~> 5.2"
 gem "letter_opener_web", "~> 1.3"
+gem "virtus-multiparams"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
