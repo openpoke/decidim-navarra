@@ -2,21 +2,51 @@
 
 En esta guía se detallan los pasos para instalar el entorno y la app de Decidim en una máquina con Red Hat 7 desde cero. Al acabar la guía deberíamos tener instalados el servidor web (nginx), el servidor de aplicación (Phusion Passenger) y la propia aplicación de Decidim (Ruby on Rails) instalados y levantados en la máquina.
 
-Además de esta guía manual se proporcionará un proyecto en Ansible para provisionar la máquina automáticamente. De hacerlo con Ansible no haría falta seguir esta guía.
+Además de esta guía manual se proporcionará un proyecto en Ansible para provisionar la máquina automáticamente. De hacerlo con Ansible no haría falta seguir esta guía a partir del punto "Tareas de Ansible".
 
-Para instalarlo con Ansible debemos primero tener instalado Python y pip. Una vez eso, instalamos Ansible:
+## Requisitos
+1. Va a haber dos entornos, de pre-producción (decidim-navarra-staging) y producción (decidim-navarra-production). Cada uno de ellos va a estar en una máquina cuya IP ha de ser añadida en el archivo inventory debajo de cada nombre. Por ejemplo:
 
-```pip install ansible```
+```
+[decidim-navarra-staging]
+10.253.110.32
 
-Después vamos a la carpeta del proyecto y lanzamos el playbook (cambiar por `decidim_navarra_staging.yml` para el entorno de staging):
+[decidim-navarra-production]
+10.253.110.33
+```
 
-```ansible-playbook decidim_navarra_production.yml --ask-vault-pass ```
+2. En cada una de las máquinas ha de existir un usuario root con una clave privada SSH copiada y autorizada para poder hacer uso de ella en el provisionamiento (el paso de provisionamiento no pide la password, es todo por medio de SSH). Estas máquinas también han de tener acceso al repositorio de decidim (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git)
+3. En la estación de trabajo instalar:
+  - python3
+  - Ansible: `pip3 install ansible`
+  - Passlib: `pip3 install passlib`
+4. Clonar en la estación de trabajo el repositorio de decidim (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git). Las recetas de ansible y ficheros necesarios para la ejecución de sus tareas están en la carpeta vendor/ansible. En este documento (docs/installation_es.md) están las instrucciones para realizar el provisionamiento automático con Ansible así como un manual detallando todas las tareas que el propio Ansible automatiza.
+
+### Ejecución de tareas de Ansible
+
+#### Servidor de pre-producción
+
+Ejecutar:
+
+`ansible-playbook decidim_navarra_staging.yml --ask-vault-pass`
 
 El password que pedirá es el mismo que el que tiene el usuario en la máquina.
 
-La aplicación usará una base de datos Postgresql 11.0, pero esta estará instalada en una máquina aparte. Es necesario que la base de datos tenga instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. En la propia máquina de la aplicación, eso sí, se instalará el cliente de Postgresql 11.0. Para poder instalar el cliente es necesario que la libreria `llvm-toolset-7` esté instalada de antemano en la máquina.
+#### Servidor de producción
 
-Para completar la instalación la máquina debe tener acceso al repositorio de Git de la aplicación.
+Ejecutar:
+
+`ansible-playbook decidim_navarra_production.yml --ask-vault-pass`
+
+El password que pedirá es el mismo que el que tiene el usuario en la máquina.
+
+## Servidor de base de datos
+
+La aplicación usará una base de datos Postgresql 11.0 que deberá estar instalada en un servidor aparte. Este servidor ha de tener instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. Las tareas de Ansible se encargan de instalar el cliente de Posgresql 11.0 en los entornos de pre-producción y producción
+
+## Tareas de Ansible
+
+Las tareas detalladas a continuación se encuentran automatizadas en el playbook de Ansible de manera que no sería necesario ejecutarlas manualmente.
 
 ### Añadir repositorio EPEL
 

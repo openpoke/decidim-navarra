@@ -20,7 +20,7 @@
 
 ## Vagrant
 
-For development purposes tFor development purposes we recommend the use of Vagrant
+For development purposes we recommend the use of Vagrant
 
 - Install vagrant from https://www.vagrantup.com/downloads
 - Install VirtualBox https://www.virtualbox.org/wiki/Downloads
