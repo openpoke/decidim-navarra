@@ -36,7 +36,7 @@ class ProcessesImporter
 
       form = Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessImportForm.from_params(
         slug: "import",
-        title: { en: "Import" },
+        title: @organization.available_locales.map { |locale| [locale, "Import"] }.to_h,
         document: uploaded_file
       ).with_context(current_organization: @organization, current_user: @admin)
 
