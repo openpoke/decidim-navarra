@@ -209,6 +209,6 @@ class ProcessesParser
   end
 
   def available_locales
-    @available_locales ||= %w(en es)
+    @available_locales ||= organization.available_locales
   end
 end
