@@ -57,7 +57,9 @@ class ProcessesParser
     end_date_string = end_date&.to_date&.to_s
     {
       original_id: raw_content["NID"],
-      description_with_1_paragraph: remaining_description.blank?,
+      description_paragraphs_count: splitted_description.count,
+      raw_description: raw_content["Descripción HTML"],
+      first_paragraph_description: short_description,
       original_url: "https://gobiernoabierto.navarra.es#{raw_content["Ruta"]}",
       proposal_status: proposal_status,
       participation_status: participation_status,
@@ -76,13 +78,11 @@ class ProcessesParser
   end
 
   def remaining_description
-    return "" if splitted_description.blank?
-
-    splitted_description[1..-1].map(&:to_s).join("\n")
+    raw_content["Descripción HTML"]
   end
 
   def splitted_description
-    @splitted_description ||= split_description_by_tags("p", "div") || Nokogiri::HTML.parse(raw_content["Descripción HTML"]).text.split("\n").select(&:present?)
+    @splitted_description ||= Nokogiri::HTML.parse(raw_content["Descripción HTML"]).text.split("\n").select(&:present?)
   end
 
   def split_description_by_tags(*tags)
