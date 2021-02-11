@@ -9,14 +9,17 @@ class ProcessesImporter
     @admin = admin
     @transformed_data = []
     @slugs = {}
+    @metadata = []
   end
 
   def json_data
     if @transformed_data.blank?
       @file.each do |row|
-        processed_row = ProcessesParser.new(row, @organization).transformed_data
+        parser = ProcessesParser.new(row, @organization)
+        processed_row = parser.transformed_data
         processed_row.merge!(slug: check_slug(processed_row[:slug]))
         @transformed_data << processed_row
+        @metadata << parser.metadata.merge(final_slug: processed_row[:slug])
       end
     end
     @transformed_data.to_json
@@ -41,9 +44,20 @@ class ProcessesImporter
       ).with_context(current_organization: @organization, current_user: @admin)
 
       Decidim::ParticipatoryProcesses::Admin::CustomImportParticipatoryProcess.call(form)
+
+      save_metadata
     ensure
       temp_file.close
       temp_file.unlink
+    end
+  end
+
+  def save_metadata
+    CSV.open("metadata.csv", "wb") do |csv|
+      csv << @metadata.first.keys
+      @metadata.each do |hash|
+        csv << hash.values
+      end
     end
   end
 

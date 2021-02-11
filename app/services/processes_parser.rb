@@ -52,6 +52,23 @@ class ProcessesParser
     }
   end
 
+  def metadata
+    start_date_string = start_date.to_date.to_s
+    end_date_string = end_date&.to_date&.to_s
+    {
+      original_id: raw_content["NID"],
+      description_with_1_paragraph: remaining_description.blank?,
+      original_url: "https://gobiernoabierto.navarra.es#{raw_content["Ruta"]}",
+      proposal_status: proposal_status,
+      participation_status: participation_status,
+      start_and_end_date_coincident: start_date_string == end_date_string,
+      start_date: start_date.to_date.to_s,
+      end_date: end_date&.to_date&.to_s,
+      original_slug: slug_value,
+      final_slug: nil
+    }
+  end
+
   private
 
   def short_description
@@ -151,7 +168,15 @@ class ProcessesParser
   def default_open_end_date; end
 
   def participation_closed?
-    raw_content["Estado del proceso de participacion"] == "Cerrado"
+    participation_status == "Cerrado"
+  end
+
+  def proposal_status
+    raw_content["Estado de la propuesta de gobierno"]
+  end
+
+  def participation_status
+    raw_content["Estado del proceso de participacion"]
   end
 
   def extract_date(text)
