@@ -30,7 +30,7 @@ class ProcessesParser
       "subtitle": has_value?("Subtítulo") ? translated_attribute("Subtítulo") : translated_attribute("Departamento"),
       "slug": slug_value,
       "hashtag": nil,
-      "short_description": translated_attribute("Descripción HTML"),
+      "short_description": translatable_hash(short_description),
       "description": translatable_hash(description_html),
       "announcement": nil,
       "start_date": start_date,
@@ -54,13 +54,34 @@ class ProcessesParser
 
   private
 
+  def short_description
+    splitted_description.first.to_s
+  end
+
+  def remaining_description
+    return "" if splitted_description.blank?
+
+    splitted_description[1..-1].map(&:to_s).join("\n")
+  end
+
+  def splitted_description
+    @splitted_description ||= split_description_by_tags("p", "div") || Nokogiri::HTML.parse(raw_content["Descripción HTML"]).text.split("\n").select(&:present?)
+  end
+
+  def split_description_by_tags(*tags)
+    html = raw_content["Descripción HTML"]
+    tags.each do |tag|
+      next if (elements = Nokogiri::HTML.parse(html).css(tag)).blank?
+
+      return elements
+    end
+
+    nil
+  end
+
   def description_html
     <<-HTML
-    #{raw_content["Descripción HTML"]}
-
-    <p>
-      URL del proceso: <a hfref="https://gobiernoabierto.navarra.es#{raw_content["Ruta"]}">https://gobiernoabierto.navarra.es#{raw_content["Ruta"]}</a>
-    </p>
+    #{remaining_description}
 
     #{links}
 
