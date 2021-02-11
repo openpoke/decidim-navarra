@@ -35,6 +35,8 @@ module Decidim
           @imported_process.decidim_scope_id = attributes["scope"]["id"]
           @imported_process.decidim_area_id = attributes["area"]["id"]
           @imported_process.save!
+          @imported_process.update_attribute(:created_at, attributes["start_date"])
+          @imported_process.publish!
           @imported_process
         end
       end
