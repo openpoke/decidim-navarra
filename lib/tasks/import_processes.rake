@@ -75,6 +75,15 @@ namespace :decidim_navarra do
     settings = welcome_text.inject(settings) { |acc, (k, v)| acc.update("welcome_text_#{k}" => v) }
     hero_content_block.settings = settings
     hero_content_block.save!
+
+    tos_page = Decidim::StaticPage.create(
+      slug: "terms-and-conditions",
+      organization: organization,
+      title: { "es" => "Términos y condiciones", "eu" => "Baldintzak eta baldintzak" },
+      content: { "es" => "<p>Pendiente</p>", "eu" => "<p>Zain</p>" }
+    )
+    organization.tos_version = tos_page.updated_at
+    organization.save!
   end
 
   desc "Transforms a CSV of processes and imports it in a organization"
