@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MailWebserviceHandler
+class MailWebserviceHandler < Decidim::ApplicationMailer
   def initialize(options = {}); end
 
   def settings
