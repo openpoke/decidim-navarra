@@ -11,7 +11,7 @@ class MailWebserviceHandler < Decidim::ApplicationMailer
 
   def send_raw_email(mail, _args = {})
     response = Faraday.post webservice_address do |request|
-      request.headers["Content-Type"] = "text/xml"
+      request.headers["Content-Type"] = "application/soap+xml; charset=utf-8; action=\"http://www.navarra.es/EnvioCorreos/IEnvioCorreos/EnviaCorreoDetallado\""
       request.body = raw_xml(mail)
     end
 
