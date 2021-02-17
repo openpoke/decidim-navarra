@@ -1,0 +1,32 @@
+---
+eu:
+  activemodel:
+    attributes:
+      census_authorization_handler:
+        date_of_birth: Jaiotze data
+        document_number: Dokumentu zenbakia
+        document_type: Dokumentu mota
+        first_surname: Lehen abizena
+        name: izena
+        personal_data_access_consent: Baimena ematen dut kontsultatu ahal izateko
+          Nortasun datuak
+        province_id: Probintzia
+        second_surname: Bigarren abizena
+  census_authorization:
+    form:
+      date_select:
+        day: Eguna
+        month: Hilabetea
+        year: Urtea
+  decidim:
+    authorization_handlers:
+      census_authorization_handler:
+        explanation: Erregistro datuen egiaztapena
+        name: Padrón
+    census_authorization_handler:
+      document_types:
+        nie: NIE
+        nif: IFZ
+        passport: Pasaporte
+      invalid_census_service_verification: Identifikatu gabeko titularra edo bizileku
+        lurralde eremu okerra
