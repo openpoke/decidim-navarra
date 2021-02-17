@@ -7,12 +7,10 @@ class MailWebserviceHandler < Decidim::ApplicationMailer
     @settings ||= {}
   end
 
-  def send_email(options = {}); end
-
   def send_raw_email(mail, _args = {})
     response = Faraday.post webservice_address do |request|
       request.headers["Content-Type"] = "application/soap+xml; charset=utf-8; action=\"http://www.navarra.es/EnvioCorreos/IEnvioCorreos/EnviaCorreoDetallado\""
-      request.body = raw_xml(mail)
+      request.body = raw_xml(mail, subject: extract_subject(mail), body: extract_body(mail))
     end
 
     Nokogiri::XML(response.body).remove_namespaces!
@@ -22,44 +20,64 @@ class MailWebserviceHandler < Decidim::ApplicationMailer
 
   private
 
-  def raw_xml(mail)
+  def extract_subject(mail)
+    mail.subject.encode(xml: :text)
+  end
+
+  def extract_body(mail)
+    mail = mail.parts.find { |message| /text\/html/.match?(message.content_type) } || mail.parts.first if mail.multipart?
+    mail.body.to_s.encode(xml: :text)
+  end
+
+  def timestamp_format
+    "%Y-%m-%dT%H:%M:%S.%LZ"
+  end
+
+  def timestamp
+    @timestamp ||= OpenStruct.new(
+      created: DateTime.current.strftime(timestamp_format),
+      expires: 3.minutes.from_now.strftime(timestamp_format)
+    )
+  end
+
+  def raw_xml(mail, opts = {})
     <<-XML
-      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:env="http://www.navarra.es/EnvioCorreos" xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-          <soapenv:Header>
-              <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-                  <wsse:UsernameToken wsu:Id="UsernameToken-1">
-                      <wsse:Username>#{request_configuration.username_token_user}</wsse:Username>
-                      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">#{request_configuration.username_token_password}</wsse:Password>
-                  </wsse:UsernameToken>
-              </wsse:Security>
-          </soapenv:Header>
-          <soapenv:Body>
-              <env:EnviaCorreo>
-                  <!--Optional:-->
-                  <env:asunto>#{mail.subject}</env:asunto>
-                  <!--Optional:-->
-                  <env:cuerpo>#{mail.body}</env:cuerpo>
-                  <!--Optional:-->
-                  <env:origen>participacionciudadana@navarra.es</env:origen>
-                  <!--Optional:-->
-                  <env:destinos>
-                      <!--Zero or more repetitions:-->
-    #{mail.to.map { |addressee| "<arr:string>#{addressee}</arr:string>" }.join("\n")}
-                      <arr:string>eduardo@populate.tools</arr:string>
-                  </env:destinos>
-                  <!--Optional:-->
-                  <env:servidor>correo.admon-cfnavarra.es</env:servidor>
-                  <!--Optional:-->
-                  <env:usuario>SVC_participacion</env:usuario>
-                  <!--Optional:-->
-                  <env:clave>Participacion2020</env:clave>
-                  <!--Optional:-->
-                  <!--env:respuesta>?</env:respuesta -->
-                  <!--Optional:-->
-                  <env:codaplicacion>172</env:codaplicacion>
-              </env:EnviaCorreo>
-          </soapenv:Body>
-      </soapenv:Envelope>
+<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+    <s:Header>
+        <o:Security s:mustUnderstand="1" xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <u:Timestamp u:Id="_0">
+                <u:Created>#{timestamp.created}</u:Created>
+                <u:Expires>#{timestamp.expires}</u:Expires>
+            </u:Timestamp>
+            <o:UsernameToken u:Id="uuid-d368d733-2147-46e2-903f-7dda72bf934a-3">
+                <o:Username>#{request_configuration.username_token_user}</o:Username>
+                <o:Password>#{request_configuration.username_token_password}</o:Password>
+            </o:UsernameToken>
+        </o:Security>
+    </s:Header>
+    <s:Body>
+        <EnviaCorreoDetallado xmlns="http://www.navarra.es/EnvioCorreos">
+            <mensaje xmlns:a="http://schemas.datacontract.org/2004/07/cpEnvioCorreos.Entidades" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <_key xmlns="http://schemas.datacontract.org/2004/07/Indra.Componentes">00000000-0000-0000-0000-000000000000</_key>
+                <a:Adjuntos i:nil="true"/>
+                <a:Asunto>#{opts[:subject]}</a:Asunto>
+                <a:Cc i:nil="true" xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+                <a:Cco i:nil="true" xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+                <a:Cuerpo>#{opts[:body]}</a:Cuerpo>
+                <a:Destinatarios xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+                    #{mail.to.map { |addressee| "<b:string>#{addressee}</b:string>" }.join("\n")}
+                </a:Destinatarios>
+                <a:Origen>participacionciudadana@navarra.es</a:Origen>
+                <a:Tipo>HTML</a:Tipo>
+            </mensaje>
+            <servidor>correo.admon-cfnavarra.es</servidor>
+            <usuario>SVC_participacion</usuario>
+            <clave>Participacion2020</clave>
+            <respuesta/>
+            <codaplicacion>172</codaplicacion>
+        </EnviaCorreoDetallado>
+    </s:Body>
+</s:Envelope>
     XML
   end
 
