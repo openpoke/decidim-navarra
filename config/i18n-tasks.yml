@@ -1,0 +1,6 @@
+base_locale: es
+locales: [en, eu]
+ignore_unused:
+  - 'activemodel.attributes.census_authorization_handler.*'
+  - 'decidim.authorization_handlers.census_authorization_handler.*'
+  - 'decidim.census_authorization_handler.document_types.*'
