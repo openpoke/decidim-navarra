@@ -40,7 +40,6 @@
     geocoder_lookup_app_id:
     hostname: decidim-navarra-staging
     include_passenger: true
-    include_firewalld: false
     memcache_listen_address: "127.0.0.1"
     memcache_memory: 256
     populate_user: centos

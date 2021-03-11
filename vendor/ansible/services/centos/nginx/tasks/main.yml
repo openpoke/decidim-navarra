@@ -1,5 +1,4 @@
 ---
-
 # @title_es Añadir el repositorio de passenger
 # @title_en Adding passenger repository
 # @input #{shell}
@@ -174,19 +173,6 @@
     - mod-mail.conf
     - mod-stream.conf
   when: include_passenger == true
-
-- name: Open https port in firewall
-  become: true
-  firewalld: service=https permanent=true state=enabled
-  notify: Restart firewalld
-  when: include_firewalld == true
-
-- name: Open http port in firewall
-  become: true
-  firewalld: service=http permanent=true state=enabled
-  notify: Restart firewalld
-  when: include_firewalld == true
-
 
 # @title_es Arrancar nginx
 # @title_en Start nginx
