@@ -1,6 +1,4 @@
 ---
-- include_vars: populate_vars.yml
-
 - name: Group "www-data" exists
   group:
     name: www-data
