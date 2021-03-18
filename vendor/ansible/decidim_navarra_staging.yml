@@ -42,7 +42,6 @@
     include_passenger: true
     memcache_listen_address: "127.0.0.1"
     memcache_memory: 256
-    populate_user: centos
     postgres_bind_address: "127.0.0.1"
     postgres_version: 11
     rails_env: staging
@@ -57,11 +56,10 @@
     epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
     epel_repo_gpg_key_url: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7"
     epel_repofile_path: "/etc/yum.repos.d/epel.repo"
-    populate_user_password: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      34623866336636323164343262303136373864343235383933383264316236363631353938653464
-      3064663334626166653265623233616161633163633633320a613038323338353364313235613364
-      36343031303933306333663034343032376163323635613734626361613561383633653233616535
-      3737393963646538340a376438656234306138363232653565663264393630636637363362386536
-      35336435323566316538643836366361356238343539313032343335333336626434
-
+    populate_user: centos
+    populate_user_password:
+    site_db_name:
+    site_db_user:
+    site_db_host:
+    site_db_port:
+    site_db_password:
