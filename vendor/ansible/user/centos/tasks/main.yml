@@ -6,11 +6,11 @@
 
 - name: Create populate user
   user:
-    name={{ populate_user }}
-    password={{ populate_user_password | password_hash('sha512') }}
-    groups=root,www-data
-    append=yes
-    shell=/bin/bash
+    name: "{{ populate_user }}"
+    password: "{{ '%s' | format(populate_user_password) | password_hash('sha512') }}"
+    groups: root,www-data
+    append: yes
+    shell: /bin/bash
 
 - name: Create directories
   file: state=directory path={{item}} owner={{ populate_user }} group={{ populate_user}} mode=0700

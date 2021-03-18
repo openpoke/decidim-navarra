@@ -12,6 +12,8 @@
 # @input yum-config-manager --add-repo #{yum_repository>baseurl}
 - name: Add SCL repository
   yum_repository:
+    name: rhscl
+    description: rhscl repo
     baseurl: https://copr.fedoraproject.org/coprs/rhscl/centos-release-scl/repo/epel-7/rhscl-centos-release-scl-epel-7.repo
     enabled: yes
 
