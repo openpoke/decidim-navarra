@@ -2,58 +2,62 @@
 
 En esta guía se detallan los pasos para instalar el entorno y la app de Decidim en una máquina con Red Hat 7 desde cero. Al acabar la guía deberíamos tener instalados el servidor web (nginx), el servidor de aplicación (Phusion Passenger) y la propia aplicación de Decidim (Ruby on Rails) instalados y levantados en la máquina.
 
-Además de esta guía manual se proporcionará un proyecto en Ansible para provisionar la máquina automáticamente. De hacerlo con Ansible no haría falta seguir esta guía a partir del punto "Tareas de Ansible".
+Además de esta guía manual se proporcionará un proyecto en Ansible para provisionar la máquina automáticamente. De hacerlo con Ansible no haría falta seguir esta guía.
 
-## Requisitos
+Estos son los requisitos de la instalación:
+
 1. Va a haber dos entornos, de pre-producción (decidim-navarra-staging) y producción (decidim-navarra-production). Cada uno de ellos va a estar en una máquina cuya IP ha de ser añadida en el archivo inventory debajo de cada nombre. Por ejemplo:
 
 ```
+
 [decidim-navarra-staging]
+
 10.253.110.32
 
-[decidim-navarra-production]
-10.253.110.33
+[decidim-navarra-staging]
+
+10.253.110.32
+
 ```
 
 2. En cada una de las máquinas ha de existir un usuario root con una clave privada SSH copiada y autorizada para poder hacer uso de ella en el provisionamiento (el paso de provisionamiento no pide la password, es todo por medio de SSH). Estas máquinas también han de tener acceso al repositorio de decidim (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git)
+
 3. En la estación de trabajo instalar:
-  - python3
-  - Ansible: `pip3 install ansible`
-  - Passlib: `pip3 install passlib`
+
+- python3
+
+- Ansible: pip3 install ansible
+
+- Passlib: pip3 install passlib
+
 4. Clonar en la estación de trabajo el repositorio de decidim (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git). Las recetas de ansible y ficheros necesarios para la ejecución de sus tareas están en la carpeta vendor/ansible. En este documento (docs/installation_es.md) están las instrucciones para realizar el provisionamiento automático con Ansible así como un manual detallando todas las tareas que el propio Ansible automatiza.
 
-### Ejecución de tareas de Ansible
+5. Antes de lanzar el playbook hay que definir el password del usuario y rellenar los valores de bases de datos. Todos esos valores están al final del playbook. Los valores pueden rellenarse en texto plano o encriptados.
 
-#### Servidor de pre-producción
+Lo primero que hay que hacer es definir un password para nuestro vault. Este password se usará para encriptar valores y desencriptarlos al ejecutar cada playbook.
 
-Ejecutar:
+Para encriptar un valor hay que usar el comando `ansible-vault encrypt_string CADENA_A_ENCRIPTAR --ask-vault-pass`. Nos pedirá el password del vault que hemos definido y nos devolverá una cadena que empieza por `!vault | `. Todo eso debe ponerse en el campo del valor que hemos encriptado.
 
-`ansible-playbook decidim_navarra_staging.yml --ask-vault-pass`
+Una vez completados los datos que faltan en el playbook vamos a la carpeta del proyecto y lo lanzamos (cambiar por `decidim_navarra_staging.yml` para el entorno de staging):
 
-El password que pedirá es el mismo que el que tiene el usuario en la máquina.
+```ansible-playbook decidim_navarra_production.yml --ask-vault-pass ```
 
-#### Servidor de producción
+El password que pedirá es el mismo que definimos al encriptar los valores.
 
-Ejecutar:
-
-`ansible-playbook decidim_navarra_production.yml --ask-vault-pass`
-
-El password que pedirá es el mismo que el que tiene el usuario en la máquina.
-
-## Servidor de base de datos
-
-La aplicación usará una base de datos Postgresql 11.0 que deberá estar instalada en un servidor aparte. Este servidor ha de tener instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. Las tareas de Ansible se encargan de instalar el cliente de Posgresql 11.0 en los entornos de pre-producción y producción
-
-## Tareas de Ansible
-
-Las tareas detalladas a continuación se encuentran automatizadas en el playbook de Ansible de manera que no sería necesario ejecutarlas manualmente.
+6. La aplicación usará una base de datos Postgresql 11.0, pero esta estará instalada en una máquina aparte. Es necesario que la base de datos tenga instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. En la propia máquina de la aplicación, eso sí, se instalará el cliente de Postgresql 11.0. Para poder instalar el cliente es necesario que la libreria `llvm-toolset-7` esté instalada de antemano en la máquina.
 
 ### Añadir repositorio EPEL
 
-Añadir el repositorio de paquetes EPEL (URL https://download.fedoraproject.org/pub/epel/$releasever/$basearch/) al sistema
+Añadir el repositorio de paquetes EPEL (URL {{ epel_repo_url }}) al sistema
 
 ```
-yum-config-manager --add-repo https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+yum install {{ epel_repo_url }}
+```
+
+### Importar la clave GPG de EPEL
+
+```
+rpm --import {{ epel_repo_gpg_key_url }}
 ```
 
 ### Instalar los paquetes básicos
@@ -751,6 +755,23 @@ LC_ALL=C.UTF-8
 LANG=en_US.UTF-8
 LANGUAGE=en_US.UTF-8
 
+## Census service integration
+CENSUS_WEBSERVICE_ADDRESS={{census_webservice_address}}
+CENSUS_WEBSERVICE_CODE={{census_webservice_code}}
+CENSUS_WEBSERVICE_PURPOSE={{census_webservice_purpose}}
+CENSUS_WEBSERVICE_OFFICIAL_DOCUMENT_NUMBER={{census_webservice_official_document_number}}
+CENSUS_WEBSERVICE_OFFICIAL_NAME={{census_webservice_official_name}}
+CENSUS_WEBSERVICE_EXPEDIENT_ID={{census_webservice_expedient_id}}
+CENSUS_WEBSERVICE_PROCEDURE_CODE={{census_webservice_procedure_code}}
+CENSUS_WEBSERVICE_PROCEDURE_NAME={{census_webservice_procedure_name}}
+CENSUS_WEBSERVICE_PROCESSING_UNIT={{census_webservice_processing_unit}}
+
+## email service integration
+MAILER_DELIVERY_METHOD={{mailer_delivery_method}}
+EMAIL_WEBSERVICE_ADDRESS={{email_webservice_address}}
+EMAIL_WEBSERVICE_USERNAME_TOKEN_USER={{email_webservice_username_token_user}}
+EMAIL_WEBSERVICE_USERNAME_TOKEN_PASSWORD={{email_webservice_username_token_password}}
+
 ```
 
 ### Habilitar sidekiq en monit
@@ -965,6 +986,11 @@ set :linked_dirs, fetch(:linked_dirs, []).push(*%w(
 ))
 set :sidekiq_config, -> { File.join(release_path, "config", "sidekiq.yml") }
 set :passenger_restart_with_touch, true
+
+task :clean_vendor_ansible do
+  run "rm -rf #{release_path}/vendor/ansible"
+end
+before "bundle:install", "clean_vendor_ansible"
 
 ```
 

@@ -6,17 +6,46 @@
 # instalados y levantados en la máquina.
 # @comment Además de esta guía manual se proporcionará un proyecto en Ansible para provisionar la máquina automáticamente. De hacerlo
 # con Ansible no haría falta seguir esta guía.
-# @comment Para instalarlo con Ansible debemos primero tener instalado Python y pip. Una vez eso, instalamos Ansible:
-# @comment ```pip install ansible```
-# @comment Después vamos a la carpeta del proyecto y lanzamos el playbook (cambiar por `decidim_navarra_staging.yml`
-# para el entorno de staging):
+# @comment Estos son los requisitos de la instalación:
+# @comment 1. Va a haber dos entornos, de pre-producción (decidim-navarra-staging) y producción
+# (decidim-navarra-production). Cada uno de ellos va a estar en una máquina cuya IP ha de ser
+# añadida en el archivo inventory debajo de cada nombre. Por ejemplo:
+# @comment ```
+# @comment [decidim-navarra-staging]
+# @comment  10.253.110.32
+# @comment  [decidim-navarra-staging]
+# @comment  10.253.110.32
+# @comment ```
+# @comment 2. En cada una de las máquinas ha de existir un usuario root con una clave privada SSH copiada y autorizada
+# para poder hacer uso de ella en el provisionamiento (el paso de provisionamiento no pide la password, es todo
+# por medio de SSH). Estas máquinas también han de tener acceso al repositorio de decidim
+# (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git)
+# @comment 3. En la estación de trabajo instalar:
+# @comment - python3
+# @comment - Ansible: pip3 install ansible
+# @comment - Passlib: pip3 install passlib
+# @comment 4. Clonar en la estación de trabajo el repositorio de decidim
+# (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git).
+# Las recetas de ansible y ficheros necesarios para la ejecución de sus tareas están en
+# la carpeta vendor/ansible. En este documento (docs/installation_es.md) están
+# las instrucciones para realizar el provisionamiento automático con Ansible así como un
+# manual detallando todas las tareas que el propio Ansible automatiza.
+# @comment 5. Antes de lanzar el playbook hay que definir el password del usuario y rellenar los valores de
+# bases de datos. Todos esos valores están al final del playbook. Los valores pueden rellenarse en texto plano o
+# encriptados.
+# @comment Lo primero que hay que hacer es definir un password para nuestro vault. Este password se usará para
+# encriptar valores y desencriptarlos al ejecutar cada playbook.
+# @comment Para encriptar un valor hay que usar el comando `ansible-vault encrypt_string CADENA_A_ENCRIPTAR --ask-vault-pass`.
+# Nos pedirá el password del vault que hemos definido y nos devolverá una cadena que empieza por `!vault | `. Todo
+# eso debe ponerse en el campo del valor que hemos encriptado.
+# @comment Una vez completados los datos que faltan en el playbook vamos a la carpeta del proyecto y lo lanzamos
+# (cambiar por `decidim_navarra_staging.yml` para el entorno de staging):
 # @comment ```ansible-playbook decidim_navarra_production.yml --ask-vault-pass ```
-# @comment El password que pedirá es el mismo que el que tiene el usuario en la máquina.
-# @comment La aplicación usará una base de datos Postgresql 11.0, pero esta estará instalada en una máquina aparte. Es necesario que
+# @comment El password que pedirá es el mismo que definimos al encriptar los valores.
+# @comment 6. La aplicación usará una base de datos Postgresql 11.0, pero esta estará instalada en una máquina aparte. Es necesario que
 # la base de datos tenga instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. En la propia máquina de la aplicación, eso sí,
 # se instalará el cliente de Postgresql 11.0. Para poder instalar el cliente es necesario que la libreria `llvm-toolset-7` esté instalada
 # de antemano en la máquina.
-# @comment Para completar la instalación la máquina debe tener acceso al repositorio de Git de la aplicación.
 - hosts: 127.0.0.1
   connection: local
   become: yes

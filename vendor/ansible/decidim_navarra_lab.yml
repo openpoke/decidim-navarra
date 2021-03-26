@@ -1,22 +1,4 @@
 ---
-# @title Guía de instalación del entorno de Decidim
-# @comment En esta guía se detallan los pasos para instalar el entorno y la app de
-# Decidim en una máquina con Red Hat 7 desde cero. Al acabar la guía deberíamos tener instalados
-# el servidor web (nginx), el servidor de aplicación (Phusion Passenger) y la propia aplicación de Decidim (Ruby on Rails)
-# instalados y levantados en la máquina.
-# @comment Además de esta guía manual se proporcionará un proyecto en Ansible para provisionar la máquina automáticamente. De hacerlo
-# con Ansible no haría falta seguir esta guía.
-# @comment Para instalarlo con Ansible debemos primero tener instalado Python y pip. Una vez eso, instalamos Ansible:
-# @comment ```pip install ansible```
-# @comment Después vamos a la carpeta del proyecto y lanzamos el playbook (cambiar por `decidim_navarra_staging.yml`
-# para el entorno de staging):
-# @comment ```ansible-playbook decidim_navarra_production.yml --ask-vault-pass ```
-# @comment El password que pedirá es el mismo que el que tiene el usuario en la máquina.
-# @comment La aplicación usará una base de datos Postgresql 11.0, pero esta estará instalada en una máquina aparte. Es necesario que
-# la base de datos tenga instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. En la propia máquina de la aplicación, eso sí,
-# se instalará el cliente de Postgresql 11.0. Para poder instalar el cliente es necesario que la libreria `llvm-toolset-7` esté instalada
-# de antemano en la máquina.
-# @comment Para completar la instalación la máquina debe tener acceso al repositorio de Git de la aplicación.
 - hosts: 127.0.0.1
   connection: local
   become: yes
