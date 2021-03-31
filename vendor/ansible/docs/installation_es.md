@@ -34,11 +34,17 @@ Para encriptar un valor hay que usar el comando `ansible-vault encrypt_string CA
 
 Una vez completados los datos que faltan en el playbook vamos a la carpeta del proyecto y lo lanzamos (cambiar por `decidim_navarra_staging.yml` para el entorno de staging):
 
-```ansible-playbook decidim_navarra_production.yml --ask-vault-pass```
+```
+
+ansible-playbook decidim_navarra_production.yml --ask-vault-pass
+
+```
 
 El password que pedirá es el mismo que definimos al encriptar los valores.
 
 - La aplicación usará una base de datos Postgresql 11.0, pero esta estará instalada en una máquina aparte. Es necesario que la base de datos tenga instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. En la propia máquina de la aplicación, eso sí, se instalará el cliente de Postgresql 11.0. Para poder instalar el cliente es necesario que la libreria `llvm-toolset-7` esté instalada de antemano en la máquina.
+
+Esta instalación creará en el servidor al usuario `participa_decidim` para gestionar la app.
 
 ### Añadir repositorio EPEL
 

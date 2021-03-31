@@ -37,12 +37,15 @@
 # eso debe ponerse en el campo del valor que hemos encriptado.
 # @comment Una vez completados los datos que faltan en el playbook vamos a la carpeta del proyecto y lo lanzamos
 # (cambiar por `decidim_navarra_staging.yml` para el entorno de staging):
-# @comment ```ansible-playbook decidim_navarra_production.yml --ask-vault-pass```
+# @comment ```
+# @comment ansible-playbook decidim_navarra_production.yml --ask-vault-pass
+# @comment ```
 # @comment El password que pedirá es el mismo que definimos al encriptar los valores.
 # @comment - La aplicación usará una base de datos Postgresql 11.0, pero esta estará instalada en una máquina aparte. Es necesario que
 # la base de datos tenga instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. En la propia máquina de la aplicación, eso sí,
 # se instalará el cliente de Postgresql 11.0. Para poder instalar el cliente es necesario que la libreria `llvm-toolset-7` esté instalada
 # de antemano en la máquina.
+# @comment Esta instalación creará en el servidor al usuario `participa_decidim` para gestionar la app.
 - hosts: 127.0.0.1
   connection: local
   become: yes
@@ -63,7 +66,7 @@
     - { role: 'services/centos/nginx' }
     # - { role: 'services/centos/postgresql_server' }
     - { role: 'services/centos/postgresql_client' }
-    - { role: 'services/centos/redis_server', redis_user: centos }
+    - { role: 'services/centos/redis_server', redis_user: participa_decidim }
     ### Site
     - { role: 'sites/decidim' }
     - { role: 'tools/deploy' }
@@ -72,11 +75,11 @@
     app_git_branch: master
     app_group: www-data
     app_repo_url: "https://gesfuentes.admon-cfnavarra.es/git/r/presidencia/WebParticipacionCiudadana.git"
-    app_user: centos
+    app_user: participa_decidim
     backup_databases:
       - decidim
     backups_folder: /backup
-    backups_user: centos
+    backups_user: participa_decidim
     databases:
       - decidim
     env: production
@@ -89,19 +92,19 @@
     postgres_bind_address: "127.0.0.1"
     postgres_version: 11
     rails_env: production
-    rbenv_user: centos
+    rbenv_user: participa_decidim
     redis_bind_address: "127.0.0.1"
     redis_url: redis://127.0.0.1:6379/0
     rollbar_access_token:
     sites_domains:
-      - desparticipa.admon-cfnavarra.es
+      - participa.navarra.es
     ssl_certificate_name: decidim
     internal_server: true
     ansible_python_interpreter: /usr/bin/python
     epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
     epel_repo_gpg_key_url: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7"
     epel_repofile_path: "/etc/yum.repos.d/epel.repo"
-    populate_user: centos
+    populate_user: participa_decidim
     populate_user_password:
     site_db_name:
     site_db_user:
