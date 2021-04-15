@@ -359,7 +359,7 @@ curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpa
 ## Nginx + Passenger
 ```
 
-### Añadir repositorios de CentOS needed for some passenger packages
+### Añadir repositorios de CentOS necesarios para algunos paquetes
 
 En /etc/yum.repos.d/ crear un fichero centos.repo con el contenido:
 

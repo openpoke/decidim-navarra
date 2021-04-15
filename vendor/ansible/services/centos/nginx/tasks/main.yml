@@ -8,7 +8,7 @@
   shell: curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
   when: include_passenger == true
 
-# @title_es Añadir repositorios de CentOS needed for some passenger packages
+# @title_es Añadir repositorios de CentOS necesarios para algunos paquetes
 # @title_en Adding CentOS repositories  needed for some passenger packages
 # @comment_es En /etc/yum.repos.d/ crear un fichero centos.repo con el contenido:
 # @comment_en Create the file centos.repo in /etc/yum.repos.d/ with the content:
