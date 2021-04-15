@@ -359,6 +359,31 @@ curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpa
 ## Nginx + Passenger
 ```
 
+### Añadir repositorios de CentOS needed for some passenger packages
+
+En /etc/yum.repos.d/ crear un fichero centos.repo con el contenido:
+
+```
+[base]
+name=CentOS $releasever – Base
+baseurl=http://mirror.centos.org/centos/7/os/$basearch/
+gpgcheck=0
+enabled=1
+
+[updates]
+name=CentOS $releasever – Updates
+baseurl=http://mirror.centos.org/centos/7/updates/$basearch/
+gpgcheck=0
+enabled=1
+
+[extras]
+name=CentOS $releasever – Extras
+baseurl=http://mirror.centos.org/centos/7/extras/$basearch/
+gpgcheck=0
+enabled=1
+
+```
+
 ### Instalar nginx y phusion passenger
 
 ```
@@ -986,11 +1011,6 @@ set :linked_dirs, fetch(:linked_dirs, []).push(*%w(
 ))
 set :sidekiq_config, -> { File.join(release_path, "config", "sidekiq.yml") }
 set :passenger_restart_with_touch, true
-
-task :clean_vendor_ansible do
-  run "rm -rf #{release_path}/vendor/ansible"
-end
-before "bundle:install", "clean_vendor_ansible"
 
 ```
 

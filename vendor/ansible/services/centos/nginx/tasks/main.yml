@@ -8,6 +8,40 @@
   shell: curl --fail -sSLo /etc/yum.repos.d/passenger.repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
   when: include_passenger == true
 
+# @title_es Añadir repositorios de CentOS needed for some passenger packages
+# @title_en Adding CentOS repositories  needed for some passenger packages
+# @comment_es En /etc/yum.repos.d/ crear un fichero centos.repo con el contenido:
+# @comment_en Create the file centos.repo in /etc/yum.repos.d/ with the content:
+# @input
+# f{centos.repo}
+- name: Add centos repository 1/3
+  yum_repository:
+    name: base
+    description: centos base
+    file: centos
+    baseurl: http://mirror.centos.org/centos/7/os/$basearch/
+    gpgcheck: no
+    enabled: yes
+
+- name: Add centos repository 2/3
+  yum_repository:
+    name: updates
+    description: centos updates
+    file: centos
+    baseurl: http://mirror.centos.org/centos/7/updates/$basearch/
+    gpgcheck: no
+    enabled: yes
+
+- name: Add centos repository 3/3
+  yum_repository:
+    name: extras
+    description: centos extras
+    file: centos
+    baseurl: http://mirror.centos.org/centos/7/extras/$basearch/
+    gpgcheck: no
+    enabled: yes
+
+
 # @title_es Instalar nginx y phusion passenger
 # @title_en Install nginx and phusion passenger
 # @input #{shell}
