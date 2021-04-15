@@ -574,12 +574,6 @@ systemctl start nginx
 yum-config-manager --add-repo=https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 ```
 
-### Añadir repositorio SCL
-
-```
-yum-config-manager --add-repo https://copr.fedoraproject.org/coprs/rhscl/centos-release-scl/repo/epel-7/rhscl-centos-release-scl-epel-7.repo
-```
-
 ### Instalar paquetes necesarios para el cliente de postgresql 9.6
 
 ```

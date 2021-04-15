@@ -7,16 +7,6 @@
     name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
     state: present
 
-# @title_es Añadir repositorio SCL
-# @title_en Add SCL repository
-# @input yum-config-manager --add-repo #{yum_repository>baseurl}
-- name: Add SCL repository
-  yum_repository:
-    name: rhscl
-    description: rhscl repo
-    baseurl: https://copr.fedoraproject.org/coprs/rhscl/centos-release-scl/repo/epel-7/rhscl-centos-release-scl-epel-7.repo
-    enabled: yes
-
 # @title_es Instalar paquetes necesarios para el cliente de postgresql 9.6
 # @title_en Install necessary packages for the postgresql 9.6 client
 # @input yum install -y #{with_items | join: ' '}
