@@ -63,7 +63,7 @@ rpm --import {{ epel_repo_gpg_key_url }}
 ### Instalar los paquetes básicos
 
 ```
-yum install -y git tree htop vim psmisc gnupg zip ntp ruby-devel ImageMagick postgresql-libs screen curl nodejs tmux libicu-devel ca-certificates npm net-tools zlib-devel readline-devel the_silver_searcher nodejs-bindings node-gyp python3-psycopg2 python3-pip
+yum install -y git tree htop vim psmisc gnupg zip ntp ruby-devel ImageMagick screen curl nodejs tmux libicu-devel ca-certificates npm net-tools zlib-devel readline-devel the_silver_searcher nodejs-bindings node-gyp python3-psycopg2 python3-pip
 ```
 
 ### Instalar yarn
@@ -1005,6 +1005,11 @@ set :linked_dirs, fetch(:linked_dirs, []).push(*%w(
 ))
 set :sidekiq_config, -> { File.join(release_path, "config", "sidekiq.yml") }
 set :passenger_restart_with_touch, true
+
+task :clean_vendor_ansible do
+  run_locally { execute "rm -rf #{release_path}/vendor/ansible" }
+end
+before "bundler:install", "clean_vendor_ansible"
 
 ```
 

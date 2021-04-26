@@ -15,7 +15,6 @@
       - ntp
       - ruby-devel
       - ImageMagick
-      - postgresql-libs
       - screen
       - curl
       - nodejs
