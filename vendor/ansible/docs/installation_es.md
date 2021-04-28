@@ -22,7 +22,7 @@ Estos son los requisitos de la instalación:
 
 - En cada una de las máquinas ha de existir un usuario root con una clave privada SSH copiada y autorizada para poder hacer uso de ella en el provisionamiento (el paso de provisionamiento no pide la password, es todo por medio de SSH). Estas máquinas también han de tener acceso al repositorio de decidim (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git)
 
-- En la estación de trabajo instalar python3, ansible (`pip3 install ansible`) y passlib (`pip3 install passlib`)
+- En la estación de trabajo instalar python3, pip3 (`sudo yum install python3-pip`), ansible (`pip3 install ansible`) y passlib (`pip3 install passlib`)
 
 - Clonar en la estación de trabajo el repositorio de decidim (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git). Las recetas de ansible y ficheros necesarios para la ejecución de sus tareas están en la carpeta vendor/ansible. En este documento (docs/installation_es.md) están las instrucciones para realizar el provisionamiento automático con Ansible así como un manual detallando todas las tareas que el propio Ansible automatiza.
 

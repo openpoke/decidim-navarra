@@ -20,7 +20,7 @@
 # para poder hacer uso de ella en el provisionamiento (el paso de provisionamiento no pide la password, es todo
 # por medio de SSH). Estas máquinas también han de tener acceso al repositorio de decidim
 # (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git)
-# @comment - En la estación de trabajo instalar python3, ansible (`pip3 install ansible`) y passlib (`pip3 install passlib`)
+# @comment - En la estación de trabajo instalar python3, pip3 (`sudo yum install python3-pip`), ansible (`pip3 install ansible`) y passlib (`pip3 install passlib`)
 # @comment - Clonar en la estación de trabajo el repositorio de decidim
 # (https://gesfuentes.admon-cfnavarra.es/git/summary/presidencia!WebParticipacionCiudadana.git).
 # Las recetas de ansible y ficheros necesarios para la ejecución de sus tareas están en
