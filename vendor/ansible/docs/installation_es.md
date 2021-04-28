@@ -42,6 +42,68 @@ ansible-playbook decidim_navarra_production.yml --ask-vault-pass
 
 El password que pedirá es el mismo que definimos al encriptar los valores.
 
+- Además de esto hay que generar el fichero secrets correspondiente si no está generado ya para el entorno (staging o producción). Esto se hace ejecutando el siguiente comando (el ejemplo es para producción):
+
+```
+
+ansible-vault create ruta/a/directorio/ansible/sites/decidim/vars/secrets_production.yml
+
+```
+
+Para staging el fichero deberá ser secrets_staging.yml
+
+El contenido del fichero debe tener las siguientes claves:
+
+```
+
+secret_key_base:
+
+census_webservice_address:
+
+census_webservice_code:
+
+census_webservice_purpose:
+
+census_webservice_official_document_number:
+
+census_webservice_official_name:
+
+census_webservice_expedient_id:
+
+census_webservice_procedure_code:
+
+census_webservice_procedure_name:
+
+census_webservice_processing_unit:
+
+mailer_delivery_method:
+
+email_webservice_address:
+
+email_webservice_username_token_user:
+
+email_webservice_username_token_password:
+
+rollbar_access_token:
+
+mailer_sender:
+
+smtp_username:
+
+smtp_password:
+
+smtp_domain:
+
+smtp_port:
+
+geocoder_lookup_app_id:
+
+geocoder_lookup_app_code:
+
+```
+
+Para saber dónde poner el valor de cada clave por favor contactad con el proveedor (Populate).
+
 - La aplicación usará una base de datos Postgresql 11.0, pero esta estará instalada en una máquina aparte. Es necesario que la base de datos tenga instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. En la propia máquina de la aplicación, eso sí, se instalará el cliente de Postgresql 11.0. Para poder instalar el cliente es necesario que la libreria `llvm-toolset-7` esté instalada de antemano en la máquina.
 
 Esta instalación creará en el servidor al usuario `participa_decidim` para gestionar la app.

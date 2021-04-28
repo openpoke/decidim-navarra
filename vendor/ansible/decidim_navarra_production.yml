@@ -41,6 +41,38 @@
 # @comment ansible-playbook decidim_navarra_production.yml --ask-vault-pass
 # @comment ```
 # @comment El password que pedirá es el mismo que definimos al encriptar los valores.
+# @comment - Además de esto hay que generar el fichero secrets correspondiente si no está generado ya para el entorno (staging o producción).
+# Esto se hace ejecutando el siguiente comando (el ejemplo es para producción):
+# @comment ```
+# @comment ansible-vault create ruta/a/directorio/ansible/sites/decidim/vars/secrets_production.yml
+# @comment ```
+# @comment Para staging el fichero deberá ser secrets_staging.yml
+# @comment El contenido del fichero debe tener las siguientes claves:
+# @comment ```
+# @comment secret_key_base:
+# @comment census_webservice_address:
+# @comment census_webservice_code:
+# @comment census_webservice_purpose:
+# @comment census_webservice_official_document_number:
+# @comment census_webservice_official_name:
+# @comment census_webservice_expedient_id:
+# @comment census_webservice_procedure_code:
+# @comment census_webservice_procedure_name:
+# @comment census_webservice_processing_unit:
+# @comment mailer_delivery_method:
+# @comment email_webservice_address:
+# @comment email_webservice_username_token_user:
+# @comment email_webservice_username_token_password:
+# @comment rollbar_access_token:
+# @comment mailer_sender:
+# @comment smtp_username:
+# @comment smtp_password:
+# @comment smtp_domain:
+# @comment smtp_port:
+# @comment geocoder_lookup_app_id:
+# @comment geocoder_lookup_app_code:
+# @comment ```
+# @comment Para saber dónde poner el valor de cada clave por favor contactad con el proveedor (Populate).
 # @comment - La aplicación usará una base de datos Postgresql 11.0, pero esta estará instalada en una máquina aparte. Es necesario que
 # la base de datos tenga instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. En la propia máquina de la aplicación, eso sí,
 # se instalará el cliente de Postgresql 11.0. Para poder instalar el cliente es necesario que la libreria `llvm-toolset-7` esté instalada
