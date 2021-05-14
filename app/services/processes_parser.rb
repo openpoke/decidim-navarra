@@ -21,14 +21,18 @@ class ProcessesParser
 
   TRANSLATIONS = {
     es: {
+      detail: "Detalle",
       documentation: "Documentación",
       links: "Enlaces"
     },
     eu: {
+      detail: "Xehetasuna",
       documentation: "Dokumentazioa",
       links: "Estekak"
     }
   }.with_indifferent_access.freeze
+
+  FILES_BASE_URL = "https://gobiernoabierto.navarra.es/sites/default/files/"
 
   def initialize(row, organization)
     @raw_content = row
@@ -73,7 +77,7 @@ class ProcessesParser
     {
       original_id: external_id,
       description_paragraphs_count: splitted_description.count,
-      raw_description: raw_content["Descripcion - HTML"],
+      raw_description: raw_content["Descripcion HTML"],
       first_paragraph_description: short_description,
       original_url: "https://gobiernoabierto.navarra.es#{raw_content["Ruta"]}",
       locale: locale,
@@ -92,7 +96,12 @@ class ProcessesParser
   private
 
   def image_url
-    @image_url ||= raw_content["Imagen URL"].presence&.gsub(/\s/, "")
+    return if raw_content["Imagen"].blank?
+
+    # GIFs are not accepted for hero images
+    return if /\.gif\z/i =~ raw_content["Imagen"]
+
+    @image_url ||= URI.join(FILES_BASE_URL, raw_content["Imagen"].gsub(/\s/, ""))
   end
 
   def external_es_id
@@ -108,15 +117,15 @@ class ProcessesParser
   end
 
   def remaining_description
-    raw_content["Descripcion - HTML"]
+    raw_content["Descripcion HTML"]
   end
 
   def splitted_description
-    @splitted_description ||= Nokogiri::HTML.parse(raw_content["Descripcion - HTML"]).text.split("\n").select(&:present?)
+    @splitted_description ||= Nokogiri::HTML.parse(raw_content["Descripcion HTML"]).text.split("\n").select(&:present?)
   end
 
   def split_description_by_tags(*tags)
-    html = raw_content["Descripcion - HTML"]
+    html = raw_content["Descripcion HTML"]
     tags.each do |tag|
       next if (elements = Nokogiri::HTML.parse(html).css(tag)).blank?
 
@@ -130,9 +139,11 @@ class ProcessesParser
     <<-HTML
     #{remaining_description}
 
-    #{links}
+    #{list_of_links_from("Enlaces", :links)}
 
-    #{documentation}
+    #{list_of_links_from("Documentacion", :documentation)}
+
+    #{list_of_links_from("Contenidos subespacio", :detail)}
     HTML
   end
 
@@ -144,27 +155,19 @@ class ProcessesParser
     slug(raw_content["Titulo"])
   end
 
-  def documentation
-    return unless has_value?("Documentacion URL")
+  def list_of_links_from(raw_attribute_name, title_key)
+    return unless has_value?(raw_attribute_name)
 
-    urls = raw_content["Documentacion URL"].split(",").map(&:strip)
+    list = urls_list(raw_content[raw_attribute_name])
 
-    descriptions = if urls.count > 1
-                     raw_content["Documentacion"].split(",").map(&:strip)
-                   else
-                     [raw_content["Documentacion"].presence&.strip]
-                   end.compact
-
-    descriptions = urls if descriptions.count != urls.count
-
-    links_list = descriptions.zip(urls).map do |description, url|
-      "<li><a href=\"#{url}\">#{description}</a></li>"
+    links_list = list.map do |link|
+      "<li><a href=\"#{link[:url]}\">#{link[:text].presence || link[:url]}</a></li>"
     end.join("\n")
 
     <<-HTML
     <div>
       <p>
-        <h3>#{translate(:documentation)}</h3>
+        <h3>#{translate(title_key)}</h3>
         <ul>
            #{links_list}
         </ul>
@@ -173,30 +176,22 @@ class ProcessesParser
     HTML
   end
 
-  def links
-    return unless has_value?("Enlaces")
+  def urls_list(text)
+    splitted_texts = text.split("@@").map do |fragment|
+      fragment.partition(URI.regexp(%w(http https)))
+    end
 
-    splitted_text = raw_content["Enlaces"].split("http").map do |text|
-      parts = text.split(", ")
-      next parts if parts.count < 3
+    extractions = splitted_texts.map do |partition|
+      partition = partition.reject(&:blank?)
+      url = partition.find { |fragment| URI.regexp(%w(http https)) =~ fragment }
+      description = (partition - [url]).first
 
-      [parts.shift, parts.join(", ")]
-    end.flatten
+      { text: description&.strip, url: url&.gsub(/,\z/, "") }
+    end
 
-    links_list = splitted_text.each_slice(2).map do |link|
-      "<li><a href=\"http#{link[1]}\">#{link[0]}</a></li>"
-    end.join("\n")
-
-    <<-HTML
-    <div>
-      <p>
-        <h3>#{translate(:links)}</h3>
-        <ul>
-         #{links_list}
-        </ul>
-      </p>
-    </div>
-    HTML
+    (0..(extractions.count - 2)).map do |index|
+      { text: extractions[index][:text], url: extractions[index + 1][:url] }
+    end
   end
 
   def title
