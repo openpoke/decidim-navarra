@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby RUBY_VERSION
 
-gem "decidim", "0.23.1"
+gem "decidim", "0.24"
 # gem "decidim-consultations", "0.23.1"
 # gem "decidim-initiatives", "0.23.1"
 # gem "decidim-templates", "0.23.1"
@@ -12,7 +12,7 @@ gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidi
 
 gem "bootsnap", "~> 1.3"
 
-gem "puma", ">= 4.3.5"
+gem "puma", ">= 5.0"
 gem "uglifier", "~> 4.1"
 
 gem "faker", "~> 1.9"
@@ -26,7 +26,7 @@ gem "virtus-multiparams"
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
 
-  gem "decidim-dev", "0.23.1"
+  gem "decidim-dev", "0.24"
 end
 
 group :development do
