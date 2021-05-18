@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby RUBY_VERSION
 
-gem "decidim", "0.24"
+gem "decidim", "0.24.2"
 # gem "decidim-consultations", "0.23.1"
 # gem "decidim-initiatives", "0.23.1"
 # gem "decidim-templates", "0.23.1"
@@ -26,7 +26,7 @@ gem "virtus-multiparams"
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
 
-  gem "decidim-dev", "0.24"
+  gem "decidim-dev", "0.24.2"
 end
 
 group :development do
