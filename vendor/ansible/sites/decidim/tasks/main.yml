@@ -92,7 +92,7 @@
   become: true
   template:
     src: monit_sidekiq.j2
-    dest: /etc/monit.d/
+    dest: /etc/monit.d/sidekiq.monit
   notify:
     - Reload Monit
 
