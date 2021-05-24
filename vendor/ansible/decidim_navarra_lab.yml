@@ -25,7 +25,7 @@
     - { role: 'tools/deploy' }
   vars:
     app_id: decidim
-    app_git_branch: master
+    app_git_branch: staging
     app_group: www-data
     app_repo_url: "https://gesfuentes.admon-cfnavarra.es/git/r/presidencia/WebParticipacionCiudadana.git"
     app_user: centos
