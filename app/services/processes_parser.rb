@@ -240,7 +240,7 @@ class ProcessesParser
   def default_open_end_date; end
 
   def participation_closed?
-    participation_status == "Cerrado"
+    proposal_status == "Cerrado"
   end
 
   def proposal_status
