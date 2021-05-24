@@ -21,12 +21,12 @@ class ProcessesParser
 
   TRANSLATIONS = {
     es: {
-      detail: "Detalle",
+      detail: "Contenido relacionado",
       documentation: "Documentación",
       links: "Enlaces"
     },
     eu: {
-      detail: "Xehetasuna",
+      detail: "Lotutako edukia",
       documentation: "Dokumentazioa",
       links: "Estekak"
     }
