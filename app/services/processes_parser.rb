@@ -23,12 +23,14 @@ class ProcessesParser
     es: {
       detail: "Contenido relacionado",
       documentation: "Documentación",
-      links: "Enlaces"
+      links: "Enlaces",
+      participation_steps: "Periodos de participación"
     },
     eu: {
       detail: "Lotutako edukia",
       documentation: "Dokumentazioa",
-      links: "Estekak"
+      links: "Estekak",
+      participation_steps: "Parte hartzeko aldiak"
     }
   }.with_indifferent_access.freeze
 
@@ -120,6 +122,25 @@ class ProcessesParser
     raw_content["Descripcion HTML"]
   end
 
+  def participation_steps
+    return unless raw_content["Participacion fases"].present?
+
+    list = raw_content["Participacion fases"].gsub(/,\s*([A-Z])/,"||||\\1").split("||||")
+
+    html_list = list.map do |step|
+      "<li>#{step}</li>"
+    end.join("\n")
+
+    <<-HTML
+    <div>
+      <h3>#{translate(:participation_steps)}</h3>
+      <p>
+        #{html_list}
+      </p>
+    </div>
+    HTML
+  end
+
   def splitted_description
     @splitted_description ||= Nokogiri::HTML.parse(raw_content["Descripcion HTML"]).text.split("\n").select(&:present?)
   end
@@ -144,6 +165,8 @@ class ProcessesParser
     #{list_of_links_from("Documentacion", :documentation)}
 
     #{list_of_links_from("Contenidos subespacio", :detail)}
+
+    #{participation_steps}
     HTML
   end
 
