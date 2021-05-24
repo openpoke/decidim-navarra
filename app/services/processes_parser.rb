@@ -54,7 +54,7 @@ class ProcessesParser
       "remote_hero_image_url": image_url,
       "remote_banner_image_url": image_url,
       "developer_group": localized_attribute("Unidad responsable"),
-      "local_area": nil,
+      "local_area": localized_attribute("Departamento"),
       "meta_scope": nil,
       "participatory_scope": nil,
       "participatory_structure": nil,
