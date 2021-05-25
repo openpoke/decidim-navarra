@@ -114,12 +114,16 @@ class ProcessesParser
     @external_id ||= raw_content["NID"].strip.presence
   end
 
+  def description_first_present_element_index
+    @description_first_present_element_index ||= splitted_description.find_index { |element| element.text.strip.present? }
+  end
+
   def short_description
-    splitted_description.first.to_s
+    splitted_description.slice(description_first_present_element_index).to_html
   end
 
   def remaining_description
-    raw_content["Descripcion HTML"]
+    splitted_description.slice((description_first_present_element_index + 1)..).to_html
   end
 
   def participation_steps
@@ -142,7 +146,7 @@ class ProcessesParser
   end
 
   def splitted_description
-    @splitted_description ||= Nokogiri::HTML.parse(raw_content["Descripcion HTML"]).text.split("\n").select(&:present?)
+    @splitted_description ||= Nokogiri::HTML.parse(raw_content["Descripcion HTML"]).xpath("//body").children
   end
 
   def split_description_by_tags(*tags)
