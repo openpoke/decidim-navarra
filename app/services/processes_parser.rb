@@ -137,9 +137,11 @@ class ProcessesParser
 
     <<-HTML
     <div>
-      <h3>#{translate(:participation_steps)}</h3>
       <p>
-        #{html_list}
+        <h3>#{translate(:participation_steps)}</h3>
+        <ul>
+          #{html_list}
+        </ul>
       </p>
     </div>
     HTML
