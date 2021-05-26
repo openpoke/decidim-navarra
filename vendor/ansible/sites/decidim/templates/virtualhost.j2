@@ -25,6 +25,14 @@ server {
   auth_basic_user_file {{http_auth_file}};
   {% endif %}
 
+  passenger_set_header  Host $host;
+  passenger_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  passenger_set_header  X-Forwarded-Proto https;
+  passenger_set_header  X-Forwarded-Ssl on; # Optional
+  passenger_set_header  X-Forwarded-Port $server_port;
+  passenger_set_header  X-Forwarded-Host $host;
+  passenger_set_header  Ssl on;
+
   passenger_enabled on;
   client_max_body_size 50M;
 
