@@ -7,6 +7,14 @@ GIT
       decidim-core (>= 0.23.0)
       deface (~> 1.5)
 
+GIT
+  remote: https://github.com/mainio/decidim-module-term_customizer.git
+  revision: c9f127e78bd52b29ee02bc62f252db2634f9a1f0
+  specs:
+    decidim-term_customizer (0.24.0)
+      decidim-admin (~> 0.24.0)
+      decidim-core (~> 0.24.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -877,6 +885,7 @@ DEPENDENCIES
   decidim-consultations (= 0.24.2)
   decidim-dev (= 0.24.2)
   decidim-initiatives (= 0.24.2)
+  decidim-term_customizer (~> 0.24.0)!
   faker (~> 1.9)
   faraday
   letter_opener_web (~> 1.3)
