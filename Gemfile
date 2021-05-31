@@ -5,8 +5,9 @@ source "https://rubygems.org"
 ruby RUBY_VERSION
 
 gem "decidim", "0.24.2"
-# gem "decidim-consultations", "0.23.1"
-# gem "decidim-initiatives", "0.23.1"
+gem "decidim-consultations", "0.24.2"
+gem "decidim-initiatives", "0.24.2"
+gem "decidim-conferences", "0.24.2"
 # gem "decidim-templates", "0.23.1"
 gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: :main
 
