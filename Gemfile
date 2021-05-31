@@ -10,6 +10,7 @@ gem "decidim-initiatives", "0.24.2"
 gem "decidim-conferences", "0.24.2"
 # gem "decidim-templates", "0.23.1"
 gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: :main
+gem "decidim-term_customizer", "~> 0.24.0", git: "https://github.com/mainio/decidim-module-term_customizer.git"
 
 gem "bootsnap", "~> 1.3"
 
