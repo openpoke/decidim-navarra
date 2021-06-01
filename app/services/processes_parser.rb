@@ -35,6 +35,7 @@ class ProcessesParser
   }.with_indifferent_access.freeze
 
   FILES_BASE_URL = "https://gobiernoabierto.navarra.es/sites/default/files/"
+  DEFAULT_IMAGE_FILENAME = "participacion_proceso_base.png"
 
   def initialize(row, organization)
     @raw_content = row
@@ -98,12 +99,16 @@ class ProcessesParser
   private
 
   def image_url
-    return if raw_content["Imagen"].blank?
+    @image_url ||= URI.join(FILES_BASE_URL, image_filename)
+  end
+
+  def image_filename
+    return DEFAULT_IMAGE_FILENAME if raw_content["Imagen"].blank?
 
     # GIFs are not accepted for hero images
-    return if /\.gif\z/i =~ raw_content["Imagen"]
+    return DEFAULT_IMAGE_FILENAME if /\.gif\z/i =~ raw_content["Imagen"]
 
-    @image_url ||= URI.join(FILES_BASE_URL, raw_content["Imagen"].gsub(/\s/, ""))
+    raw_content["Imagen"].gsub(/\s/, "")
   end
 
   def external_es_id
