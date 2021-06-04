@@ -1,0 +1,57 @@
+<div class="mini-footer">
+  <div class="row">
+    <div class="medium-5 large-3 column logo-navarra-footer-container">
+      <a href="https://navarra.es/<%= I18n.locale %>">
+        <div class="logo-navarra-footer-detail">
+          <div class="logo-navarra-footer-detail-red"></div>
+          <div class="logo-navarra-footer-detail-blue"></div>
+        </div>
+        <%= image_tag("logo-navarra-footer.png", class: 'logo-gobierno-navarra-footer', alt: t("layouts.decidim.footer.cc_by_license")) %>
+      </a>
+    </div>
+    <div class="medium-5 large-7 column">
+      <div class="navarra-footer-menu">
+        <div class="navarra-footer-menu-element">
+          <a
+            href="https://gobiernoabierto.navarra.es/<%= I18n.locale %>/<%= t('footer_links.map') %>"
+            class="navarra-footer-menu-element-text"
+          >
+            <%= t('footer_menu.map') %>
+          </a>
+        </div>
+        <div class="navarra-footer-menu-element">
+          <a
+            href="https://www.navarra.es/<%= I18n.locale %>/<%= t('footer_links.legal') %>"
+            class="navarra-footer-menu-element-text"
+          >
+            <%= t('footer_menu.legal') %>
+          </a>
+        </div>
+        <div class="navarra-footer-menu-element">
+          <a
+            href="https://www.navarra.es/<%= I18n.locale %>/<%= t('footer_links.accesibility') %>"
+            class="navarra-footer-menu-element-text"
+          >
+            <%= t('footer_menu.accesibility') %>
+          </a>
+        </div>
+        <div class="navarra-footer-menu-element">
+          <a
+            href="https://www.navarra.es/home_<%= I18n.locale %>/Indices/Sugerencias/"
+            class="navarra-footer-menu-element-text"
+          >
+            <%= t('footer_menu.contact') %>
+          </a>
+        </div>
+        <div class="navarra-footer-menu-element">
+          <a
+            href="/users/sign_in"
+            class="navarra-footer-menu-element-text"
+          >
+            <%= t('footer_menu.users') %>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

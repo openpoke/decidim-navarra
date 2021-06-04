@@ -30,3 +30,17 @@ es:
         passport: Pasaporte
       invalid_census_service_verification: Titular no Identificado o Ámbito Territorial
         de Residencia Incorrecto
+  footer_links:
+    accesibility: accesibilidad
+    legal: aviso-legal
+    map: webmap
+  footer_menu:
+    accesibility: Accesibilidad
+    contact: Contacte con nosotros
+    legal: Aviso legal
+    map: Mapa web
+    users: Accede a tu cuenta
+  open_data: Datos Abiertos
+  open_government: Gobierno Abierto de Navarra
+  participation: Participacion
+  transparency: Transparencia
