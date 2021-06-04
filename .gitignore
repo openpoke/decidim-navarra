@@ -36,3 +36,4 @@ public/uploads
 # Environment
 .env
 .rbenv-vars
+.DS_Store

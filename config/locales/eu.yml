@@ -30,3 +30,17 @@ eu:
         passport: Pasaporte
       invalid_census_service_verification: Identifikatu gabeko titularra edo bizileku
         lurralde eremu okerra
+  footer_links:
+    accesibility: irisgarritasuna
+    legal: legezko-oharra
+    map: webmap
+  footer_menu:
+    accesibility: Erabilerraztasuna
+    contact: Jar zaitez gurekin harremanetan
+    legal: Lege abisua
+    map: Webaren mapa
+    users: Zure kontua sartu
+  open_data: Datu Irekiak
+  open_government: Nafarroako Gobernua Irekia
+  participation: Partaidetza
+  transparency: Gardentasuna
