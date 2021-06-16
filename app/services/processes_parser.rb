@@ -40,7 +40,7 @@ class ProcessesParser
   def initialize(row, organization)
     @raw_content = row
     @organization = organization
-    @locale = raw_content["Idioma"] == "Euskera" ? "eu" : "es"
+    @locale = raw_content["Idioma"] == "Euskara" ? "eu" : "es"
   end
 
   def transformed_data
