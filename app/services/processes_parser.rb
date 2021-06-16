@@ -82,7 +82,7 @@ class ProcessesParser
       description_paragraphs_count: splitted_description.count,
       raw_description: raw_content["Descripcion HTML"],
       first_paragraph_description: short_description,
-      original_url: "https://gobiernoabierto.navarra.es#{raw_content["Ruta"]}",
+      original_url: raw_content["Ruta"],
       locale: locale,
       original_language: raw_content["Idioma"],
       es_node_id: raw_content["Nodo castellano"],
