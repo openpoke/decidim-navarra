@@ -45,7 +45,7 @@ class ProcessesParser
 
   def transformed_data
     {
-      "title": localized_attribute("Titulo"),
+      "title": localized_attribute("Título"),
       "subtitle": has_value?("Subtítulo") ? localized_attribute("Subtítulo") : localized_attribute("Departamento"),
       "slug": slug_value,
       "hashtag": nil,
@@ -186,7 +186,7 @@ class ProcessesParser
 
     return value if value.present?
 
-    slug(raw_content["Titulo"])
+    slug(raw_content["Título"])
   end
 
   def list_of_links_from(raw_attribute_name, title_key)
@@ -229,7 +229,7 @@ class ProcessesParser
   end
 
   def title
-    localized_attribute("Titulo")
+    localized_attribute("Título")
   end
 
   def translate(key)
