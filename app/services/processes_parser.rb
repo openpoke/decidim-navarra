@@ -21,7 +21,7 @@ class ProcessesParser
 
   TRANSLATIONS = {
     es: {
-      detail: "Contenido relacionado",
+      detail: "Contenidos relacionados",
       documentation: "Documentación",
       links: "Enlaces",
       participation_steps: "Periodos de participación"
@@ -175,7 +175,7 @@ class ProcessesParser
 
     #{list_of_links_from("Documentacion", :documentation)}
 
-    #{list_of_links_from("Contenidos subespacio", :detail)}
+    #{list_of_links_from("Contenidos relacionados", :detail)}
 
     #{participation_steps}
     HTML
