@@ -21,7 +21,7 @@ class ProcessesParser
 
   TRANSLATIONS = {
     es: {
-      detail: "Contenidos relacionados",
+      detail: "Contenido relacionado",
       documentation: "Documentación",
       links: "Enlaces",
       participation_steps: "Periodos de participación"
