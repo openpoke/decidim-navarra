@@ -173,9 +173,9 @@ class ProcessesParser
 
     #{list_of_links_from("Enlaces", :links)}
 
-    #{list_of_links_from("Documentacion", :documentation)}
-
     #{list_of_links_from("Contenidos relacionados", :detail)}
+
+    #{list_of_links_from("Documentacion", :documentation)}
 
     #{participation_steps}
     HTML
