@@ -4,10 +4,10 @@ source "https://rubygems.org"
 
 ruby RUBY_VERSION
 
-gem "decidim", "0.24.2"
-gem "decidim-consultations", "0.24.2"
-gem "decidim-initiatives", "0.24.2"
-gem "decidim-conferences", "0.24.2"
+gem "decidim", "0.25.0"
+gem "decidim-consultations", "0.25.0"
+gem "decidim-initiatives", "0.25.0"
+gem "decidim-conferences", "0.25.0"
 # gem "decidim-templates", "0.23.1"
 gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: :main
 gem "decidim-term_customizer", "~> 0.24.0", git: "https://github.com/mainio/decidim-module-term_customizer.git"
@@ -28,7 +28,7 @@ gem "virtus-multiparams"
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
 
-  gem "decidim-dev", "0.24.2"
+  gem "decidim-dev", "0.25.0"
 end
 
 group :development do
