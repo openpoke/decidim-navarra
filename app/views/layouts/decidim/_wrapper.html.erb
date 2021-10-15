@@ -33,7 +33,7 @@ end
              creates a sticky footer-->
         <!-- Topbar -->
         <div class="title-bar">
-          <img class="title-bar-bg" src="<%= asset_path 'background-header.png' %>">
+          <img class="title-bar-bg" src="<%= asset_pack_path 'media/images/background-header.png' %>">
           <%= link_to t("skip_button", scope: "decidim.accessibility"), url_for(anchor: "content"), class: "skip" %>
           <% if current_organization.official_img_header? %>
             <%= link_to  current_organization.official_url, class: "logo-cityhall" do %>
