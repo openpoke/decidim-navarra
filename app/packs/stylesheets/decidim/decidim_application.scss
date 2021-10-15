@@ -1,0 +1,254 @@
+// // Variables
+//
+$primary: #ED1B2D;
+$black: #000;
+$white: #fff;
+// $primary-rgb: 239,96,77;
+// $secondary: #3e7f8b;
+// $secondary-rgb: 89,154,166;
+// $success: #57d685;
+// $success-rgb: 87,214,133;
+// $warning: #ffae00;
+// $warning-rgb: 255,174,0;
+// $alert: #ec5840;
+// $alert-rgb: 236,88,64;
+// $highlight: #be6400;
+// $highlight-rgb: 190,100,0;
+// $highlight-alternative: #ff5731;
+// $highlight-alternative-rgb: 255,87,49;
+//
+// $proposals: #238ff7;
+// $actions: #57d685;
+// $debates: #fa6c96;
+// $meetings: #fabc6c;
+//
+// $twitter: #55acee;
+// $facebook: #3b5998;
+// $google: #4285f4;
+//
+// // background colors used in public diff views
+// $color-addition: #e6ffed;
+// $color-removal: #ffeef0;
+
+.logo-wrapper {
+  .logo-wrapper-open-government-right {
+    padding: .5rem 0 0 .25rem;
+  }
+  .logo-wrapper-open-government {
+    display: block;
+    color: $black;
+    font-weight: normal;
+    margin-bottom: .75rem;
+  }
+  span {
+    color: $black;
+    font-weight: bold;
+    font-size: 1rem;
+    padding-right: 8px;
+    &::before {
+      display: none;
+    }
+  }
+  .logo-wrapper-open-government-transparency {
+    color: #b8b8b8;
+  }
+  .logo-wrapper-open-government-links {
+    color: $primary;
+  }
+}
+
+.title-bar {
+  background-color: #F4F4F4;
+  padding-bottom: 0;
+  .title-bar-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  .top-bar-navarra {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    .topbar__search {
+      padding: .75rem 0;
+      background: $white;
+      max-width: initial;
+      form {
+        display: inline-block;
+        width: 370px;
+        vertical-align: middle;
+      }
+      input,
+      button {
+        height: 2rem;
+      }
+    }
+  }
+}
+
+.topbar__user__login,
+.topbar__admin__link {
+  a {
+    color: $primary;
+  }
+}
+
+.topbar__dropmenu > ul > li > a {
+  color: $primary;
+}
+
+.topbar__dropmenu #language-chooser-menu {
+  z-index: 1;
+}
+
+.off-canvas-content {
+  #content {
+    .wrapper {
+      background-image: image-url("images/background-main.png");
+      background-repeat: no-repeat;
+      background-position: top center;
+    }
+  }
+}
+
+.dropdown.menu > li.is-dropdown-submenu-parent > a::after {
+  border-top-color: rgba(0, 0, 0, .5) !important;
+}
+
+.topbar____logo_gobierno {
+  margin-left: 1rem;
+}
+
+.row.column.topbar {
+  position: relative;
+  z-index: 2;
+  margin-bottom: .75rem;
+}
+
+.button-wrapper #icon-magnifying-glass, {
+  fill: $white !important;
+}
+
+.topbar__notifications .icon, .topbar__conversations .icon {
+  fill: $primary;
+}
+
+.input-group {
+  .input-group-field {
+    background-color: #e0e0e0;
+    &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: rgba(0, 0, 0, .5) !important;
+      opacity: 1; /* Firefox */
+    }
+
+    &::-ms-input-placeholder { /* Microsoft Edge */
+      color: rgba(0, 0, 0, .5) !important;
+    }
+  }
+}
+
+.topbar____logo_gobierno .topbar____logo_gobierno__navarra {
+  width: 90%;
+}
+
+.mini-footer {
+  background: $white;
+}
+
+.logo-navarra-footer-detail {
+  width: 5px;
+  height: 30px;
+  display: inline-block;
+}
+
+.logo-gobierno-navarra-footer {
+  max-width: 160px;
+  vertical-align: top;
+  margin-left: .5rem;
+}
+
+.logo-navarra-footer-detail-red {
+  height: 70%;
+  background-color: #3F3F3F;
+}
+
+.logo-navarra-footer-detail-blue {
+  height: 30%;
+  background-color: #EE4424;
+}
+
+.mini-footer {
+  padding: 3rem 0;
+  .navarra-footer-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  .navarra-footer-menu-element {
+    &:not(:last-child) {
+      &:after {
+        content: '|';
+        padding: 0 .25rem;
+        display: inline-block;
+        color: $black;
+      }
+    }
+  }
+  .navarra-footer-menu-element-text {
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+
+
+@media print, screen and (min-width: 40em) {
+  .topbar__search:not(:focus-within) .button-wrapper button {
+    background: $primary;
+  }
+
+}
+
+@media screen and (max-width: 39.99875em) {
+  .title-bar {
+    .title-bar-bg {
+      display:none !important;
+    }
+  }
+
+  .topbar__menu {
+    .icon--menu {
+      fill: $black;
+    }
+  }
+
+  .topbar____logo_gobierno {
+    display: none !important;
+  }
+
+  .row.column.topbar {
+    position: initial;
+  }
+
+  .logo-navarra-footer-container {
+    text-align: center;
+  }
+
+  .mini-footer .navarra-footer-menu {
+    flex-flow: row wrap;
+  }
+
+  .mini-footer .navarra-footer-menu-element {
+    width: 100%;
+    text-align: center;
+    &:not(:last-child) {
+      padding: .5rem 0;
+      &:after {
+        display: none;
+      }
+    }
+  }
+
+}
