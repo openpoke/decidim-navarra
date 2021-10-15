@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # This migration comes from decidim_initiatives (originally 20191002082220)
 
+# Migration updated after 0.25 upgrade
 class MoveSignatureTypeToInitativeType < ActiveRecord::Migration[5.2]
   class InitiativesType < ApplicationRecord
     self.table_name = :decidim_initiatives_types
@@ -23,7 +24,7 @@ class MoveSignatureTypeToInitativeType < ActiveRecord::Migration[5.2]
 
     InitiativesType.reset_column_information
 
-    Decidim::Initiatives::InitiativesType.find_each do |type|
+    InitiativesType.find_each do |type|
       type.signature_type = if type.online_signature_enabled && face_to_face_voting_allowed
                               :any
                             elsif type.online_signature_enabled && !face_to_face_voting_allowed
