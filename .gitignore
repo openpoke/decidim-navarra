@@ -38,6 +38,8 @@ public/uploads
 .rbenv-vars
 .DS_Store
 
+# Node
+/public/decidim-packs
 /public/packs
 /public/packs-test
 /node_modules
