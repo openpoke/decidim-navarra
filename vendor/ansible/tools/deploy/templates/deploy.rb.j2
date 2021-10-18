@@ -18,7 +18,8 @@ set :linked_dirs, fetch(:linked_dirs, []).push(*%w(
   public/system
   public/cache
   public/uploads
-  public/assets
+  public/decidim-packs
+  tmp/webpacker-cache
 ))
 set :sidekiq_config, -> { File.join(release_path, "config", "sidekiq.yml") }
 set :passenger_restart_with_touch, true
@@ -26,4 +27,33 @@ set :passenger_restart_with_touch, true
 task :clean_vendor_ansible do
   run_locally { execute "rm -rf #{release_path}/vendor/ansible" }
 end
+
+Rake::Task["deploy:compile_assets"].clear
 before "bundler:install", "clean_vendor_ansible"
+
+namespace :deploy do
+  desc "Compile assets"
+  task :compile_assets => [:set_rails_env] do
+    invoke "deploy:install_dependencies"
+    invoke "deploy:webpacker_compile"
+    invoke "deploy:decidim_webpacker_install"
+  end
+
+  desc "Install dependencies"
+  task :install_dependencies do
+    on roles(:all) do
+      execute "cd #{release_path}; npm install"
+    end
+  end
+
+  desc "Webpacker compile"
+  task :webpacker_compile do
+    on roles(:all) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rails, "webpacker:compile"
+        end
+      end
+    end
+  end
+end
