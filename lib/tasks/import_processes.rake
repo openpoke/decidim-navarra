@@ -86,6 +86,15 @@ namespace :decidim_navarra do
     organization.save!
   end
 
+  desc "Initialize participatory process groups"
+  task :initialize_participatory_process_groups, [:organization_id] => :environment do |_t, args|
+    organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
+
+    ProcessesParser::PROCESS_GROUPS_ATTTIBUTES.each do |attrs|
+      Decidim::ParticipatoryProcessGroup.create!(attrs.except(:hashtag).merge(organization: organization))
+    end
+  end
+
   desc "Transforms a CSV of processes and imports it in a organization"
   task :import, [:csv_path, :organization_id, :admin_id] => [:environment] do |_t, args|
     raise "Please, provide a file path" if args[:csv_path].blank?
