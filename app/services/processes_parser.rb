@@ -36,6 +36,7 @@ class ProcessesParser
 
   FILES_BASE_URL = "https://gobiernoabierto.navarra.es/sites/default/files/"
   DEFAULT_IMAGE_FILENAME = "participacion_proceso_base.png"
+  REGULATORY_PARTICIPATION_GROUP_VALUES = ["Consulta pública previa", "Norma"]
   PROCESS_GROUPS_ATTTIBUTES = [
     {
       title: { "es" => "Procesos de participación", "eu" => "Partaidetza prozesuak" },
@@ -76,7 +77,7 @@ class ProcessesParser
       "participatory_structure": nil,
       "target": nil,
       "area": area_data,
-      "participatory_process_group": nil,
+      "participatory_process_group": group_attributes,
       "scope": scope_data,
       "attachments": { "files": nil },
       "components": nil,
@@ -275,6 +276,10 @@ class ProcessesParser
     raw_content["Estado del proceso de participacion"]
   end
 
+  def proposal_type
+    raw_content["Tipo de propuesta"].strip
+  end
+
   def extract_date(text)
     day_month, year = text.split(", ")[1, 2]
     day, month_name = day_month.split(" ")
@@ -286,7 +291,17 @@ class ProcessesParser
   end
 
   def area
-    @area ||= area_type.areas.find_or_create_by(name: translatable_hash(raw_content["Tipo de propuesta"]), organization: organization)
+    @area ||= area_type.areas.find_or_create_by(name: translatable_hash(proposal_type), organization: organization)
+  end
+
+  def group_hashtag
+    REGULATORY_PARTICIPATION_GROUP_VALUES.include?(proposal_type) ? "participacion-en-normativa" : "procesos-de-participacion"
+  end
+
+  def group_attributes
+    @group_attributes ||= PROCESS_GROUPS_ATTTIBUTES.find do |attributes|
+      attributes[:hashtag] == group_hashtag
+    end
   end
 
   def area_type

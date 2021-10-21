@@ -51,7 +51,11 @@ module Decidim
       def import_process_group(attributes)
         return if attributes.blank?
 
-        super
+        ParticipatoryProcessGroup.find_by(
+          title: attributes["title"],
+          description: attributes["description"],
+          organization: @organization
+        )
       end
 
       def upload_attachment(attribute, url)
