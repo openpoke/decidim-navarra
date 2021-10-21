@@ -36,6 +36,19 @@ class ProcessesParser
 
   FILES_BASE_URL = "https://gobiernoabierto.navarra.es/sites/default/files/"
   DEFAULT_IMAGE_FILENAME = "participacion_proceso_base.png"
+  PROCESS_GROUPS_ATTTIBUTES = [
+    {
+      title: { "es" => "Procesos de participación", "eu" => "Partaidetza prozesuak" },
+      description: { "es" => "<p>[Texto para confirmar]</p>", "eu" => "<p>[Texto para confirmar]</p>" },
+      hashtag: "procesos-de-participacion"
+    },
+
+    {
+      title: { "es" => "Participación en normativa", "eu" => "Araudietan parte hartzea" },
+      description: { "es" => "<p>[Texto para confirmar]</p>", "eu" => "<p>[Texto para confirmar]</p>" },
+      hashtag: "participacion-en-normativa"
+    }
+  ].freeze
 
   def initialize(row, organization)
     @raw_content = row
