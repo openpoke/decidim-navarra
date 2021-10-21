@@ -30,11 +30,15 @@ module Decidim
             scopes_enabled: attributes["scopes_enabled"],
             participatory_process_group: import_process_group(attributes["participatory_process_group"])
           )
-          @imported_process.remote_hero_image_url = attributes["remote_hero_image_url"] if remote_file_exists?(attributes["remote_hero_image_url"])
-          @imported_process.remote_banner_image_url = attributes["remote_banner_image_url"] if remote_file_exists?(attributes["remote_banner_image_url"])
           @imported_process.decidim_scope_id = attributes["scope"]["id"]
           @imported_process.decidim_area_id = attributes["area"]["id"]
           @imported_process.save!
+          [:hero_image, :banner_image].each do |attr|
+            next unless remote_file_exists?(attributes["remote_#{attr}_url"])
+            file = URI.open(attributes["remote_#{attr}_url"])
+            uri = URI.parse(attributes["remote_#{attr}_url"])
+            @imported_process.send(attr).attach(io: file, filename: File.basename(uri.path))
+          end
           @imported_process.update_attribute(:created_at, attributes["start_date"])
           @imported_process.publish!
           @imported_process
