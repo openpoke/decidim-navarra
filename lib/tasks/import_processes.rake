@@ -102,9 +102,21 @@ namespace :decidim_navarra do
     organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
     admin = args[:admin_id].present? ? organization.admins.find_by(id: args[:admin_id]) : organization.admins.first
 
+    unless groups_created?(organization)
+      puts "Generating participatory process groups, please wait..."
+      Rake::Task["decidim_navarra:initialize_participatory_process_groups"].invoke(organization.id)
+      puts "Participatory process groups created."
+    end
+
     puts "Importing processes, please wait..."
     importer = ProcessesImporter.new(args[:csv_path], organization, admin)
     importer.import_processes
     puts "Import completed."
+  end
+
+  def groups_created?(organization)
+    ProcessesParser::PROCESS_GROUPS_ATTTIBUTES.all? do |attrs|
+      Decidim::ParticipatoryProcessGroup.where(organization: organization, hashtag: attrs[:hashtag]).exists?
+    end
   end
 end
