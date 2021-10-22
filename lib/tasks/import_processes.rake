@@ -116,7 +116,7 @@ namespace :decidim_navarra do
 
   def groups_created?(organization)
     ProcessesParser::PROCESS_GROUPS_ATTTIBUTES.all? do |attrs|
-      Decidim::ParticipatoryProcessGroup.where(organization: organization, hashtag: attrs[:hashtag]).exists?
+      Decidim::ParticipatoryProcessGroup.where(attrs.slice(:title, :description).merge(organization: organization)).exists?
     end
   end
 end
