@@ -34,10 +34,7 @@ module Decidim
           @imported_process.decidim_area_id = attributes["area"]["id"]
           @imported_process.save!
           [:hero_image, :banner_image].each do |attr|
-            next unless remote_file_exists?(attributes["remote_#{attr}_url"])
-            file = URI.open(attributes["remote_#{attr}_url"])
-            uri = URI.parse(attributes["remote_#{attr}_url"])
-            @imported_process.send(attr).attach(io: file, filename: File.basename(uri.path))
+            upload_attachment(attr, attributes["remote_#{attr}_url"])
           end
           @imported_process.update_attribute(:created_at, attributes["start_date"])
           @imported_process.publish!
@@ -49,6 +46,21 @@ module Decidim
         return if attributes.blank?
 
         super
+      end
+
+      def upload_attachment(attribute, url)
+        return unless url.present? && remote_file_exists?(url)
+
+        file = URI.open(url)
+        uri = URI.parse(url)
+        @imported_process.send(attribute).attach(
+          io: file.is_a?(Tempfile) ? File.open(file.path) : file,
+          filename: File.basename(uri.path)
+        )
+        return unless file.is_a? Tempfile
+
+        file.close
+        file.unlink
       end
     end
   end
