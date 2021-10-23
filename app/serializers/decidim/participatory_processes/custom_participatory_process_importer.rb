@@ -51,7 +51,7 @@ module Decidim
       def upload_attachment(attribute, url)
         return unless url.present? && remote_file_exists?(url)
 
-        file = URI.open(url)
+        file = URI.open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
         uri = URI.parse(url)
         @imported_process.send(attribute).attach(
           io: file.is_a?(Tempfile) ? File.open(file.path) : file,
