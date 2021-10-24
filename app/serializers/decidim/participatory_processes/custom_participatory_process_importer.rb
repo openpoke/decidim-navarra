@@ -40,6 +40,12 @@ module Decidim
           @imported_process.publish!
           @imported_process
         end
+      rescue ActiveRecord::RecordInvalid
+        errors = @imported_process.errors.full_messages.join("\n")
+        Rails.logger.error(
+          "Pocess with id #{@imported_process.id} and slug #{@imported_process.slug} has validation errors:\n #{errors}"
+        )
+        @imported_process
       end
 
       def import_process_group(attributes)
@@ -53,14 +59,17 @@ module Decidim
 
         file = URI.open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
         uri = URI.parse(url)
-        @imported_process.send(attribute).attach(
+        blob = ActiveStorage::Blob.create_and_upload!(
           io: file.is_a?(Tempfile) ? File.open(file.path) : file,
           filename: File.basename(uri.path)
         )
-        return unless file.is_a? Tempfile
-
-        file.close
-        file.unlink
+        blob.analyze
+        @imported_process.send(attribute).attach(blob)
+      ensure
+        if file.is_a? Tempfile
+          file.close
+          file.unlink
+        end
       end
     end
   end
