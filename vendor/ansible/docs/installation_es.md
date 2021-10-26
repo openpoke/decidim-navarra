@@ -1101,6 +1101,17 @@ namespace :deploy do
       end
     end
   end
+
+  desc "Decidim webpacker configuration"
+  task :decidim_webpacker_install do
+    on roles(:all) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "decidim:webpacker:install"
+        end
+      end
+    end
+  end
 end
 ```
 
