@@ -4,13 +4,13 @@ source "https://rubygems.org"
 
 ruby RUBY_VERSION
 
-gem "decidim", "0.25.0"
-gem "decidim-conferences", "0.25.0"
-gem "decidim-consultations", "0.25.0"
-gem "decidim-initiatives", "0.25.0"
+gem "decidim", "0.25.1"
+gem "decidim-conferences", "0.25.1"
+gem "decidim-consultations", "0.25.1"
+gem "decidim-initiatives", "0.25.1"
 # gem "decidim-templates", "0.23.1"
-gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: "release/0.25"
-gem "decidim-extra_user_fields", git: "https://github.com/PopulateTools/decidim-module-extra_user_fields", branch: "release/0.25"
+gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: "release/0.25-stable"
+gem "decidim-extra_user_fields", git: "https://github.com/PopulateTools/decidim-module-extra_user_fields", branch: "release/0.25-stable"
 
 gem "decidim-term_customizer", git: "https://github.com/mainio/decidim-module-term_customizer.git", branch: "develop"
 
@@ -32,7 +32,7 @@ group :development, :test do
 
   gem "simplecov", "~> 0.19.0"
 
-  gem "decidim-dev", "0.25.0"
+  gem "decidim-dev", "0.25.1"
 
   gem "brakeman", "~> 5.1"
 end
