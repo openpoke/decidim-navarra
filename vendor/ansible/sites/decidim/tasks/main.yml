@@ -39,6 +39,7 @@
     - "{{app_base_path}}/shared/tmp"
     - "{{app_base_path}}/shared/vendor"
     - "{{app_base_path}}/shared/cache"
+    - "{{app_base_path}}/shared/storage"
     - "{{app_base_path}}/releases"
     - "{{app_base_path}}/repo"
 
@@ -125,6 +126,21 @@
   file:
     src: "{{app_base_path}}/shared/public"
     dest: "{{app_base_path}}/current/public"
+    state: link
+    force: yes
+    owner: "{{app_user}}"
+    group: "{{app_group}}"
+    mode: 0774
+  when: current_folder_exists.stat.exists == False and
+        cert_exists.stat.exists == False
+
+# @title_es Enlace simbolico a current/storage
+# @title_en Sumlinking current/storage
+# @input ln -s /var/www/decidim/shared/storage /var/www/decidim/current/storage
+- name: Symlink current storage
+  file:
+    src: "{{app_base_path}}/shared/storage"
+    dest: "{{app_base_path}}/current/storage"
     state: link
     force: yes
     owner: "{{app_user}}"

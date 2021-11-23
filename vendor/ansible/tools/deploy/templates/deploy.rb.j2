@@ -19,6 +19,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push(*%w(
   public/cache
   public/uploads
   public/decidim-packs
+  storage
   tmp/webpacker-cache
 ))
 set :sidekiq_config, -> { File.join(release_path, "config", "sidekiq.yml") }

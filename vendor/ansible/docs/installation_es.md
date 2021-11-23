@@ -791,7 +791,7 @@ Copiar en `/etc/logrotate.d/decidim`
 ### Crear directorios
 
 ```
-mkdir {{{app_base_path}},{{app_base_path}}/shared,{{app_base_path}}/shared/bundle,{{app_base_path}}/shared/config,{{app_base_path}}/shared/log,{{app_base_path}}/shared/public,{{app_base_path}}/shared/tmp,{{app_base_path}}/shared/vendor,{{app_base_path}}/shared/cache,{{app_base_path}}/releases,{{app_base_path}}/repo} -o {{app_user}} -g {{app_group}} -m #{file>mode}
+mkdir {{{app_base_path}},{{app_base_path}}/shared,{{app_base_path}}/shared/bundle,{{app_base_path}}/shared/config,{{app_base_path}}/shared/log,{{app_base_path}}/shared/public,{{app_base_path}}/shared/tmp,{{app_base_path}}/shared/vendor,{{app_base_path}}/shared/cache,{{app_base_path}}/shared/storage,{{app_base_path}}/releases,{{app_base_path}}/repo} -o {{app_user}} -g {{app_group}} -m #{file>mode}
 ```
 
 ### Create el fichero de configuración de base de datos para la app
@@ -878,6 +878,12 @@ mkdir /var/www/decidim/current -o centos -g www-data -m #{file>mode}
 
 ```
 ln -s /var/www/decidim/shared/public /var/www/decidim/current/public
+```
+
+### Enlace simbolico a current/storage
+
+```
+ln -s /var/www/decidim/shared/storage /var/www/decidim/current/storage
 ```
 
 ### Eliminar directorio temporal 'current'
@@ -1064,6 +1070,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push(*%w(
   public/cache
   public/uploads
   public/decidim-packs
+  storage
   tmp/webpacker-cache
 ))
 set :sidekiq_config, -> { File.join(release_path, "config", "sidekiq.yml") }
