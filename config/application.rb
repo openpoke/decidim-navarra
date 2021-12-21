@@ -18,3 +18,11 @@ module DecidimNavarra
     # the framework and any gems in your application.
   end
 end
+
+Decidim.configure do |config|
+  # Max requests in a time period to prevent DoS attacks. Only applied on production.
+  config.throttling_max_requests = 1000
+
+  # Time window in which the throttling is applied.
+  # config.throttling_period = 1.minute
+end
