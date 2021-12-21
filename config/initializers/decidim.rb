@@ -136,12 +136,6 @@ Decidim.configure do |config|
   # Amount of time that the data portability files will be available in the server.
   # config.data_portability_expiry_time = 7.days
 
-  # Max requests in a time period to prevent DoS attacks. Only applied on production.
-  config.throttling_max_requests = 500
-
-  # Time window in which the throttling is applied.
-  # config.throttling_period = 1.minute
-
   # Time window were users can access the website even if their email is not confirmed.
   # config.unconfirmed_access_for = 2.days
 
