@@ -64,7 +64,7 @@ class ProcessesImporter
   end
 
   def save_metadata
-    CSV.open("metadata.csv", "wb") do |csv|
+    CSV.open("processes_metadata.csv", "wb") do |csv|
       csv << @metadata.first.keys
       @metadata.each do |hash|
         csv << hash.values
