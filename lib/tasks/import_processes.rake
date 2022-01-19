@@ -114,6 +114,19 @@ namespace :decidim_navarra do
     puts "Import completed."
   end
 
+  desc "Transforms a CSV of assemblies and imports it in a organization"
+  task :import_assemblies, [:csv_path, :organization_id, :admin_id] => [:environment] do |_t, args|
+    raise "Please, provide a file path" if args[:csv_path].blank?
+
+    organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
+    admin = args[:admin_id].present? ? organization.admins.find_by(id: args[:admin_id]) : organization.admins.first
+
+    puts "Importing assemblies, please wait..."
+    importer = AssembliesImporter.new(args[:csv_path], organization, admin)
+    importer.import_assemblies
+    puts "Import completed."
+  end
+
   def groups_created?(organization)
     ProcessesParser::PROCESS_GROUPS_ATTTIBUTES.all? do |attrs|
       Decidim::ParticipatoryProcessGroup.where(attrs.slice(:title, :description).merge(organization: organization)).exists?
