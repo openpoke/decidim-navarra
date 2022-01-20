@@ -1,5 +1,14 @@
 GIT
-  remote: git@github.com:PopulateTools/decidim.git
+  remote: https://github.com/PopulateTools/decidim-module-anonymous_proposals
+  revision: 11f93677b920f061d4d4f465d9e874748df37aff
+  branch: release/0.25-stable
+  specs:
+    decidim-anonymous_proposals (0.25.2)
+      decidim-core (>= 0.25.0)
+      deface (~> 1.5)
+
+GIT
+  remote: https://github.com/PopulateTools/decidim.git
   revision: d61cf918a766c7301cba1dbfbbfe2f4d610ccc73
   branch: web_participacion_ciudadana/0.25-stable
   specs:
@@ -193,15 +202,6 @@ GIT
       decidim-forms (= 0.25.2)
     decidim-verifications (0.25.2)
       decidim-core (= 0.25.2)
-
-GIT
-  remote: https://github.com/PopulateTools/decidim-module-anonymous_proposals
-  revision: 11f93677b920f061d4d4f465d9e874748df37aff
-  branch: release/0.25-stable
-  specs:
-    decidim-anonymous_proposals (0.25.2)
-      decidim-core (>= 0.25.0)
-      deface (~> 1.5)
 
 GIT
   remote: https://github.com/mainio/decidim-module-term_customizer.git
@@ -462,7 +462,7 @@ GEM
     geocoder (1.7.3)
     globalid (0.5.2)
       activesupport (>= 5.0)
-    graphql (1.13.5)
+    graphql (1.13.6)
     hashdiff (1.0.1)
     hashie (5.0.0)
     highline (2.0.3)
