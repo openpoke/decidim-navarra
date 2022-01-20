@@ -12,6 +12,8 @@ es:
           los datos de Identidad
         province_id: Provincia
         second_surname: Segundo apellido
+      participatory_process_type:
+        title: Título
   census_authorization:
     form:
       date_select:
@@ -19,6 +21,41 @@ es:
         month: Mes
         year: Año
   decidim:
+    admin:
+      actions:
+        new_process_type: Nuevo tipo de proceso
+      menu:
+        participatory_process_types: Tipos de proceso
+      models:
+        participatory_process_type:
+          fields:
+            created_at: Fecha de creación
+            title: Título
+          name: Tipo de proceso
+      participatory_process_types:
+        create:
+          error: Ha habido un problema al crear el tipo de proceso.
+          success: Tipo de proceso creado con éxito.
+        destroy:
+          success: Tipo de proceso eliminado con éxito.
+        edit:
+          title: Editar tipo de proceso
+          update: Actualizar
+        form:
+          title: Título
+        new:
+          create: Crear
+          title: Nuevo tipo de proceso
+        update:
+          error: Ha habido un problema al actualizar el tipo de proceso.
+          success: Tipo de proces actualizado con éxito.
+      titles:
+        participatory_process_types: Tipos de proceso participativo
+    admin_log:
+      participatory_process_type:
+        create: "%{user_name} ha creado el tipo de proceso participativo %{resource_name}"
+        delete: "%{user_name} ha eliminado el tipo de proceso participativo %{resource_name}"
+        update: "%{user_name} ha actualizado el tipo de proceso participativo %{resource_name}"
     authorization_handlers:
       census_authorization_handler:
         explanation: Verificación de datos padronales
@@ -30,6 +67,15 @@ es:
         passport: Pasaporte
       invalid_census_service_verification: Titular no Identificado o Ámbito Territorial
         de Residencia Incorrecto
+    log:
+      value_types:
+        participatory_process_type_presenter:
+          not_found: 'El tipo de proceso no se encotró en la base de datos (ID: %{id})'
+    participatory_processes:
+      participatory_processes:
+        filters:
+          all_types: Todos los tipos
+          filter_by: Mostrar
   footer_links:
     accesibility: accesibilidad
     legal: aviso-legal

@@ -12,6 +12,8 @@ eu:
           Nortasun datuak
         province_id: Probintzia
         second_surname: Bigarren abizena
+      participatory_process_type:
+        title: Izenburua
   census_authorization:
     form:
       date_select:
@@ -19,6 +21,41 @@ eu:
         month: Hilabetea
         year: Urtea
   decidim:
+    admin:
+      actions:
+        new_process_type: Prozesu mota berria
+      menu:
+        participatory_process_types: Prozesu motak
+      models:
+        participatory_process_type:
+          fields:
+            created_at: Noiz sortua
+            title: Izenburua
+          name: Prozesu mota
+      participatory_process_types:
+        create:
+          error: Arazo bat egon da prozesu mota berri bat sortzeko.
+          success: Prozesu mota behar bezala sortu da.
+        destroy:
+          success: Prozesu mota behar bezala ezabatu da.
+        edit:
+          title: Editatu prozesu mota
+          update: Eguneratu
+        form:
+          title: Izenburua
+        new:
+          create: Sortu
+          title: Prozesu mota berria
+        update:
+          error: Arazo bat izan da prozesu mota hau eguneratzean.
+          success: Prozesu mota behar bezala eguneratu da.
+      titles:
+        participatory_process_types: Parte-hartze prozesu motak
+    admin_log:
+      participatory_process_type:
+        create: "%{user_name} created the %{resource_name} participatory process type"
+        delete: "%{user_name} deleted the %{resource_name} participatory process type"
+        update: "%{user_name} updated the %{resource_name} participatory process type"
     authorization_handlers:
       census_authorization_handler:
         explanation: Erregistro datuen egiaztapena
@@ -30,6 +67,15 @@ eu:
         passport: Pasaporte
       invalid_census_service_verification: Identifikatu gabeko titularra edo bizileku
         lurralde eremu okerra
+    log:
+      value_types:
+        participatory_process_type_presenter:
+          not_found: 'The process type was not found on the database (ID: %{id})'
+    participatory_processes:
+      participatory_processes:
+        filters:
+          all_types: Mota guztiak
+          filter_by: Erakutsi
   footer_links:
     accesibility: irisgarritasuna
     legal: legezko-oharra
