@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_15_170240) do
+ActiveRecord::Schema.define(version: 2022_01_20_111400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
@@ -1349,6 +1349,14 @@ ActiveRecord::Schema.define(version: 2021_10_15_170240) do
     t.index ["position"], name: "index_order_by_position_for_steps"
   end
 
+  create_table "decidim_participatory_process_types", force: :cascade do |t|
+    t.jsonb "title", null: false
+    t.bigint "decidim_organization_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["decidim_organization_id"], name: "index_decidim_process_types_on_decidim_organization_id"
+  end
+
   create_table "decidim_participatory_process_user_roles", id: :serial, force: :cascade do |t|
     t.integer "decidim_user_id"
     t.integer "decidim_participatory_process_id"
@@ -1393,10 +1401,12 @@ ActiveRecord::Schema.define(version: 2021_10_15_170240) do
     t.boolean "show_metrics", default: true
     t.integer "weight", default: 1, null: false
     t.integer "follows_count", default: 0, null: false
+    t.bigint "decidim_participatory_process_type_id"
     t.index ["decidim_area_id"], name: "index_decidim_participatory_processes_on_decidim_area_id"
     t.index ["decidim_organization_id", "slug"], name: "index_unique_process_slug_and_organization", unique: true
     t.index ["decidim_organization_id"], name: "index_decidim_processes_on_decidim_organization_id"
     t.index ["decidim_participatory_process_group_id"], name: "idx_process_on_process_group_id"
+    t.index ["decidim_participatory_process_type_id"], name: "index_decidim_processes_on_decidim_process_type_id"
     t.index ["decidim_scope_id"], name: "idx_process_on_scope_id"
     t.index ["decidim_scope_type_id"], name: "index_decidim_participatory_processes_on_decidim_scope_type_id"
   end
@@ -1937,7 +1947,9 @@ ActiveRecord::Schema.define(version: 2021_10_15_170240) do
   add_foreign_key "decidim_identities", "decidim_organizations"
   add_foreign_key "decidim_newsletters", "decidim_users", column: "author_id"
   add_foreign_key "decidim_participatory_process_steps", "decidim_participatory_processes"
+  add_foreign_key "decidim_participatory_process_types", "decidim_organizations"
   add_foreign_key "decidim_participatory_processes", "decidim_organizations"
+  add_foreign_key "decidim_participatory_processes", "decidim_participatory_process_types"
   add_foreign_key "decidim_participatory_processes", "decidim_scope_types"
   add_foreign_key "decidim_scope_types", "decidim_organizations"
   add_foreign_key "decidim_scopes", "decidim_organizations"
