@@ -3,11 +3,12 @@
 source "https://rubygems.org"
 
 ruby RUBY_VERSION
+DECIDIM_VERSION = { git: "git@github.com:PopulateTools/decidim.git", branch: "web_participacion_ciudadana/0.25-stable" }
 
-gem "decidim", "0.25.1"
-gem "decidim-conferences", "0.25.1"
-gem "decidim-consultations", "0.25.1"
-gem "decidim-initiatives", "0.25.1"
+gem "decidim", DECIDIM_VERSION
+gem "decidim-conferences", DECIDIM_VERSION
+gem "decidim-consultations", DECIDIM_VERSION
+gem "decidim-initiatives", DECIDIM_VERSION
 # gem "decidim-templates", "0.23.1"
 gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: "release/0.25-stable"
 
@@ -31,7 +32,7 @@ group :development, :test do
 
   gem "simplecov", "~> 0.19.0"
 
-  gem "decidim-dev", "0.25.1"
+  gem "decidim-dev", DECIDIM_VERSION
 
   gem "brakeman", "~> 5.1"
 end
