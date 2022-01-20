@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 ruby RUBY_VERSION
-DECIDIM_VERSION = { git: "git@github.com:PopulateTools/decidim.git", branch: "web_participacion_ciudadana/0.25-stable" }
+DECIDIM_VERSION = { git: "https://github.com/PopulateTools/decidim.git", branch: "web_participacion_ciudadana/0.25-stable" }
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-conferences", DECIDIM_VERSION
