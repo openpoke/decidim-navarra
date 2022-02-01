@@ -74,14 +74,7 @@ class AssembliesParser
   end
 
   def area
-    @area ||= area_type.areas.find_or_create_by(name: localized_values("area"), organization: organization)
-  end
-
-  def area_type
-    @area_type ||= organization.area_types.find_or_create_by(
-      name: { es: "Órgano participativo temático", eu: "Parte-hartze organo tematikoa" },
-      plural: { es: "Órganos participativos temáticos", eu: "Parte-hartze organo tematikoak" }
-    )
+    @area ||= Decidim::Area.find_by(id: raw_content["area_id"])
   end
 
   def assembly_type_data
