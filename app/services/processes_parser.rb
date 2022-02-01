@@ -127,11 +127,11 @@ class ProcessesParser
   end
 
   def external_es_id
-    @external_es_id ||= raw_content["Nodo castellano"].strip.presence
+    @external_es_id ||= raw_content["Nodo castellano"]&.strip&.presence
   end
 
   def external_id
-    @external_id ||= raw_content["NID"].strip.presence
+    @external_id ||= raw_content["NID"]&.strip&.presence
   end
 
   def description_first_present_element_index
@@ -291,10 +291,12 @@ class ProcessesParser
   def extract_date(text)
     day_month, year = text.split(", ")[1, 2]
     day, month_name = day_month.split(" ")
-    Date.new(year.to_i, MONTH_NAMES[month_name], day.to_i)
+    Date.new(year.to_i, MONTH_NAMES[month_name.titleize], day.to_i)
   end
 
   def area_data
+    return { "id" => nil, "name" => nil } if area.blank?
+
     area.attributes.slice("id", "name")
   end
 
@@ -324,7 +326,7 @@ class ProcessesParser
   end
 
   def scope_data
-    scope.attributes.slice("id", "name")
+    scope&.attributes&.slice("id", "name")
   end
 
   def scope
