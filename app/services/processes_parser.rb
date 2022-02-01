@@ -396,6 +396,8 @@ class ProcessesParser
   end
 
   def scope
+    return if locale == "eu"
+
     @scope ||= begin
                  legislature_id = if raw_content["Legislatura"].present?
                                     legislature_scope_type.scopes.find_or_create_by(
