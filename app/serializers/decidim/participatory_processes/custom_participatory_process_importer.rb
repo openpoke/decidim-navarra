@@ -28,6 +28,7 @@ module Decidim
             announcement: attributes["announcement"],
             private_space: false,
             scopes_enabled: attributes["scopes_enabled"],
+            participatory_process_type: participatory_process_type(attributes["decidim_participatory_process_type_id"]),
             participatory_process_group: import_process_group(attributes["participatory_process_group"])
           )
           @imported_process.decidim_scope_id = attributes["scope"]["id"]
@@ -55,6 +56,14 @@ module Decidim
           title: attributes["title"],
           description: attributes["description"],
           organization: @organization
+        )
+      end
+
+      def participatory_process_type(id)
+        return if id.blank?
+
+        ::Decidim::ParticipatoryProcessType.find_by(
+          id: id
         )
       end
 
