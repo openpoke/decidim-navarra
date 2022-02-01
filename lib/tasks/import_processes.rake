@@ -69,7 +69,7 @@ namespace :decidim_navarra do
     Decidim::System::CreateDefaultContentBlocks.call(organization)
 
     hero_content_block = Decidim::ContentBlock.find_by(organization: organization, manifest_name: :hero, scope_name: :homepage)
-    hero_content_block.images_container.background_image = File.new(File.join(seeds_root, "homepage_image.jpg"))
+    hero_content_block.images_container.background_image.attach(io: File.open(File.join(seeds_root, "homepage_image.jpg")), filename: "homepage_image.pdf")
     settings = {}
     welcome_text = { "es" => "Escucha. Participa. Conversa", "eu" => "Entzun, Parte hartu. Elkarrizketak eduki" }
     settings = welcome_text.inject(settings) { |acc, (k, v)| acc.update("welcome_text_#{k}" => v) }
