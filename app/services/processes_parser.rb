@@ -78,6 +78,7 @@ class ProcessesParser
       "target": nil,
       "area": area_data,
       "participatory_process_group": group_attributes,
+      "decidim_participatory_process_type_id": process_type_id,
       "scope": scope_data,
       "attachments": { "files": nil },
       "components": nil,
@@ -276,8 +277,15 @@ class ProcessesParser
     raw_content["Estado del proceso de participacion"]
   end
 
-  def proposal_type
-    raw_content["Tipo de propuesta"].strip
+  def process_type
+    @process_type ||= Decidim::ParticipatoryProcessType.find_or_create_by(
+      title: translatable_hash(raw_content["Tipo de propuesta"].strip),
+      organization: organization
+    )
+  end
+
+  def process_type_id
+    process_type.id
   end
 
   def extract_date(text)
@@ -292,6 +300,10 @@ class ProcessesParser
 
   def area
     @area ||= area_type.areas.find_or_create_by(name: translatable_hash(proposal_type), organization: organization)
+  end
+
+  def proposal_type
+    @proposal_type ||= raw_content["Tipo de propuesta"].strip
   end
 
   def group_hashtag
