@@ -72,6 +72,10 @@ eu:
         participatory_process_type_presenter:
           not_found: 'The process type was not found on the database (ID: %{id})'
     participatory_processes:
+      admin:
+        participatory_processes:
+          form:
+            select_participatory_process_type: Hautatu prozesu mota bat
       participatory_processes:
         filters:
           all_types: Mota guztiak

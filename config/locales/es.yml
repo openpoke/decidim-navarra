@@ -72,6 +72,10 @@ es:
         participatory_process_type_presenter:
           not_found: 'El tipo de proceso no se encotró en la base de datos (ID: %{id})'
     participatory_processes:
+      admin:
+        participatory_processes:
+          form:
+            select_participatory_process_type: Selecciona un tipo de proceso
       participatory_processes:
         filters:
           all_types: Todos los tipos
