@@ -160,6 +160,9 @@ namespace :decidim_navarra do
       puts "Areas created."
     end
 
+    # Remove assemblies types
+    Decidim::AssembliesType.where(organization: organization).destroy_all
+
     puts "Importing assemblies, please wait..."
     importer = AssembliesImporter.new(args[:csv_path], organization, admin)
     importer.import_assemblies
