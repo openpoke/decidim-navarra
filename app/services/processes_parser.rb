@@ -187,6 +187,8 @@ class ProcessesParser
   private
 
   def image_url
+    return if locale == "eu"
+
     @image_url ||= URI.join(FILES_BASE_URL, image_filename)
   end
 
