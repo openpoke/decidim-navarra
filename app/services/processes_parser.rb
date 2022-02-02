@@ -168,7 +168,7 @@ class ProcessesParser
     {
       original_id: external_id,
       description_paragraphs_count: splitted_description.count,
-      raw_description: raw_content["Descripcion HTML"],
+      raw_description: raw_content["Descripcion_html"],
       first_paragraph_description: short_description,
       original_url: raw_content["Ruta"],
       locale: locale,
@@ -243,11 +243,11 @@ class ProcessesParser
   end
 
   def splitted_description
-    @splitted_description ||= Nokogiri::HTML.parse(raw_content["Descripcion HTML"]).xpath("//body").children
+    @splitted_description ||= Nokogiri::HTML.parse(raw_content["Descripcion_html"]).xpath("//body").children
   end
 
   def split_description_by_tags(*tags)
-    html = raw_content["Descripcion HTML"]
+    html = raw_content["Descripcion_html"]
     tags.each do |tag|
       next if (elements = Nokogiri::HTML.parse(html).css(tag)).blank?
 
@@ -376,7 +376,7 @@ class ProcessesParser
   end
 
   def area
-    @area ||= Decidim::Area.find_by(id: raw_content["Area id"])
+    @area ||= Decidim::Area.find_by(id: raw_content["Ambito_ID"])
   end
 
   def proposal_type
