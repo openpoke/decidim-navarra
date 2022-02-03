@@ -376,7 +376,7 @@ class ProcessesParser
   end
 
   def area
-    @area ||= Decidim::Area.find_by(id: raw_content["Ambito_ID"])
+    @area ||= Decidim::Area.find_by(id: raw_content["area_id"])
   end
 
   def proposal_type
