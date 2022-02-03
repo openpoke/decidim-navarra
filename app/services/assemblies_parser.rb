@@ -26,8 +26,8 @@ class AssembliesParser
       "attachments": { "files": nil },
       "components": nil,
       "scopes_enabled": true,
-      "decidim_scope_id": raw_content["scope_id"],
-      "decidim_area_id": area_data["id"],
+      "decidim_scope_id": scope&.id,
+      "decidim_area_id": area&.id,
       "decidim_assemblies_type_id": assembly_type_data["id"],
       "private_space": false,
       "is_transparent": false,
@@ -44,6 +44,38 @@ class AssembliesParser
   end
 
   private
+
+  def scope
+    @scope ||= begin
+                 legislature_id = if raw_content["Scope_type_es"].present?
+                                    legislature_scope_type.scopes.find_or_create_by(
+                                      name: { "es" => raw_content["Scope_type_es"], "eu" => raw_content["Scope_type_eus"] },
+                                      organization: organization,
+                                      code: raw_content["Scope_type_es"]
+                                    ).id
+                                  end
+                 department_scope_type.scopes.find_or_create_by(
+                   name: { "es" => raw_content["scope_es"], "eu" => raw_content["scope_eus"] },
+                   parent_id: legislature_id,
+                   organization: organization,
+                   code: "#{raw_content["Scope_type_es"]}-#{raw_content["scope_es"]}"
+                 )
+               end
+  end
+
+  def legislature_scope_type
+    @legislature_scope_type ||= organization.scope_types.find_or_create_by(
+      name: { es: "Legislatura", eu: "Legebiltzarra" },
+      plural: { es: "Legislaturas", eu: "Legebiltzarrak" }
+    )
+  end
+
+  def department_scope_type
+    @department_scope_type ||= organization.scope_types.find_or_create_by(
+      name: { es: "Departamento", eu: "Sail" },
+      plural: { es: "Departamentos", eu: "Sailak" }
+    )
+  end
 
   def external_id
     @external_id ||= raw_content["id"].strip.presence
@@ -67,10 +99,6 @@ class AssembliesParser
     LOCALE_SUFFIXES.map do |suffix, locale|
       [locale, raw_content["#{prefix}_#{suffix}"]]
     end.to_h
-  end
-
-  def area_data
-    area.attributes.slice("id", "name")
   end
 
   def area
