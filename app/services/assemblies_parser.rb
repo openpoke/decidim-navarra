@@ -28,7 +28,7 @@ class AssembliesParser
       "scopes_enabled": true,
       "decidim_scope_id": scope&.id,
       "decidim_area_id": area&.id,
-      "decidim_assemblies_type_id": assembly_type_data["id"],
+      "decidim_assemblies_type_id": nil,
       "private_space": false,
       "is_transparent": false,
       "original_id": external_id
@@ -103,16 +103,5 @@ class AssembliesParser
 
   def area
     @area ||= Decidim::Area.find_by(id: raw_content["area_id"])
-  end
-
-  def assembly_type_data
-    assembly_type.attributes.slice("id", "name")
-  end
-
-  def assembly_type
-    @assembly_type ||= Decidim::AssembliesType.find_or_create_by(
-      organization: organization,
-      title: localized_values("decidim_assemblies_type")
-    )
   end
 end
