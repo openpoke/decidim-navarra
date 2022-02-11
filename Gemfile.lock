@@ -1,4 +1,14 @@
 GIT
+  remote: https://github.com/Platoniq/decidim-module-decidim_awesome
+  revision: 018e5b921110719e1fc676257e3e7caf889ef907
+  branch: fix_zeitwerk_issues
+  specs:
+    decidim-decidim_awesome (0.8.0)
+      decidim-admin (>= 0.25.0, < 0.26)
+      decidim-core (>= 0.25.0, < 0.26)
+      sassc (~> 2.3)
+
+GIT
   remote: https://github.com/PopulateTools/decidim-module-anonymous_proposals
   revision: 11f93677b920f061d4d4f465d9e874748df37aff
   branch: release/0.25-stable
@@ -745,6 +755,8 @@ GEM
       nokogiri (>= 1.10.8)
       rubyzip (>= 1.3.0)
     rubyzip (2.3.2)
+    sassc (2.4.0)
+      ffi (~> 1.9)
     searchlight (4.1.0)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
@@ -855,6 +867,7 @@ DEPENDENCIES
   decidim-anonymous_proposals!
   decidim-conferences!
   decidim-consultations!
+  decidim-decidim_awesome!
   decidim-dev!
   decidim-initiatives!
   decidim-term_customizer!
