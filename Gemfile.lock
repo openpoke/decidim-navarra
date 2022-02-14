@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Platoniq/decidim-module-decidim_awesome
-  revision: 018e5b921110719e1fc676257e3e7caf889ef907
-  branch: fix_zeitwerk_issues
+  revision: 822cf104fbb6a3fbda69edd20fa17d583789e159
+  branch: main
   specs:
     decidim-decidim_awesome (0.8.0)
       decidim-admin (>= 0.25.0, < 0.26)
