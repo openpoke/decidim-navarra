@@ -20,7 +20,6 @@ set :linked_dirs, fetch(:linked_dirs, []).push(*%w(
   public/uploads
   public/decidim-packs
   storage
-  tmp/webpacker-cache
 ))
 set :sidekiq_config, -> { File.join(release_path, "config", "sidekiq.yml") }
 set :passenger_restart_with_touch, true
@@ -36,8 +35,8 @@ namespace :deploy do
   desc "Compile assets"
   task :compile_assets => [:set_rails_env] do
     invoke "deploy:install_dependencies"
-    invoke "deploy:webpacker_compile"
     invoke "deploy:decidim_webpacker_install"
+    invoke "deploy:webpacker_compile"
   end
 
   desc "Install dependencies"
