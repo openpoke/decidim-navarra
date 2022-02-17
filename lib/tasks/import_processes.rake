@@ -69,7 +69,7 @@ namespace :decidim_navarra do
     Decidim::System::CreateDefaultContentBlocks.call(organization)
 
     hero_content_block = Decidim::ContentBlock.find_by(organization: organization, manifest_name: :hero, scope_name: :homepage)
-    hero_content_block.images_container.background_image = File.new(File.join(seeds_root, "homepage_image.jpg"))
+    hero_content_block.images_container.background_image.attach(io: File.open(File.join(seeds_root, "homepage_image.jpg")), filename: "homepage_image.pdf")
     settings = {}
     welcome_text = { "es" => "Escucha. Participa. Conversa", "eu" => "Entzun, Parte hartu. Elkarrizketak eduki" }
     settings = welcome_text.inject(settings) { |acc, (k, v)| acc.update("welcome_text_#{k}" => v) }
@@ -90,8 +90,35 @@ namespace :decidim_navarra do
   task :initialize_participatory_process_groups, [:organization_id] => :environment do |_t, args|
     organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
 
-    ProcessesParser::PROCESS_GROUPS_ATTTIBUTES.each do |attrs|
-      Decidim::ParticipatoryProcessGroup.create!(attrs.except(:hashtag).merge(organization: organization))
+    ProcessesParser::PROCESS_GROUPS_ATTRIBUTES.each do |attrs|
+      group = Decidim::ParticipatoryProcessGroup.find_or_initialize_by(attrs.slice(:id))
+      group.title = nil
+      group.assign_attributes(attrs.except(:id, :hashtag).merge(organization: organization))
+      group.save
+      Decidim::ContentBlock.where(scoped_resource_id: group.id, scope_name: "participatory_process_group_homepage").destroy_all
+      %w(title participatory_processes).each do |manifest_name|
+        content_block = Decidim::ContentBlock.create!(
+          scoped_resource_id: group.id,
+          organization: organization,
+          manifest_name: manifest_name,
+          scope_name: "participatory_process_group_homepage",
+          settings: nil,
+          images: {}
+        )
+        content_block.publish!
+      end
+    end
+  end
+
+  desc "Initialize areas"
+  task :initialize_areas, [:organization_id] => :environment do |_t, args|
+    organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
+
+    ProcessesParser::AREAS_ATTRIBUTES.each do |attrs|
+      area = Decidim::Area.find_or_initialize_by(attrs.slice(:id))
+      area.name = nil
+      area.assign_attributes(attrs.except(:id).merge(organization: organization, area_type_id: nil))
+      area.save
     end
   end
 
@@ -108,15 +135,49 @@ namespace :decidim_navarra do
       puts "Participatory process groups created."
     end
 
+    unless areas_created?(organization)
+      puts "Generating areas, please wait..."
+      Rake::Task["decidim_navarra:initialize_areas"].invoke(organization.id)
+      puts "Areas created."
+    end
+
     puts "Importing processes, please wait..."
     importer = ProcessesImporter.new(args[:csv_path], organization, admin)
     importer.import_processes
     puts "Import completed."
   end
 
+  desc "Transforms a CSV of assemblies and imports it in a organization"
+  task :import_assemblies, [:csv_path, :organization_id, :admin_id] => [:environment] do |_t, args|
+    raise "Please, provide a file path" if args[:csv_path].blank?
+
+    organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
+    admin = args[:admin_id].present? ? organization.admins.find_by(id: args[:admin_id]) : organization.admins.first
+
+    unless areas_created?(organization)
+      puts "Generating areas, please wait..."
+      Rake::Task["decidim_navarra:initialize_areas"].invoke(organization.id)
+      puts "Areas created."
+    end
+
+    # Remove assemblies types
+    Decidim::AssembliesType.where(organization: organization).destroy_all
+
+    puts "Importing assemblies, please wait..."
+    importer = AssembliesImporter.new(args[:csv_path], organization, admin)
+    importer.import_assemblies
+    puts "Import completed."
+  end
+
   def groups_created?(organization)
-    ProcessesParser::PROCESS_GROUPS_ATTTIBUTES.all? do |attrs|
-      Decidim::ParticipatoryProcessGroup.where(attrs.slice(:title, :description).merge(organization: organization)).exists?
+    ProcessesParser::PROCESS_GROUPS_ATTRIBUTES.all? do |attrs|
+      Decidim::ParticipatoryProcessGroup.where(attrs.slice(:id, :title, :description).merge(organization: organization)).exists?
+    end
+  end
+
+  def areas_created?(organization)
+    ProcessesParser::AREAS_ATTRIBUTES.all? do |attrs|
+      Decidim::Area.where(attrs.merge(organization: organization)).exists?
     end
   end
 end
