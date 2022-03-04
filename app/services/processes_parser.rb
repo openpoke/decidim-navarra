@@ -198,7 +198,7 @@ class ProcessesParser
     # GIFs are not accepted for hero images
     return DEFAULT_IMAGE_FILENAME if /\.gif\z/i =~ raw_content["Imagen"]
 
-    raw_content["Imagen"].gsub(/\s/, "").gsub(/\Ahttps:\/gobiernoabierto\.navarra\.es\/sites\/default\/files\//, "")
+    raw_content["Imagen"].gsub(/\s/, "").gsub(/\Ahttps:\/gobiernoabierto\.navarra\.es\/sites\/default\/files\//, "").gsub(/\Apublic:\/\//, "")
   end
 
   def external_es_id
