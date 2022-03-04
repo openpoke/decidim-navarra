@@ -123,7 +123,7 @@ namespace :decidim_navarra do
   end
 
   desc "Transforms a CSV of processes and imports it in a organization"
-  task :import, [:csv_path, :organization_id, :files_base_url, :admin_id] => [:environment] do |_t, args|
+  task :import, [:csv_path, :organization_id, :admin_id, :files_base_url] => [:environment] do |_t, args|
     raise "Please, provide a file path" if args[:csv_path].blank?
 
     organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
