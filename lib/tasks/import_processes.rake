@@ -123,11 +123,12 @@ namespace :decidim_navarra do
   end
 
   desc "Transforms a CSV of processes and imports it in a organization"
-  task :import, [:csv_path, :organization_id, :admin_id] => [:environment] do |_t, args|
+  task :import, [:csv_path, :organization_id, :admin_id, :files_base_url] => [:environment] do |_t, args|
     raise "Please, provide a file path" if args[:csv_path].blank?
 
     organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
     admin = args[:admin_id].present? ? organization.admins.find_by(id: args[:admin_id]) : organization.admins.first
+    files_base_url = args[:files_base_url]
 
     unless groups_created?(organization)
       puts "Generating participatory process groups, please wait..."
@@ -142,7 +143,7 @@ namespace :decidim_navarra do
     end
 
     puts "Importing processes, please wait..."
-    importer = ProcessesImporter.new(args[:csv_path], organization, admin)
+    importer = ProcessesImporter.new(args[:csv_path], organization, admin, files_base_url: files_base_url)
     importer.import_processes
     puts "Import completed."
   end

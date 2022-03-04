@@ -3,19 +3,20 @@
 require "csv"
 
 class ProcessesImporter
-  def initialize(path, organization, admin)
+  def initialize(path, organization, admin, opts = {})
     @file = CSV.read(path, col_sep: ",", headers: true)
     @organization = organization
     @admin = admin
     @transformed_data = []
     @slugs = {}
     @metadata = []
+    @files_base_url = opts[:files_base_url]
   end
 
   def json_data
     if @transformed_data.blank?
       @file.each do |row|
-        parser = ProcessesParser.new(row, @organization)
+        parser = ProcessesParser.new(row, @organization, files_base_url: @files_base_url)
         @transformed_data << parser.transformed_data
         @metadata << parser.metadata
       end

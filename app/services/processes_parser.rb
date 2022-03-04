@@ -2,7 +2,7 @@
 
 # An example implementation of an AuthorizationHandler to be used in tests.
 class ProcessesParser
-  attr_reader :raw_content, :organization, :locale
+  attr_reader :raw_content, :organization, :locale, :files_base_url
 
   MONTH_NAMES = {
     "Enero" => 1,
@@ -124,10 +124,11 @@ class ProcessesParser
     { id: 28, name: { es: "Vivienda", eu: "Etxebizitza" } }
   ].freeze
 
-  def initialize(row, organization)
+  def initialize(row, organization, opts = {})
     @raw_content = row
     @organization = organization
     @locale = %w(Euskara Euskera).include?(raw_content["Idioma"]) ? "eu" : "es"
+    @files_base_url = opts[:files_base_url] || FILES_BASE_URL
   end
 
   def transformed_data
@@ -187,9 +188,10 @@ class ProcessesParser
   private
 
   def image_url
+    # return nil
     return if locale == "eu"
 
-    @image_url ||= URI.join(FILES_BASE_URL, image_filename)
+    @image_url ||= URI.join(files_base_url, image_filename)
   end
 
   def image_filename
@@ -198,7 +200,7 @@ class ProcessesParser
     # GIFs are not accepted for hero images
     return DEFAULT_IMAGE_FILENAME if /\.gif\z/i =~ raw_content["Imagen"]
 
-    raw_content["Imagen"].gsub(/\s/, "").gsub(/\Ahttps:\/gobiernoabierto\.navarra\.es\/sites\/default\/files\//, "")
+    raw_content["Imagen"].gsub(/\s/, "").gsub(/\Ahttps:\/gobiernoabierto\.navarra\.es\/sites\/default\/files\//, "").gsub(/\Apublic:\/\//, "")
   end
 
   def external_es_id
