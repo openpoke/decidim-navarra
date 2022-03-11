@@ -2,7 +2,7 @@
 
 # An example implementation of an AuthorizationHandler to be used in tests.
 class ProcessesParser
-  attr_reader :raw_content, :organization, :locale, :files_base_url
+  attr_reader :raw_content, :organization, :locale, :files_base_url, :general_base_url
 
   MONTH_NAMES = {
     "Enero" => 1,
@@ -129,6 +129,7 @@ class ProcessesParser
     @organization = organization
     @locale = %w(Euskara Euskera).include?(raw_content["Idioma"]) ? "eu" : "es"
     @files_base_url = opts[:files_base_url] || FILES_BASE_URL
+    @general_base_url = files_base_url.gsub(URI.parse(files_base_url).request_uri, "/")
   end
 
   def transformed_data
@@ -302,14 +303,26 @@ class ProcessesParser
     HTML
   end
 
+  def url_regexp
+    @url_regexp ||= URI::DEFAULT_PARSER.make_regexp(%w(http https))
+  end
+
+  def url_partition(text)
+    text = text.strip
+    text = "#{general_base_url}#{text}" unless /\A#{url_regexp}/.match?(text)
+    text.partition(url_regexp)
+  end
+
   def urls_list(text)
-    splitted_texts = text.split("@@").map do |fragment|
-      fragment.partition(URI.regexp(%w(http https)))
+    splitted_texts = text.split("@@").map.with_index do |fragment, i|
+      next [fragment] if i < 1
+
+      url_partition(fragment)
     end
 
     extractions = splitted_texts.map do |partition|
       partition = partition.reject(&:blank?)
-      url = partition.find { |fragment| URI.regexp(%w(http https)) =~ fragment }
+      url = partition.find { |fragment| url_regexp =~ fragment }
       description = (partition - [url]).first
 
       { text: description&.strip, url: url&.gsub(/,\z/, "") }
