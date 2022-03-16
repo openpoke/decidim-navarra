@@ -1,14 +1,4 @@
 GIT
-  remote: https://github.com/Platoniq/decidim-module-decidim_awesome
-  revision: 822cf104fbb6a3fbda69edd20fa17d583789e159
-  branch: main
-  specs:
-    decidim-decidim_awesome (0.8.0)
-      decidim-admin (>= 0.25.0, < 0.26)
-      decidim-core (>= 0.25.0, < 0.26)
-      sassc (~> 2.3)
-
-GIT
   remote: https://github.com/PopulateTools/decidim-module-anonymous_proposals
   revision: 11f93677b920f061d4d4f465d9e874748df37aff
   branch: release/0.25-stable
@@ -382,6 +372,10 @@ GEM
     db-query-matchers (0.10.0)
       activesupport (>= 4.0, < 7)
       rspec (~> 3.0)
+    decidim-decidim_awesome (0.8.1)
+      decidim-admin (>= 0.25.0, < 0.27)
+      decidim-core (>= 0.25.0, < 0.27)
+      sassc (~> 2.3)
     declarative-builder (0.1.0)
       declarative-option (< 0.2.0)
     declarative-option (0.1.0)
@@ -867,7 +861,7 @@ DEPENDENCIES
   decidim-anonymous_proposals!
   decidim-conferences!
   decidim-consultations!
-  decidim-decidim_awesome!
+  decidim-decidim_awesome (~> 0.8)
   decidim-dev!
   decidim-initiatives!
   decidim-term_customizer!
