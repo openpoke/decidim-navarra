@@ -85,10 +85,8 @@ es:
     legal: aviso-legal
     map: webmap
   footer_menu:
-    accesibility: Accesibilidad
     contact: Contacte con nosotros
-    legal: Aviso legal
-    map: Mapa web
+    participation: Órganos de participación
     users: Accede a tu cuenta
   open_data: Datos Abiertos
   open_government: Gobierno Abierto de Navarra
