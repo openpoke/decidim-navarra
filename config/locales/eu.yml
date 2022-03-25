@@ -85,10 +85,8 @@ eu:
     legal: legezko-oharra
     map: webmap
   footer_menu:
-    accesibility: Erabilerraztasuna
     contact: Jar zaitez gurekin harremanetan
-    legal: Lege abisua
-    map: Webaren mapa
+    participation: Parte hartzen duten organoak
     users: Zure kontua sartu
   open_data: Datu Irekiak
   open_government: Nafarroako Gobernua Irekia
