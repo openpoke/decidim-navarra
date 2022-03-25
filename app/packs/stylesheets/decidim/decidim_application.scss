@@ -186,19 +186,24 @@ $white: #fff;
     align-items: center;
     align-content: center;
   }
+  .footer-nav {
+    font-size: 0;
+  }
   .navarra-footer-menu-element {
+    padding: 0;
     &:not(:last-child) {
       &:after {
         content: '|';
         padding: 0 .25rem;
         display: inline-block;
         color: $black;
+        font-size: 14px;
       }
     }
-  }
-  .navarra-footer-menu-element-text {
-    font-size: 14px;
-    color: #666;
+    a {
+      font-size: 14px;
+      color: #666;
+    }
   }
 }
 
