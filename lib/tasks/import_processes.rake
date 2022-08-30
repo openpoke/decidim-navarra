@@ -6,7 +6,7 @@ namespace :decidim_navarra do
   task :initialize_site, [:host] => [:environment] do |_t, args|
     host = args[:host] || ENV["DECIDIM_HOST"] ||"localhost"
     smtp_label = "Participación Ciudadana"
-    smtp_email = "participacionciudadana@navarra.es"
+    smtp_email = "participanavarra@navarra.es"
     seeds_root = File.join(__dir__, "..", "..", "db", "seeds")
 
     organization = Decidim::Organization.first || Decidim::Organization.create!(
