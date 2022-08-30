@@ -67,7 +67,7 @@ class MailWebserviceHandler < Decidim::ApplicationMailer
                 <a:Destinatarios xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
                     #{mail.to.map { |addressee| "<b:string>#{addressee}</b:string>" }.join("\n")}
                 </a:Destinatarios>
-                <a:Origen>participacionciudadana@navarra.es</a:Origen>
+                <a:Origen>participanavarra@navarra.es</a:Origen>
                 <a:Tipo>HTML</a:Tipo>
             </mensaje>
             <servidor>correo.admon-cfnavarra.es</servidor>
