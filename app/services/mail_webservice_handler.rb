@@ -8,12 +8,19 @@ class MailWebserviceHandler < Decidim::ApplicationMailer
   end
 
   def send_raw_email(mail, _args = {})
+    request_body = raw_xml(mail, subject: extract_subject(mail), body: extract_body(mail))
+
     response = Faraday.post webservice_address do |request|
       request.headers["Content-Type"] = "application/soap+xml; charset=utf-8; action=\"http://www.navarra.es/EnvioCorreos/IEnvioCorreos/EnviaCorreoDetallado\""
-      request.body = raw_xml(mail, subject: extract_subject(mail), body: extract_body(mail))
+      request.body = request_body
     end
 
-    Nokogiri::XML(response.body).remove_namespaces!
+    response_body = Nokogiri::XML(response.body).remove_namespaces!
+
+    Rails.logger.info "[EMAIL_WEBSERVICE] Request: #{request_body}"
+    Rails.logger.info "[EMAIL_WEBSERVICE] Response: #{response_body}"
+
+    response_body
   end
   alias deliver! send_raw_email
   alias deliver send_raw_email
