@@ -7,16 +7,18 @@
 
 # @title_es Habilitar la rotación de logs
 # @title_en Enable log rotation
-# @comment_es Copiar en `/etc/logrotate.d/decidim`
-# @comment_en Copy in `/etc/logrotate.d/decidim`
+# @comment_es Copiar en `$HOME/.logrotate-decidim.conf`
+# @comment_en Copy in `$HOME/.logrotate-decidim.conf`
 # @input
 # f{logrotate.j2}
 - name: Enable log rotation
   become: yes
   template:
+    owner: "{{app_user}}"
+    group: "{{app_group}}"
+    mode: 0774
     src: logrotate.j2
-    dest: /etc/logrotate.d/{{app_id}}
-
+    dest: /home/{{app_user}}/.logrotate-decidim.conf
 
 # @title_es Crear directorios
 # @title_en Create folders
