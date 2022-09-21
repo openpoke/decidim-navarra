@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-lock "3.16.0"
+lock "3.8.0"
 
 set :application, "{{app_id}}"
 set :repo_url, "{{app_repo_url}}"
@@ -20,6 +20,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push(*%w(
   public/uploads
   public/decidim-packs
   storage
+  tmp/webpacker-cache
 ))
 set :sidekiq_config, -> { File.join(release_path, "config", "sidekiq.yml") }
 set :passenger_restart_with_touch, true
@@ -34,9 +35,9 @@ before "bundler:install", "clean_vendor_ansible"
 namespace :deploy do
   desc "Compile assets"
   task :compile_assets => [:set_rails_env] do
-    invoke "deploy:decidim_webpacker_install"
     invoke "deploy:install_dependencies"
     invoke "deploy:webpacker_compile"
+    invoke "deploy:decidim_webpacker_install"
   end
 
   desc "Install dependencies"
