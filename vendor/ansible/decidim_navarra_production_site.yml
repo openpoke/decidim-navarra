@@ -1,0 +1,40 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  become: yes
+  roles:
+    ### Handlers
+    - { role: 'handlers' }
+    ### Site
+    - { role: 'sites/decidim' }
+    - { role: 'tools/deploy' }
+  vars:
+    app_id: decidim
+    app_git_branch: master
+    app_group: www-data
+    app_repo_url: "https://gesfuentes.admon-cfnavarra.es/git/r/presidencia/WebParticipacionCiudadana.git"
+    app_user: centos
+    env: production
+    geocoder_lookup_app_code:
+    geocoder_lookup_app_id:
+    hostname: decidim-navarra-production
+    include_passenger: true
+    memcache_listen_address: "127.0.0.1"
+    memcache_memory: 256
+    postgres_bind_address: "127.0.0.1"
+    postgres_version: 11
+    rails_env: production
+    rbenv_user: centos
+    redis_bind_address: "127.0.0.1"
+    redis_url: redis://127.0.0.1:6379/0
+    rollbar_access_token:
+    sites_domains:
+      - participa.navarra.es
+    ssl_certificate_name: decidim
+    internal_server: true
+    ansible_python_interpreter: /usr/bin/python
+    site_db_name:
+    site_db_user:
+    site_db_host:
+    site_db_port:
+    site_db_password:

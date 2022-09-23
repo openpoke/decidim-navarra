@@ -77,7 +77,7 @@
 # la base de datos tenga instaladas las extensiones `ltree`, `pg_trgm` y `plpgsql`. En la propia máquina de la aplicación, eso sí,
 # se instalará el cliente de Postgresql 11.0. Para poder instalar el cliente es necesario que la libreria `llvm-toolset-7` esté instalada
 # de antemano en la máquina.
-# @comment Esta instalación creará en el servidor al usuario `participa_decidim` para gestionar la app.
+# @comment Esta instalación creará en el servidor al usuario `centos` para gestionar la app.
 - hosts: 127.0.0.1
   connection: local
   become: yes
@@ -98,7 +98,7 @@
     - { role: 'services/centos/nginx' }
     # - { role: 'services/centos/postgresql_server' }
     - { role: 'services/centos/postgresql_client' }
-    - { role: 'services/centos/redis_server', redis_user: participa_decidim }
+    - { role: 'services/centos/redis_server', redis_user: centos }
     ### Site
     - { role: 'sites/decidim' }
     - { role: 'tools/deploy' }
@@ -107,11 +107,11 @@
     app_git_branch: master
     app_group: www-data
     app_repo_url: "https://gesfuentes.admon-cfnavarra.es/git/r/presidencia/WebParticipacionCiudadana.git"
-    app_user: participa_decidim
+    app_user: centos
     backup_databases:
       - decidim
     backups_folder: /backup
-    backups_user: participa_decidim
+    backups_user: centos
     databases:
       - decidim
     env: production
@@ -124,7 +124,7 @@
     postgres_bind_address: "127.0.0.1"
     postgres_version: 11
     rails_env: production
-    rbenv_user: participa_decidim
+    rbenv_user: centos
     redis_bind_address: "127.0.0.1"
     redis_url: redis://127.0.0.1:6379/0
     rollbar_access_token:
@@ -136,7 +136,7 @@
     epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
     epel_repo_gpg_key_url: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7"
     epel_repofile_path: "/etc/yum.repos.d/epel.repo"
-    populate_user: participa_decidim
+    populate_user: centos
     populate_user_password:
     site_db_name:
     site_db_user:
