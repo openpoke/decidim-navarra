@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "base64"
+
 class MailWebserviceHandler < Decidim::ApplicationMailer
   def initialize(options = {}); end
 
@@ -50,40 +52,40 @@ class MailWebserviceHandler < Decidim::ApplicationMailer
   def raw_xml(mail, opts = {})
     <<-XML
 <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-    <s:Header>
-        <o:Security s:mustUnderstand="1" xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-            <u:Timestamp u:Id="_0">
-                <u:Created>#{timestamp.created}</u:Created>
-                <u:Expires>#{timestamp.expires}</u:Expires>
-            </u:Timestamp>
-            <o:UsernameToken u:Id="uuid-d368d733-2147-46e2-903f-7dda72bf934a-3">
-                <o:Username>#{request_configuration.username_token_user}</o:Username>
-                <o:Password>#{request_configuration.username_token_password}</o:Password>
-            </o:UsernameToken>
-        </o:Security>
-    </s:Header>
-    <s:Body>
-        <EnviaCorreoDetallado xmlns="http://www.navarra.es/EnvioCorreos">
-            <mensaje xmlns:a="http://schemas.datacontract.org/2004/07/cpEnvioCorreos.Entidades" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-                <_key xmlns="http://schemas.datacontract.org/2004/07/Indra.Componentes">00000000-0000-0000-0000-000000000000</_key>
-                <a:Adjuntos i:nil="true"/>
-                <a:Asunto>#{opts[:subject]}</a:Asunto>
-                <a:Cc i:nil="true" xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-                <a:Cco i:nil="true" xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-                <a:Cuerpo>#{opts[:body]}</a:Cuerpo>
-                <a:Destinatarios xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-                    #{mail.to.map { |addressee| "<b:string>#{addressee}</b:string>" }.join("\n")}
-                </a:Destinatarios>
-                <a:Origen>participanavarra@navarra.es</a:Origen>
-                <a:Tipo>HTML</a:Tipo>
-            </mensaje>
-            <servidor>correo.admon-cfnavarra.es</servidor>
-            <usuario>SVC_participacion</usuario>
-            <clave>Participacion2020</clave>
-            <respuesta/>
-            <codaplicacion>172</codaplicacion>
-        </EnviaCorreoDetallado>
-    </s:Body>
+  <s:Header>
+    <o:Security s:mustUnderstand="1" xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <u:Timestamp u:Id="_0">
+        <u:Created>#{timestamp.created}</u:Created>
+        <u:Expires>#{timestamp.expires}</u:Expires>
+      </u:Timestamp>
+      <o:UsernameToken u:Id="uuid-d368d733-2147-46e2-903f-7dda72bf934a-3">
+        <o:Username>#{request_configuration.username_token_user}</o:Username>
+        <o:Password>#{request_configuration.username_token_password}</o:Password>
+      </o:UsernameToken>
+    </o:Security>
+  </s:Header>
+  <s:Body>
+    <EnviaCorreoDetallado xmlns="http://www.navarra.es/EnvioCorreos">
+      <mensaje xmlns:a="http://schemas.datacontract.org/2004/07/cpEnvioCorreos.Entidades" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <_key xmlns="http://schemas.datacontract.org/2004/07/Indra.Componentes">00000000-0000-0000-0000-000000000000</_key>
+        #{extract_attachments(mail)}
+        <a:Asunto>#{opts[:subject]}</a:Asunto>
+        <a:Cc i:nil="true" xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+        <a:Cco i:nil="true" xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+        <a:Cuerpo>#{opts[:body]}</a:Cuerpo>
+        <a:Destinatarios xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+          #{mail.to.map { |addressee| "<b:string>#{addressee}</b:string>" }.join("\n")}
+        </a:Destinatarios>
+        <a:Origen>participanavarra@navarra.es</a:Origen>
+        <a:Tipo>HTML</a:Tipo>
+      </mensaje>
+      <servidor>correo.admon-cfnavarra.es</servidor>
+      <usuario>SVC_participacion</usuario>
+      <clave>Participacion2020</clave>
+      <respuesta/>
+      <codaplicacion>172</codaplicacion>
+    </EnviaCorreoDetallado>
+  </s:Body>
 </s:Envelope>
     XML
   end
@@ -94,5 +96,25 @@ class MailWebserviceHandler < Decidim::ApplicationMailer
 
   def request_configuration
     @request_configuration ||= OpenStruct.new(Rails.application.secrets.email_webservice_configuration)
+  end
+
+  def extract_attachments(mail)
+    if mail.attachments.any?
+      index = 0
+      attachments_files = mail.attachments.map do |attachment|
+        index += 1
+        %Q{
+<a:FicheroAdjunto>
+  <_key xmlns="http://schemas.datacontract.org/2004/07/Indra.Componentes">00000000-0000-0000-0000-#{"%012d" % index}</_key>
+  <a:Fichero>#{Base64.strict_encode64(attachment.decoded)}</a:Fichero>
+  <a:Nombre>#{attachment.filename}</a:Nombre>
+</a:FicheroAdjunto>
+        }
+      end.join("\n")
+
+      "<a:Adjuntos>\n#{attachments_files}\n </a:Adjuntos>"
+    else
+      %Q{<a:Adjuntos i:nil="true"/>}
+    end
   end
 end
