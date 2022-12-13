@@ -44,8 +44,8 @@ class MailWebserviceHandler < Decidim::ApplicationMailer
 
   def timestamp
     @timestamp ||= OpenStruct.new(
-      created: DateTime.current.strftime(timestamp_format),
-      expires: 3.minutes.from_now.strftime(timestamp_format)
+      created: Time.now.utc.strftime(timestamp_format),
+      expires: 3.minutes.from_now.utc.strftime(timestamp_format)
     )
   end
 
