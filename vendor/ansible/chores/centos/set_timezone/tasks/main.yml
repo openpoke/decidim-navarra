@@ -1,9 +1,9 @@
-# @title_es Establecer UTC como zona horaria del servidor
+# @title_es Establecer Madrid como zona horaria del servidor
 # @title_en Set UTC as the server timezone
-# @input ln -s /usr/share/zoneinfo/UTC /etc/localtime
+# @input ln -s /usr/share/zoneinfo/Europe/Madrid /etc/localtime
 - name: set UTC timezone
   file:
-    src: "/usr/share/zoneinfo/UTC"
+    src: "/usr/share/zoneinfo/Europe/Madrid"
     dest: "/etc/localtime"
     state: link
   notify:

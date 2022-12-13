@@ -92,7 +92,7 @@
     - { role: 'user/centos' }
     ### Services
     - { role: 'chores/common/hostname' }
-    - { role: 'packages/centos/fullstaq-ruby', ruby_versions: ['fullstaq-ruby-2.6.6', 'fullstaq-ruby-2.7.1'] }
+    - { role: 'packages/centos/fullstaq-ruby', ruby_versions: ['fullstaq-ruby-2.7.4'] }
     - { role: 'services/centos/monit', monit_services: ['sshd', 'cron', 'disk-usage'] }
     - { role: 'services/centos/memcached' }
     - { role: 'services/centos/nginx' }
