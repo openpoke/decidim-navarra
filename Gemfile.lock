@@ -288,6 +288,8 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     anchored (1.1.0)
+    appsignal (3.2.2)
+      rack
     ast (2.4.2)
     axe-core-api (4.3.2)
       dumb_delegator
@@ -854,6 +856,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  appsignal
   bootsnap (~> 1.4)
   brakeman (~> 5.1)
   byebug (~> 11.0)
