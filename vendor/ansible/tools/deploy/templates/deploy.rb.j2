@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-lock "3.8.0"
+lock "3.17.1"
 
 set :application, "{{app_id}}"
 set :repo_url, "{{app_repo_url}}"
@@ -69,3 +69,15 @@ namespace :deploy do
     end
   end
 end
+
+task :restart_sidekiq do
+  on roles(:all) do
+    within release_path do
+      with rails_env: fetch(:rails_env) do
+        execute :rake, "sidekiq:restart"
+      end
+    end
+  end
+end
+
+after "deploy:finished", "restart_sidekiq"

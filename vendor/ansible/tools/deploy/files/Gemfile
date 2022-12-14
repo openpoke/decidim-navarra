@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "capistrano", "3.8.0", require: false
+gem "capistrano"
 gem "capistrano-bundler"
 gem "capistrano-passenger"
 gem "capistrano-rails"
