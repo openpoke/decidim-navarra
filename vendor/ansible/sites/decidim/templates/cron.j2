@@ -1,3 +1,6 @@
+# Restart periodically sidekiq
+0 */2 * * * root /bin/monit restart -g decidim-sidekiq
+
 # Logrotate
 0 2 * * * {{app_user}} /bin/bash -c '/sbin/logrotate -state ~/.logrotate-state ~/.logrotate-decidim.conf'
 
