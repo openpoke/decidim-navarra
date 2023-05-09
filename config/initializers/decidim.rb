@@ -2,10 +2,12 @@
 
 Decidim.configure do |config|
   # The name of the application
-  config.application_name = "My Application Name"
+  config.application_name = "Decidim Navarra"
 
   # The email that will be used as sender in all emails from Decidim
   config.mailer_sender = "change-me@example.org"
+
+  config.unconfirmed_access_for = 2.days
 
   # Sets the list of available locales for the whole application.
   #
@@ -48,7 +50,7 @@ Decidim.configure do |config|
   # end
 
   # Currency unit
-  # config.currency_unit = "€"
+  config.currency_unit = "€"
 
   # Defines the quality of image uploads after processing. Image uploads are
   # processed by Decidim, this value helps reduce the size of the files.
@@ -71,6 +73,9 @@ Decidim.configure do |config|
   # take over user accounts.
   #
   config.enable_html_header_snippets = true
+
+  # Set max requests
+  config.throttling_max_requests = 500
 
   # Allow organizations admins to track newsletter links.
   # config.track_newsletter_links = true
@@ -216,9 +221,18 @@ Decidim.configure do |config|
   # config.consent_cookie_name = "decidim-cc"
 end
 
+# Inform Decidim about the assets folder
+Decidim.register_assets_path File.expand_path("app/packs", Rails.application.root)
+
 Rails.application.config.i18n.available_locales = Decidim.available_locales
 Rails.application.config.i18n.default_locale = Decidim.default_locale
 
 Decidim::Verifications.register_workflow(:census_authorization_handler) do |auth|
   auth.form = "CensusAuthorizationHandler"
+end
+
+# API configuration
+Rails.application.config.to_prepare do
+  Decidim::Api::Schema.max_complexity = 5000
+  Decidim::Api::Schema.max_depth = 50
 end

@@ -3,16 +3,16 @@
 source "https://rubygems.org"
 
 ruby RUBY_VERSION
-DECIDIM_VERSION = { git: "https://github.com/PopulateTools/decidim.git", branch: "web_participacion_ciudadana/0.25-stable" }
+DECIDIM_VERSION = "0.26.5"
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-conferences", DECIDIM_VERSION
 gem "decidim-consultations", DECIDIM_VERSION
 gem "decidim-initiatives", DECIDIM_VERSION
 # gem "decidim-templates", "0.23.1"
-gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: "release/0.25-stable"
+gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: "release/0.26-stable"
 
-gem "decidim-term_customizer", git: "https://github.com/mainio/decidim-module-term_customizer.git", branch: "develop"
+gem "decidim-term_customizer", git: "https://github.com/mainio/decidim-module-term_customizer.git", branch: "release/0.26-stable"
 gem "decidim-decidim_awesome", "~> 0.8"
 
 gem "bootsnap", "~> 1.4"
@@ -26,7 +26,6 @@ gem "faraday"
 gem "wicked_pdf", "~> 2.1"
 gem "sidekiq", "~> 5.2"
 gem "virtus-multiparams"
-gem "appsignal"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
@@ -42,7 +41,6 @@ group :development do
   gem "letter_opener_web", "~> 1.3"
   gem "listen", "~> 3.1"
   gem "rubocop-faker"
-  gem "spring", "~> 2.0"
-  gem "spring-watcher-listen", "~> 2.0"
-  gem "web-console", "4.0.4"
+  gem "spring"
+  gem "spring-watcher-listen"
 end
