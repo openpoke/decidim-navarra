@@ -30,7 +30,7 @@ class MailWebserviceHandler < Decidim::ApplicationMailer
   private
 
   def extract_subject(mail)
-    mail.subject.encode(xml: :text)
+    mail.subject&.truncate(170)&.encode(xml: :text)
   end
 
   def extract_body(mail)
