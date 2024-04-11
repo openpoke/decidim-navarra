@@ -8,15 +8,6 @@ GIT
       deface (~> 1.5)
 
 GIT
-  remote: https://github.com/mainio/decidim-module-term_customizer.git
-  revision: abbf0c69e1bcaafebc5aa4f8da22fdb64ce62149
-  branch: release/0.27-stable
-  specs:
-    decidim-term_customizer (0.27.0)
-      decidim-admin (~> 0.27.0)
-      decidim-core (~> 0.27.0)
-
-GIT
   remote: https://github.com/sgruhier/foundation_rails_helper.git
   revision: bc33600db7a2d16ce3cdc1f8369d0d7e7c4245b5
   specs:
@@ -871,7 +862,6 @@ DEPENDENCIES
   decidim-dev (= 0.27.5)
   decidim-initiatives (= 0.27.5)
   decidim-templates (= 0.27.5)
-  decidim-term_customizer!
   faker (~> 2.14)
   faraday
   foundation_rails_helper!
@@ -888,7 +878,7 @@ DEPENDENCIES
   wicked_pdf (~> 2.1)
 
 RUBY VERSION
-   ruby 3.0.6p216
+   ruby 3.0.2p107
 
 BUNDLED WITH
    2.2.33
