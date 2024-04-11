@@ -3,16 +3,16 @@
 source "https://rubygems.org"
 
 ruby RUBY_VERSION
-DECIDIM_VERSION = "0.26.9"
+DECIDIM_VERSION = "0.27.5"
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-conferences", DECIDIM_VERSION
 gem "decidim-consultations", DECIDIM_VERSION
 gem "decidim-initiatives", DECIDIM_VERSION
 gem "decidim-templates", DECIDIM_VERSION
-gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: "release/0.26-stable"
+gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: "release/0.27-stable"
 
-gem "decidim-term_customizer", git: "https://github.com/mainio/decidim-module-term_customizer.git", branch: "release/0.26-stable"
+gem "decidim-term_customizer", git: "https://github.com/mainio/decidim-module-term_customizer.git", branch: "release/0.27-stable"
 gem "decidim-decidim_awesome", "~> 0.8"
 
 gem "bootsnap", "~> 1.4"
@@ -31,7 +31,7 @@ gem "nokogiri", "~> 1.12"
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
 
-  gem "simplecov", "~> 0.19.0"
+  gem "simplecov", "~> 0.21.0"
 
   gem "decidim-dev", DECIDIM_VERSION
 
