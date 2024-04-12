@@ -4,7 +4,6 @@
 # to verify the citizen's residence.
 class CensusAuthorizationHandler < Decidim::AuthorizationHandler
   include ActionView::Helpers::SanitizeHelper
-  include Virtus::Multiparams
 
   PROVINCE_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__), "province_codes.json")))
   DOCUMENT_TYPE_SERVICE_VALUES = {
@@ -20,7 +19,7 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
   attribute :document_number, String
   attribute :date_of_birth, Date
   attribute :province_id, String
-  attribute :personal_data_access_consent, Boolean
+  attribute :personal_data_access_consent, const_get(:Boolean), default: false
 
   validates :name, :first_surname, :second_surname, :date_of_birth, :province_id, presence: true
   validates :document_type, inclusion: { in: DOCUMENT_TYPE_SERVICE_VALUES.keys }, presence: true
