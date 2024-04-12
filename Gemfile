@@ -25,7 +25,6 @@ gem "faker", "~> 2.14"
 gem "faraday"
 gem "wicked_pdf", "~> 2.1"
 gem "sidekiq", "~> 5.2"
-gem "virtus-multiparams"
 gem "nokogiri", "~> 1.12"
 
 group :development, :test do
