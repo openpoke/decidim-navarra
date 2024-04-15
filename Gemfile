@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 ruby RUBY_VERSION
-DECIDIM_VERSION = "0.26.5"
+DECIDIM_VERSION = "0.26.9"
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-conferences", DECIDIM_VERSION
@@ -26,6 +26,7 @@ gem "faraday"
 gem "wicked_pdf", "~> 2.1"
 gem "sidekiq", "~> 5.2"
 gem "virtus-multiparams"
+gem "nokogiri", "~> 1.12"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
