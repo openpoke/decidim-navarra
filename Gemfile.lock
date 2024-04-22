@@ -847,6 +847,7 @@ DEPENDENCIES
   decidim-decidim_awesome (~> 0.8)
   decidim-dev (= 0.26.9)
   decidim-initiatives (= 0.26.9)
+  decidim-templates (= 0.26.9)
   decidim-term_customizer!
   faker (~> 2.14)
   faraday
