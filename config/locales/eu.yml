@@ -88,6 +88,8 @@ eu:
     contact: Jar zaitez gurekin harremanetan
     participation: Parte hartzen duten organoak
     users: Zure kontua sartu
+  locale:
+    name: Euskera
   open_data: Datu Irekiak
   open_government: Nafarroako Gobernua Irekia
   participation: Partaidetza
