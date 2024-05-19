@@ -170,6 +170,22 @@ namespace :decidim_navarra do
     puts "Import completed."
   end
 
+  desc "Updates organization participatory processes types from a CSV"
+  task :update_participatory_processes_types, [:csv_path, :organization_id] => [:environment] do |_t, args|
+    raise "Please, provide a file path" if args[:csv_path].blank?
+
+    organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
+
+    updater = ProcessesTypeUpdater.new(args[:csv_path], organization)
+    updater.transform_processes
+
+    updater.metadata.each do |k, v|
+      puts "#{k}: #{v}"
+    end
+
+    puts "Updates completed."
+  end
+
   def groups_created?(organization)
     ProcessesParser::PROCESS_GROUPS_ATTRIBUTES.all? do |attrs|
       Decidim::ParticipatoryProcessGroup.where(attrs.slice(:id, :title, :description).merge(organization: organization)).exists?
