@@ -8,14 +8,13 @@ class ProcessesTypeUpdater
     "Normativa en elaboración" => { title: { "es" => "Normativa en elaboración", "eu" => "Garatzen ari diren araudia" } }
   }.freeze
 
-  attr_accessor :file, :organization, :transformed_data
+  attr_accessor :file, :organization, :transformed_data, :process_types
 
-  def initialize(path, organization)
+  def initialize(path, organization, options = {})
     @file = CSV.read(path, col_sep: ",", headers: true)
     @organization = organization
     @transformed_data = []
-    @slugs = {}
-    @metadata = []
+    @process_types = options[:process_types].presence || detect_or_create_process_types
   end
 
   def processes_search
@@ -31,9 +30,25 @@ class ProcessesTypeUpdater
     @processes_found ||= processes_search.select { |item| item[1].present? }
   end
 
+  def detect_or_create_process_types
+    AVAILABLE_PROCESSES.transform_values do |attributes|
+      items = attributes[:title].map do |locale, translation|
+        Decidim::ParticipatoryProcessType.where(organization: organization).where("title @> ?", { locale => translation }.to_json).to_a
+      end.flatten.uniq
+
+      item =
+        items.find { |type| type.title.keys.count >= 2 } ||
+        items.find { |type| type.title["es"].present? } ||
+        items.first ||
+        Decidim::ParticipatoryProcessType.find_or_create_by(attributes.merge(organization: organization))
+      item.update_attribute(:title, attributes[:title]) if item.title != attributes[:title]
+      item
+    end
+  end
+
   def transform_processes
     processes_found.each do |row, process|
-      process_type = Decidim::ParticipatoryProcessType.find_or_create_by(AVAILABLE_PROCESSES[row["Tipo de proceso"]].merge(organization: organization))
+      process_type = process_types[row["Tipo de proceso"]]
       process.update_attribute(:decidim_participatory_process_type_id, process_type.id)
 
       @transformed_data << process

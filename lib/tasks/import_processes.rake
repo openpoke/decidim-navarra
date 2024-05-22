@@ -171,12 +171,24 @@ namespace :decidim_navarra do
   end
 
   desc "Updates organization participatory processes types from a CSV"
-  task :update_participatory_processes_types, [:csv_path, :organization_id] => [:environment] do |_t, args|
+  task :update_participatory_processes_types, [:csv_path, :options, :organization_id] => [:environment] do |_t, args|
     raise "Please, provide a file path" if args[:csv_path].blank?
+
+    options = args[:options].present? ? JSON.parse(args[:options].gsub(";", ",")) : {}
+
+    presenter_options = if options["process_types_ids"].present?
+                          {
+                            process_types: ProcessesTypeUpdater::AVAILABLE_PROCESSES.keys.index_with do |value|
+                              options["process_types_ids"][value].presence && Decidim::ParticipatoryProcessType.find_by(id: options["process_types_ids"][value])
+                            end
+                          }
+                        else
+                          {}
+                        end
 
     organization = Decidim::Organization.find_by(id: args[:organization_id]) || Decidim::Organization.first
 
-    updater = ProcessesTypeUpdater.new(args[:csv_path], organization)
+    updater = ProcessesTypeUpdater.new(args[:csv_path], organization, **presenter_options)
     updater.transform_processes
 
     updater.metadata.each do |k, v|
