@@ -25,6 +25,9 @@
               <li class="navarra-footer-menu-element"><%= link_to translated_attribute(page.title), decidim.page_path(page) %></li>
             <% end %>
           <% end %>
+          <% if footer_contact.present? %>
+            <li class="navarra-footer-menu-element"><a href="<%= footer_contact %>"><%= t('footer_menu.contact') %></a>
+          <% end %>
           <li class="navarra-footer-menu-element"><a href="/users/sign_in" class="navarra-footer-menu-element"><%= t('footer_menu.users') %></a></li>
           </li>
         </ul>
