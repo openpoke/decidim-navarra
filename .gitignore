@@ -46,3 +46,6 @@ public/uploads
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Static files
+app/views/static/
