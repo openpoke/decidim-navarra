@@ -442,6 +442,7 @@ end
 
 # API configuration
 Rails.application.config.to_prepare do
+  preload_hack = Decidim::Templates::Admin::Concerns::Templatable rescue nil
   Decidim::Api::Schema.max_complexity = 5000
   Decidim::Api::Schema.max_depth = 50
 end
