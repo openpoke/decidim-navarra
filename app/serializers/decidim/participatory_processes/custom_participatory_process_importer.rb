@@ -10,8 +10,8 @@ module Decidim
         Decidim.traceability.perform_action!(:create, ParticipatoryProcess, @user, visibility: "all") do
           @imported_process = ParticipatoryProcess.new(
             organization: @organization,
-            title: title,
-            slug: slug,
+            title:,
+            slug:,
             subtitle: attributes["subtitle"],
             hashtag: attributes["hashtag"],
             description: attributes["description"],
@@ -37,7 +37,7 @@ module Decidim
           [:hero_image, :banner_image].each do |attr|
             upload_attachment(attr, attributes["remote_#{attr}_url"])
           end
-          @imported_process.update_attribute(:created_at, attributes["start_date"])
+          @imported_process.update(created_at: attributes["start_date"])
           @imported_process.publish!
           @imported_process
         end
@@ -63,26 +63,27 @@ module Decidim
         return if id.blank?
 
         ::Decidim::ParticipatoryProcessType.find_by(
-          id: id
+          id:
         )
       end
+
+      require "net/http"
+      require "open-uri"
 
       def upload_attachment(attribute, url)
         return unless url.present? && remote_file_exists?(url)
 
-        file = URI.open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
         uri = URI.parse(url)
+        file = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
+          http.get(uri.path)
+        end
+
         blob = ActiveStorage::Blob.create_and_upload!(
-          io: file.is_a?(Tempfile) ? File.open(file.path) : file,
+          io: StringIO.new(file.body),
           filename: File.basename(uri.path)
         )
         blob.analyze
         @imported_process.send(attribute).attach(blob)
-      ensure
-        if file.is_a? Tempfile
-          file.close
-          file.unlink
-        end
       end
     end
   end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_consultations (originally 20210310120626)
 
 class AddFollowableCounterCacheToConsultations < ActiveRecord::Migration[5.2]

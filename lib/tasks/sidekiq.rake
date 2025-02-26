@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :sidekiq do
   desc "Sidekiq stop"
   task :stop do
@@ -14,8 +16,8 @@ namespace :sidekiq do
   desc "Sidekiq restart"
   task :restart do
     puts "#### Trying to restart Sidekiq Now !!! ####"
-    Rake::Task['sidekiq:stop'].invoke
-    Rake::Task['sidekiq:start'].invoke
+    Rake::Task["sidekiq:stop"].invoke
+    Rake::Task["sidekiq:start"].invoke
     puts "#### Sidekiq restarted successfully !!! ####"
   end
 end

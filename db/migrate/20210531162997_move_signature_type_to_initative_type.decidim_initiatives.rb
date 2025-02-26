@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_initiatives (originally 20191002082220)
 
 # Migration updated after 0.25 upgrade
@@ -8,11 +9,11 @@ class MoveSignatureTypeToInitativeType < ActiveRecord::Migration[5.2]
   end
 
   def change
-    if !ActiveRecord::Base.connection.table_exists?("decidim_initiatives_types")
+    if !ActiveRecord::Base.connection.table_exists?('decidim_initiatives_types')
       Rails.logger.info "Skipping migration since there's no InitiativesType table"
       return
     elsif InitiativesType.count.positive?
-      raise "You need to edit this migration to continue"
+      raise 'You need to edit this migration to continue'
     end
 
     # This flag says when mixed and face-to-face voting methods

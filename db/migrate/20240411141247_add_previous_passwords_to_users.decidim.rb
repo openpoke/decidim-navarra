@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim (originally 20220518094535)
 
 class AddPreviousPasswordsToUsers < ActiveRecord::Migration[6.1]
@@ -12,9 +13,7 @@ class AddPreviousPasswordsToUsers < ActiveRecord::Migration[6.1]
 
     reversible do |direction|
       direction.up do
-        # rubocop:disable Rails/SkipsModelValidations
-        User.update_all("password_updated_at = updated_at")
-        # rubocop:enable Rails/SkipsModelValidations
+        User.update_all('password_updated_at = updated_at')
       end
     end
   end

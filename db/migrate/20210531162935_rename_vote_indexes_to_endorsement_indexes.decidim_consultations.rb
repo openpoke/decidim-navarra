@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_consultations (originally 20180130142411)
 
 class RenameVoteIndexesToEndorsementIndexes < ActiveRecord::Migration[5.1]
@@ -18,20 +19,20 @@ class RenameVoteIndexesToEndorsementIndexes < ActiveRecord::Migration[5.1]
   end
 
   def create_authorable_unique
-    remove_index :decidim_consultations_endorsements, name: "index_question_votes_author_unique"
+    remove_index :decidim_consultations_endorsements, name: 'index_question_votes_author_unique'
 
     add_index :decidim_consultations_endorsements,
-              %w(decidim_consultation_question_id decidim_author_id decidim_user_group_id),
-              name: "index_question_votes_author_unique",
+              %w[decidim_consultation_question_id decidim_author_id decidim_user_group_id],
+              name: 'index_question_votes_author_unique',
               unique: true
   end
 
   def create_author_unique
-    remove_index :decidim_consultations_endorsements, name: "index_question_votes_author_unique"
+    remove_index :decidim_consultations_endorsements, name: 'index_question_votes_author_unique'
 
     add_index :decidim_consultations_endorsements,
-              %w(decidim_consultation_question_id decidim_author_id),
-              name: "index_question_votes_author_unique",
+              %w[decidim_consultation_question_id decidim_author_id],
+              name: 'index_question_votes_author_unique',
               unique: true
   end
 end

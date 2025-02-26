@@ -76,7 +76,10 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
   def census_service_verification
     return if missing_attributes?
 
-    errors.add(:base, I18n.t("decidim.census_authorization_handler.invalid_census_service_verification")) unless citizen_found?
+    return if citizen_found?
+
+    errors.add(:base,
+               I18n.t("decidim.census_authorization_handler.invalid_census_service_verification"))
   end
 
   def missing_attributes?

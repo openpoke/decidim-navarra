@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_initiatives (originally 20220518053612)
 
 class AddCommentsEnabledToInitiativeTypes < ActiveRecord::Migration[6.1]
