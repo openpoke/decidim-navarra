@@ -841,8 +841,6 @@ DEPENDENCIES
   rubocop-faker
   sidekiq (~> 5.2)
   simplecov (~> 0.22.0)
-  spring
-  spring-watcher-listen
   wicked_pdf (~> 2.1)
 
 RUBY VERSION
