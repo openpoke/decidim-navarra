@@ -16,7 +16,7 @@ end
          id="offCanvas" data-off-canvas>
       <!-- Close button -->
       <button class="close-button"
-              aria-label="<%= t("layouts.decidim.header.close_menu") %>" type="button"
+              <%# aria-label="<%= t("layouts.decidim.header.close_menu") %>" type="button" %>
               data-close>
         <span aria-hidden="true">&times;</span>
       </button>
@@ -34,20 +34,20 @@ end
         <!-- Topbar -->
         <div class="title-bar">
           <%= link_to t("skip_button", scope: "decidim.accessibility"), url_for(anchor: "content"), class: "skip" %>
-          <% if current_organization.official_img_header? %>
-            <%= link_to  current_organization.official_url, class: "logo-cityhall" do %>
-              <%= image_tag current_organization.attached_uploader(:official_img_header).path, alt: current_organization.name %>
-            <% end %>
-          <% end %>
+         <%# <% if current_organization.official_img_header? %>
+          <%#  <%= link_to  current_organization.official_url, class: "logo-cityhall" do %>
+           <%#   <%= image_tag current_organization.attached_uploader(:official_img_header).path, alt: current_organization.name %>
+          <%#  <% end %>
+         <%# <% end %>
           <div class="row column topbar">
             <div class="logo-wrapper">
               <%= render partial: "layouts/decidim/logo", locals: { organization: current_organization } %>
             </div>
-            <%= render partial: "layouts/decidim/language_chooser" %>
+            <%# <%= render partial: "layouts/decidim/language_chooser" %>
             <div class="hide-for-medium topbar__menu">
-              <button type="button" data-toggle="offCanvas" aria-label="<%= t("layouts.decidim.header.navigation") %>">
-                <%= icon "menu", aria_label: t("layouts.decidim.header.navigation"), role: "img" %>
-              </button>
+              <%# <button type="button" data-toggle="offCanvas" aria-label="<%= t("layouts.decidim.header.navigation") %>">
+               <%# <%= icon "menu", aria_label: t("layouts.decidim.header.navigation"), role: "img" %>
+              </button> %>
             </div>
             <% if current_user %>
               <nav class="topbar__dropmenu topbar__user__logged">
@@ -80,9 +80,9 @@ end
               <div class="topbar__user show-for-medium" data-set="nav-login-holder">
                 <div class="topbar__user__login js-append">
                   <% if current_organization.sign_up_enabled? %>
-                    <%= link_to t("layouts.decidim.header.sign_up"), decidim.new_user_registration_path, class: "sign-up-link" %>
+                    <%# <%= link_to t("layouts.decidim.header.sign_up"), decidim.new_user_registration_path, class: "sign-up-link" %> %>
                   <% end %>
-                  <%= link_to t("layouts.decidim.header.sign_in"), decidim.new_user_session_path, class: "sign-in-link" %>
+                  <%# <%= link_to t("layouts.decidim.header.sign_in"), decidim.new_user_session_path, class: "sign-in-link" %> %>
                 </div>
               </div>
             <% end %>
