@@ -1,0 +1,15 @@
+example_id                                       | status | run_time        |
+------------------------------------------------ | ------ | --------------- |
+./spec/system/awesome_tests_spec.rb[1:1:1:1]     | passed | 0.59894 seconds |
+./spec/system/awesome_tests_spec.rb[1:1:1:2]     | passed | 1.94 seconds    |
+./spec/system/awesome_tests_spec.rb[1:2:1:1]     | passed | 0.60052 seconds |
+./spec/system/awesome_tests_spec.rb[1:2:1:2]     | passed | 0.58733 seconds |
+./spec/system/awesome_tests_spec.rb[1:3:1:1:1]   | passed | 0.83172 seconds |
+./spec/system/awesome_tests_spec.rb[1:3:1:1:2]   | passed | 0.91399 seconds |
+./spec/system/awesome_tests_spec.rb[1:3:2:1:1]   | passed | 0.89232 seconds |
+./spec/system/awesome_tests_spec.rb[1:3:2:1:2]   | passed | 0.78757 seconds |
+./spec/system/awesome_tests_spec.rb[1:3:3:1:1:1] | passed | 0.89689 seconds |
+./spec/system/awesome_tests_spec.rb[1:3:3:1:1:2] | passed | 0.8687 seconds  |
+./spec/system/awesome_tests_spec.rb[1:3:3:2:1:1] | passed | 1.13 seconds    |
+./spec/system/awesome_tests_spec.rb[1:3:3:2:1:2] | passed | 1.05 seconds    |
+./spec/system/homepage_spec.rb[1:1]              | passed | 0.66019 seconds |

@@ -21,9 +21,9 @@
               <% end %>
             <% end %>
 
-            <% organization_pages.where(show_in_footer: true).each do |page| %>
-              <li class="navarra-footer-menu-element"><%= link_to translated_attribute(page.title), decidim.page_path(page) %></li>
-            <% end %>
+            <%# <% organization_pages.where(show_in_footer: true).each do |page| %>
+              <%# <li class="navarra-footer-menu-element"><%= link_to translated_attribute(page.title), decidim.page_path(page) %></li> %>
+            <%#<% end %>
           <% end %>
           <% if footer_contact.present? %>
             <li class="navarra-footer-menu-element"><a href="<%= footer_contact %>"><%= t('footer_menu.contact') %></a>
