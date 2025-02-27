@@ -83,7 +83,7 @@ production:
   compile: false
 
   # Use content hash for naming assets. Cannot be overridden by for production.
-  useContentHash: true
+  useContentHash: false
 
   # Cache manifest.json for performance
   cache_manifest: true
