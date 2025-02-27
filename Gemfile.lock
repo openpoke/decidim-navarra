@@ -768,7 +768,7 @@ GEM
     spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
       spring (>= 4)
-    stringio (3.1.5)
+    stringio (3.1.2)
     strscan (3.1.0)
     temple (0.10.3)
     terminal-table (4.0.0)
@@ -832,6 +832,7 @@ DEPENDENCIES
   decidim-dev (= 0.29.2)
   decidim-initiatives (= 0.29.2)
   decidim-templates (= 0.29.2)
+  deface (>= 1.9)
   faker (~> 3.2)
   faraday
   letter_opener_web (~> 1.3)

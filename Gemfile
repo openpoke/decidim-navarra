@@ -17,17 +17,16 @@ gem "decidim-decidim_awesome", github: "decidim-ice/decidim-module-decidim_aweso
 gem "bootsnap", "~> 1.4"
 
 # gem "foundation_rails_helper", git: "https://github.com/sgruhier/foundation_rails_helper.git"
-gem "puma", ">= 5.3.1"
-
-gem "faker", "~> 3.2"
-
+gem "deface", ">= 1.9"
 gem "faraday"
 gem "nokogiri", "~> 1.12"
+gem "puma", ">= 5.3.1"
 gem "sidekiq", "~> 5.2"
 gem "wicked_pdf", "~> 2.1"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
+  gem "faker", "~> 3.2"
 
   gem "simplecov", "~> 0.22.0"
 
