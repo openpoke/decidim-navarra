@@ -4,7 +4,6 @@
   "dependencies": {
     "@decidim/browserslist-config": "^0.29.2",
     "@decidim/core": "^0.29.2",
-    "@decidim/elections": "file:packages/elections",
     "@decidim/webpacker": "^0.29.2",
     "@eslint/config-array": "^0.19.2",
     "@eslint/object-schema": "^2.1.6",
