@@ -31,6 +31,11 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        env:
+          RAILS_ENV: test
+          DATABASE_USERNAME: postgres
+          DATABASE_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
 
     steps:
       - uses: actions/checkout@v4
@@ -68,6 +73,10 @@ jobs:
 
       - name: Run RSpec
         run: SIMPLECOV=1 CODECOV=1 bundle exec rspec
+        env:
+          RAILS_ENV: test
+          DATABASE_USERNAME: postgres
+          DATABASE_PASSWORD: postgres
 
       - name: Lint Ruby files
         run: bundle exec rubocop -P
