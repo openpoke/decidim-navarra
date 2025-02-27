@@ -34,7 +34,7 @@ $white: #fff;
 .main-bar__links-desktop {
   @media (min-width: 768px){
     [data-target*=dropdown] {
-      @apply block min-w-16;;
+      @apply block min-w-16;
       div {
         @apply block text-secondary text-sm text-center;
         svg {
@@ -57,6 +57,8 @@ $white: #fff;
     }
   }
 }
+
+// Personalization for topbar____logo_gobierno
 
 // Personalization for main footer with logos 
 .main-footer-top-first {
