@@ -30,7 +30,7 @@ $white: #fff;
 // $color-addition: #e6ffed;
 // $color-removal: #ffeef0;
 
-// Personalization for add language chooser to header
+// Personalization for language chooser on header
 .main-bar__links-desktop {
   @media (min-width: 768px){
     [data-target*=dropdown] {
@@ -56,4 +56,33 @@ $white: #fff;
       }
     }
   }
-} 
+}
+
+// Personalization for main footer with logos 
+.main-footer-top-first {
+  @apply w-full bg-white;
+
+  .logos-navarra-main-footer-top-first {
+    @apply flex flex-row justify-center items-center gap-2;
+
+    .logo-navarra-footer-detail {
+      @apply w-1 h-12 inline-block;
+
+      .logo-navarra-footer-detail-red {
+        @apply h-[70%] bg-background-6;
+      }
+
+      .logo-navarra-footer-detail-blue {
+        @apply h-[30%] bg-background-7
+      }
+    }
+
+    .logo-gobierno-navarra-footer {
+      @apply max-w-full max-h-14;
+    }
+  }
+
+  .logo-navarra-footer-container {
+    @apply text-center;
+  }
+}

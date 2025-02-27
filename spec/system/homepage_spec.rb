@@ -14,4 +14,9 @@ describe "Homepage", perform_enqueued: true do
     visit decidim.root_path
     expect(page).to have_content("Welcome")
   end
+
+  it "renders the language chooser on header" do
+    visit decidim.root_path
+    expect(page).to have_css(".main-header__language-container")
+  end
 end

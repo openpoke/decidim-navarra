@@ -1,15 +1,18 @@
 example_id                                       | status | run_time        |
 ------------------------------------------------ | ------ | --------------- |
-./spec/system/awesome_tests_spec.rb[1:1:1:1]     | passed | 0.68255 seconds |
-./spec/system/awesome_tests_spec.rb[1:1:1:2]     | passed | 0.64414 seconds |
-./spec/system/awesome_tests_spec.rb[1:2:1:1]     | passed | 0.69263 seconds |
-./spec/system/awesome_tests_spec.rb[1:2:1:2]     | passed | 0.78085 seconds |
-./spec/system/awesome_tests_spec.rb[1:3:1:1:1]   | passed | 1.03 seconds    |
-./spec/system/awesome_tests_spec.rb[1:3:1:1:2]   | passed | 0.89286 seconds |
-./spec/system/awesome_tests_spec.rb[1:3:2:1:1]   | passed | 0.92972 seconds |
-./spec/system/awesome_tests_spec.rb[1:3:2:1:2]   | passed | 0.92955 seconds |
+./spec/lib/overrides_spec.rb[1:1]                | passed | 0.002 seconds   |
+./spec/lib/overrides_spec.rb[1:2]                | passed | 0.00534 seconds |
+./spec/system/awesome_tests_spec.rb[1:1:1:1]     | passed | 0.71163 seconds |
+./spec/system/awesome_tests_spec.rb[1:1:1:2]     | passed | 0.75909 seconds |
+./spec/system/awesome_tests_spec.rb[1:2:1:1]     | passed | 0.81831 seconds |
+./spec/system/awesome_tests_spec.rb[1:2:1:2]     | passed | 0.89085 seconds |
+./spec/system/awesome_tests_spec.rb[1:3:1:1:1]   | passed | 1 second        |
+./spec/system/awesome_tests_spec.rb[1:3:1:1:2]   | passed | 1.11 seconds    |
+./spec/system/awesome_tests_spec.rb[1:3:2:1:1]   | passed | 1.02 seconds    |
+./spec/system/awesome_tests_spec.rb[1:3:2:1:2]   | passed | 1.15 seconds    |
 ./spec/system/awesome_tests_spec.rb[1:3:3:1:1:1] | passed | 1.08 seconds    |
-./spec/system/awesome_tests_spec.rb[1:3:3:1:1:2] | passed | 0.94717 seconds |
-./spec/system/awesome_tests_spec.rb[1:3:3:2:1:1] | passed | 1.28 seconds    |
-./spec/system/awesome_tests_spec.rb[1:3:3:2:1:2] | passed | 1.42 seconds    |
-./spec/system/homepage_spec.rb[1:1]              | passed | 2.11 seconds    |
+./spec/system/awesome_tests_spec.rb[1:3:3:1:1:2] | passed | 1.02 seconds    |
+./spec/system/awesome_tests_spec.rb[1:3:3:2:1:1] | passed | 1.82 seconds    |
+./spec/system/awesome_tests_spec.rb[1:3:3:2:1:2] | passed | 1.63 seconds    |
+./spec/system/homepage_spec.rb[1:1]              | passed | 3.68 seconds    |
+./spec/system/homepage_spec.rb[1:2]              | passed | 0.76595 seconds |
