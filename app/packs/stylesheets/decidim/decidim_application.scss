@@ -59,13 +59,24 @@ $white: #fff;
 }
 
 // Personalization for topbar____logo_gobierno
+.logo-wrapper-open-government-right {
+  @apply flex flex-row gap-2;
+
+  .logo-wrapper-open-government-links {
+    @apply text-primary;
+  }
+
+  .logo-link-2 {
+    @apply w-full whitespace-nowrap;
+  }
+}
 
 // Personalization for main footer with logos 
 .main-footer-top-first {
   @apply w-full bg-white;
 
   .logos-navarra-main-footer-top-first {
-    @apply flex flex-row justify-center items-center gap-2;
+    @apply flex flex-row justify-center items-center gap-1;
 
     .logo-navarra-footer-detail {
       @apply w-1 h-12 inline-block;
