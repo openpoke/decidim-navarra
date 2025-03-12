@@ -23,8 +23,6 @@ Decidim.configure do |config|
 
   config.base_uploads_path = "#{ENV.fetch("BASE_UPLOADS_PATH")}/" if ENV["BASE_UPLOADS_PATH"].present?
 
-  config.social_share_services = Rails.application.secrets.decidim[:social_share_services]
-
   config.password_similarity_length = Rails.application.secrets.decidim[:password_similarity_length] if Rails.application.secrets.decidim[:password_similarity_length].present?
 
   # Restrict access to the system part with an authorized ip list.
