@@ -6,7 +6,7 @@ ruby RUBY_VERSION
 DECIDIM_VERSION = "0.29.2"
 
 gem "decidim", DECIDIM_VERSION
-gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals"
+gem "decidim-anonymous_proposals", github: "openpoke/decidim-module-anonymous_proposals", branch: "upgrade-029"
 gem "decidim-conferences", DECIDIM_VERSION
 gem "decidim-initiatives", DECIDIM_VERSION
 gem "decidim-templates", DECIDIM_VERSION
