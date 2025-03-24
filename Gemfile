@@ -19,7 +19,6 @@ gem "deface", ">= 1.9"
 gem "faraday"
 gem "health_check"
 gem "puma", ">= 5.3.1"
-gem "sidekiq"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
@@ -33,4 +32,9 @@ end
 group :development do
   gem "letter_opener_web"
   gem "rubocop-faker"
+end
+
+group :production do
+  gem "sidekiq"
+  gem "sidekiq-cron"
 end
