@@ -1,26 +1,56 @@
 version: '3'
 services:
   app:
-    image: decidim/decidim:0.23.1
+    build: .
     volumes:
-      - .:/app
-      - bundle:/usr/local/bundle
-      - node_modules:/app/node_modules
+      - /var/www/decidim/shared/storage:/app/storage
+    restart: ${RESTART_POLICY:-always}
+    env_file:
+      - .env
     environment:
-      - PORT=3000
-      - DATABASE_HOST=pg
-      - DATABASE_USERNAME=postgres
-      - RAILS_ENV=development
+      - RUN_RAILS=true
+      - RUN_SIDEKIQ=true
+      - DATABASE_URL
+      - SECRET_KEY_BASE
+      - MAILER_DELIVERY_METHOD=${MAILER_DELIVERY_METHOD:-smtp}
+      - EMAIL_WEBSERVICE_ADDRESS
+      - EMAIL_WEBSERVICE_USERNAME_TOKEN_USER
+      - EMAIL_WEBSERVICE_USERNAME_TOKEN_PASSWORD
+      - CENSUS_WEBSERVICE_ADDRESS
+      - CENSUS_WEBSERVICE_CODE
+      - CENSUS_WEBSERVICE_PURPOSE
+      - CENSUS_WEBSERVICE_OFFICIAL_DOCUMENT_NUMBER
+      - CENSUS_WEBSERVICE_OFFICIAL_NAME
+      - CENSUS_WEBSERVICE_EXPEDIENT_ID
+      - CENSUS_WEBSERVICE_PROCEDURE_CODE
+      - CENSUS_WEBSERVICE_PROCEDURE_NAME
+      - CENSUS_WEBSERVICE_PROCESSING_UNIT
+      - DECIDIM_FORCE_SSL=${DECIDIM_FORCE_SSL:-false}
+      - QUEUE_ADAPTER=${QUEUE_ADAPTER:-sidekiq}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+      - WEB_CONCURRENCY=${WEB_CONCURRENCY:-2}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - DECIDIM_ENABLE_HTML_HEADER_SNIPPETS
+      - DECIDIM_ADMIN_PASSWORD_EXPIRATION_DAYS=${DECIDIM_ADMIN_PASSWORD_EXPIRATION_DAYS:-360}
+      - CHANGE_ACTIVE_STEP=${CHANGE_ACTIVE_STEP:-enabled}
+      - SEND_REMINDERS=${SEND_REMINDERS:-enabled}
+      - WEEKLY_NOTIFICATIONS_DIGEST=${WEEKLY_NOTIFICATIONS_DIGEST:-enabled}
+      - DAILY_NOTIFICATIONS_DIGEST=${DAILY_NOTIFICATIONS_DIGEST:-enabled}
+      - HEALTHCHECK_EXCLUDE_CHECKS=${HEALTHCHECK_EXCLUDE_CHECKS:-emailconf}
+      - SMTP_STARTTLS_AUTO=${SMTP_STARTTLS_AUTO:-true}
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - SMTP_ADDRESS
+      - SMTP_DOMAIN
+      - SMTP_PORT
+      - DECIDIM_MAILER_SENDER
+      - MAPS_API_KEY
+      - MAPS_PROVIDER=${MAPS_PROVIDER:-here}
+      - RACK_ATTACK_SECRET
+      - OMNIAUTH_FACEBOOK_APP_ID
+      - OMNIAUTH_FACEBOOK_APP_SECRET
+      - OMNIAUTH_GOOGLE_CLIENT_ID
+      - OMNIAUTH_GOOGLE_CLIENT_SECRET
     ports:
       - 3000:3000
-    links:
-      - pg
-    command: bundle exec puma
-  pg:
-    image: postgres
-    volumes:
-      - pg-data:/var/lib/postgresql/data
 volumes:
-  node_modules: {}
-  bundle: {}
-  pg-data: {}
