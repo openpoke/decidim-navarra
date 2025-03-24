@@ -2,7 +2,7 @@
 
 require "sidekiq/web"
 
-redis_database = { url: ENV.fetch("REDIS_URL") }
+redis_database = { url: ENV.fetch("REDIS_URL", nil) }
 
 Sidekiq.configure_server do |config|
   config.redis = redis_database
