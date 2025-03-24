@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 ruby RUBY_VERSION
-DECIDIM_VERSION = "0.29.2"
+DECIDIM_VERSION = { github: "decidim/decidim", branch: "release/0.29-stable" }
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-anonymous_proposals", github: "openpoke/decidim-module-anonymous_proposals", branch: "upgrade-029"
