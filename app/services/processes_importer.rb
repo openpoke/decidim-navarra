@@ -14,26 +14,13 @@ class ProcessesImporter
   end
 
   def json_data
-    if @transformed_data.blank?
-      @file.each do |row|
-        parser = ProcessesParser.new(row, @organization, files_base_url: @files_base_url)
-        @transformed_data << parser.transformed_data
-        @metadata << parser.metadata
-      end
+    return @transformed_data.to_json if @transformed_data.present?
 
-      @es_data = @transformed_data.select { |process| process[:locale] == "es" }
+    transform_data
+    filter_es_data
+    merge_translations
+    update_metadata
 
-      @transformed_data = @es_data.map do |es_process|
-        es_process.merge!(slug: check_slug(es_process[:slug]))
-        eu_process = @transformed_data.find { |p| p[:locale] == "eu" && p[:external_es_id].present? && p[:external_es_id] == es_process[:external_es_id] } || {}
-        eu_process.deep_merge(es_process)
-      end
-
-      @metadata.map! do |meta_process|
-        process = @transformed_data.find { |p| p[:original_id][meta_process[:locale]] == meta_process[:original_id] } || {}
-        meta_process.merge!(final_slug: process[:slug])
-      end
-    end
     @transformed_data.to_json
   end
 
@@ -51,7 +38,7 @@ class ProcessesImporter
 
       form = Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessImportForm.from_params(
         slug: "import",
-        title: @organization.available_locales.map { |locale| [locale, "Import"] }.to_h,
+        title: @organization.available_locales.index_with { |_locale| "Import" },
         document: uploaded_file
       ).with_context(current_organization: @organization, current_user: @admin)
 
@@ -80,6 +67,42 @@ class ProcessesImporter
     else
       @slugs[slug] = 0
       slug
+    end
+  end
+
+  private
+
+  def transform_data
+    @file.each do |row|
+      parser = ProcessesParser.new(row, @organization, files_base_url: @files_base_url)
+      @transformed_data << parser.transformed_data
+      @metadata << parser.metadata
+    end
+  end
+
+  def filter_es_data
+    @es_data = @transformed_data.select { |process| process[:locale] == "es" }
+  end
+
+  def merge_translations
+    @transformed_data = @es_data.map do |es_process|
+      es_process[:slug] = check_slug(es_process[:slug])
+
+      eu_process = @transformed_data.find do |p|
+        p[:locale] == "eu" && p[:external_es_id].present? && p[:external_es_id] == es_process[:external_es_id]
+      end || {}
+
+      eu_process.deep_merge(es_process)
+    end
+  end
+
+  def update_metadata
+    @metadata.map! do |meta_process|
+      process = @transformed_data.find do |p|
+        p[:original_id][meta_process[:locale]] == meta_process[:original_id]
+      end || {}
+
+      meta_process.merge!(final_slug: process[:slug])
     end
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_consultations (originally 20180109092205)
 
 class CreateDecidimConsultations < ActiveRecord::Migration[5.1]
@@ -8,11 +9,11 @@ class CreateDecidimConsultations < ActiveRecord::Migration[5.1]
       t.integer :decidim_organization_id,
                 foreign_key: true,
                 index: {
-                  name: "index_decidim_consultations_on_decidim_organization_id"
+                  name: 'index_decidim_consultations_on_decidim_organization_id'
                 }
 
-      t.index [:decidim_organization_id, :slug],
-              name: "index_unique_consultation_slug_and_organization",
+      t.index %i[decidim_organization_id slug],
+              name: 'index_unique_consultation_slug_and_organization',
               unique: true
 
       t.jsonb :title, null: false
@@ -20,9 +21,9 @@ class CreateDecidimConsultations < ActiveRecord::Migration[5.1]
       t.jsonb :description, null: false
 
       # Text search indexes for consultations.
-      t.index :title, name: "decidim_consultations_title_search"
-      t.index :subtitle, name: "decidim_consultations_subtitle_search"
-      t.index :description, name: "decidim_consultations_description_search"
+      t.index :title, name: 'decidim_consultations_title_search'
+      t.index :subtitle, name: 'decidim_consultations_subtitle_search'
+      t.index :description, name: 'decidim_consultations_description_search'
 
       t.string :banner_image
       t.string :introductory_video_url

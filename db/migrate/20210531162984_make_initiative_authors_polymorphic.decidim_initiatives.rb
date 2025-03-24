@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_initiatives (originally 20181016095744)
 
 class MakeInitiativeAuthorsPolymorphic < ActiveRecord::Migration[5.2]
@@ -21,8 +22,8 @@ class MakeInitiativeAuthorsPolymorphic < ActiveRecord::Migration[5.2]
     end
 
     add_index :decidim_initiatives,
-              [:decidim_author_id, :decidim_author_type],
-              name: "index_decidim_initiatives_on_decidim_author"
+              %i[decidim_author_id decidim_author_type],
+              name: 'index_decidim_initiatives_on_decidim_author'
 
     change_column_null :decidim_initiatives, :decidim_author_id, false
     change_column_null :decidim_initiatives, :decidim_author_type, false

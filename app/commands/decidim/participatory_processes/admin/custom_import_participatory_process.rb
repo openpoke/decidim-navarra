@@ -9,12 +9,13 @@ module Decidim
         private
 
         def import_participatory_process
-          importer = Decidim::ParticipatoryProcesses::CustomParticipatoryProcessImporter.new(form.current_organization, form.current_user)
+          importer = Decidim::ParticipatoryProcesses::CustomParticipatoryProcessImporter.new(form.current_organization,
+                                                                                             form.current_user)
 
           participatory_processes.each do |original_process|
             title = multiple_processes? ? original_process.fetch("title", form.title) : form.title
             slug = multiple_processes? ? original_process.fetch("slug", form.slug) : form.slug
-            @imported_process = importer.import(original_process, form.current_user, title: title, slug: slug)
+            @imported_process = importer.import(original_process, form.current_user, title:, slug:)
             importer.import_participatory_process_steps(original_process["participatory_process_steps"]) if form.import_steps?
             importer.import_categories(original_process["participatory_process_categories"]) if form.import_categories?
             importer.import_folders_and_attachments(original_process["attachments"]) if form.import_attachments?

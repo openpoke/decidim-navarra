@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_participatory_processes (originally 20211125202008)
 
 class CreateDecidimParticipatoryProcessTypes < ActiveRecord::Migration[6.0]
@@ -8,7 +9,7 @@ class CreateDecidimParticipatoryProcessTypes < ActiveRecord::Migration[6.0]
       t.references(
         :decidim_organization,
         foreign_key: true,
-        index: { name: "index_decidim_process_types_on_decidim_organization_id" }
+        index: { name: 'index_decidim_process_types_on_decidim_organization_id' }
       )
       t.timestamps
     end
@@ -17,7 +18,7 @@ class CreateDecidimParticipatoryProcessTypes < ActiveRecord::Migration[6.0]
       :decidim_participatory_processes,
       :decidim_participatory_process_type,
       foreign_key: true,
-      index: { name: "index_decidim_processes_on_decidim_process_type_id" }
+      index: { name: 'index_decidim_processes_on_decidim_process_type_id' }
     )
   end
 end

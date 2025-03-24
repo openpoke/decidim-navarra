@@ -1,0 +1,15 @@
+<!-- insert_before ".main-footer__top" -->
+
+<div class="main-footer-top-first">
+  <div class="row py-4">
+    <div class="column logo-navarra-footer-container">
+      <a href="https://navarra.es/<%= I18n.locale %>" class="logos-navarra-main-footer-top-first">
+        <div class="logo-navarra-footer-detail">
+          <div class="logo-navarra-footer-detail-red"></div>
+          <div class="logo-navarra-footer-detail-blue"></div>
+        </div>
+        <%= image_pack_tag("media/images/logo-navarra-footer.png", class: 'logo-gobierno-navarra-footer', alt: t("layouts.decidim.footer.cc_by_license")) %>
+      </a>
+    </div>
+  </div>
+</div>

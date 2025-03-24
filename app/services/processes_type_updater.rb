@@ -4,8 +4,10 @@ require "csv"
 
 class ProcessesTypeUpdater
   AVAILABLE_PROCESSES = {
-    "Consulta pública previa" => { title: { "es" => "Consulta pública previa", "eu" => "Aurretiazko kontsulta publikoa" } },
-    "Normativa en elaboración" => { title: { "es" => "Normativa en elaboración", "eu" => "Garatzen ari diren araudia" } }
+    "Consulta pública previa" => { title: { "es" => "Consulta pública previa",
+                                            "eu" => "Aurretiazko kontsulta publikoa" } },
+    "Normativa en elaboración" => { title: { "es" => "Normativa en elaboración",
+                                             "eu" => "Garatzen ari diren araudia" } }
   }.freeze
 
   attr_accessor :file, :organization, :transformed_data, :process_types
@@ -21,7 +23,9 @@ class ProcessesTypeUpdater
     @processes_search ||= file.map do |row|
       [
         row,
-        Decidim::ParticipatoryProcess.where(organization: organization).find { |process| process.title["es"] == row["Nombre del proceso"] }
+        Decidim::ParticipatoryProcess.where(organization:).find do |process|
+          process.title["es"] == row["Nombre del proceso"]
+        end
       ]
     end
   end
@@ -33,15 +37,16 @@ class ProcessesTypeUpdater
   def detect_or_create_process_types
     AVAILABLE_PROCESSES.transform_values do |attributes|
       items = attributes[:title].map do |locale, translation|
-        Decidim::ParticipatoryProcessType.where(organization: organization).where("title @> ?", { locale => translation }.to_json).to_a
+        Decidim::ParticipatoryProcessType.where(organization:).where("title @> ?",
+                                                                     { locale => translation }.to_json).to_a
       end.flatten.uniq
 
       item =
         items.find { |type| type.title.keys.count >= 2 } ||
         items.find { |type| type.title["es"].present? } ||
         items.first ||
-        Decidim::ParticipatoryProcessType.find_or_create_by(attributes.merge(organization: organization))
-      item.update_attribute(:title, attributes[:title]) if item.title != attributes[:title]
+        Decidim::ParticipatoryProcessType.find_or_create_by(attributes.merge(organization:))
+      item.update(:title, attributes[:title]) if item.title != attributes[:title]
       item
     end
   end
@@ -49,7 +54,7 @@ class ProcessesTypeUpdater
   def transform_processes
     processes_found.each do |row, process|
       process_type = process_types[row["Tipo de proceso"]]
-      process.update_attribute(:decidim_participatory_process_type_id, process_type.id)
+      process.update(:decidim_participatory_process_type_id, process_type.id)
 
       @transformed_data << process
     end

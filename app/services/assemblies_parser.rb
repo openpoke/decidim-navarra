@@ -47,20 +47,21 @@ class AssembliesParser
 
   def scope
     @scope ||= begin
-                 legislature_id = if raw_content["Scope_type_es"].present?
-                                    legislature_scope_type.scopes.find_or_create_by(
-                                      name: { "es" => raw_content["Scope_type_es"], "eu" => raw_content["Scope_type_eus"] },
-                                      organization: organization,
-                                      code: raw_content["Scope_type_es"]
-                                    ).id
-                                  end
-                 department_scope_type.scopes.find_or_create_by(
-                   name: { "es" => raw_content["scope_es"], "eu" => raw_content["scope_eus"] },
-                   parent_id: legislature_id,
-                   organization: organization,
-                   code: "#{raw_content["Scope_type_es"]}-#{raw_content["scope_es"]}"
-                 )
-               end
+      legislature_id = if raw_content["Scope_type_es"].present?
+                         legislature_scope_type.scopes.find_or_create_by(
+                           name: { "es" => raw_content["Scope_type_es"],
+                                   "eu" => raw_content["Scope_type_eus"] },
+                           organization:,
+                           code: raw_content["Scope_type_es"]
+                         ).id
+                       end
+      department_scope_type.scopes.find_or_create_by(
+        name: { "es" => raw_content["scope_es"], "eu" => raw_content["scope_eus"] },
+        parent_id: legislature_id,
+        organization:,
+        code: "#{raw_content["Scope_type_es"]}-#{raw_content["scope_es"]}"
+      )
+    end
   end
 
   def legislature_scope_type
@@ -96,9 +97,9 @@ class AssembliesParser
   end
 
   def localized_values(prefix)
-    LOCALE_SUFFIXES.map do |suffix, locale|
+    LOCALE_SUFFIXES.to_h do |suffix, locale|
       [locale, raw_content["#{prefix}_#{suffix}"]]
-    end.to_h
+    end
   end
 
   def area

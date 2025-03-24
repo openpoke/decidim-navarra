@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim (originally 20220524195530)
 
 class CreateDecidimShortLinks < ActiveRecord::Migration[6.1]
@@ -16,9 +17,9 @@ class CreateDecidimShortLinks < ActiveRecord::Migration[6.1]
 
     add_index(
       :decidim_short_links,
-      [:decidim_organization_id, :identifier],
+      %i[decidim_organization_id identifier],
       unique: true,
-      name: "idx_decidim_short_links_organization_id_identifier"
+      name: 'idx_decidim_short_links_organization_id_identifier'
     )
   end
 end

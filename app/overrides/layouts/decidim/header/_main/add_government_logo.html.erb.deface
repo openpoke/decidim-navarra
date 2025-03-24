@@ -1,0 +1,14 @@
+<!-- replace_contents ".main-bar__logo" -->
+
+<div class="logo-wrapper">
+  <div class="topbar____logo_gobierno">
+    <a class="topbar____logo_gobierno__navarra" href="https://navarra.es/<%= I18n.locale %>">
+      <%= image_pack_tag 'media/images/logo-navarra-es.png', class: 'logo-gobierno-navarra', alt: t('open_government') %>
+    </a>
+  </div>
+  <div class="logo-wrapper-open-government-right">
+    <a class="logo-wrapper-open-government-links" href="/link?external_url=https%3A%2F%2Fgobiernoabierto.navarra.es%2Fes%2FTransparencia" data-remote="true"><%= t("transparency") %></a>
+    <span class="logo-wrapper-open-government-transparency text-gray-5 font-semibold"><%= t("participation") %></span>
+    <a class="logo-wrapper-open-government-links logo-link-2" href="/link?external_url=https%3A%2F%2Fgobiernoabierto.navarra.es%2Fes%2Fopen-data" data-remote="true"><%= t("open_data") %></a>
+  </div>
+</div>

@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 namespace :decidim_navarra do
-
   desc "Initialize site and create and admin and a user"
   task :initialize_site, [:host] => [:environment] do |_t, args|
-    host = args[:host] || ENV["DECIDIM_HOST"] ||"localhost"
+    host = args[:host] || ENV["DECIDIM_HOST"] || "localhost"
     smtp_label = "Participación Ciudadana"
     smtp_email = "participanavarra@navarra.es"
     seeds_root = File.join(__dir__, "..", "..", "db", "seeds")
@@ -23,7 +22,7 @@ namespace :decidim_navarra do
         address: host,
         port: ENV["DECIDIM_SMTP_PORT"] || "25"
       },
-      host: host,
+      host:,
       default_locale: Decidim.default_locale,
       available_locales: Decidim.available_locales,
       reference_prefix: "PCN",
@@ -43,7 +42,7 @@ namespace :decidim_navarra do
       nickname: "admin",
       password: "decidim123456",
       password_confirmation: "decidim123456",
-      organization: organization,
+      organization:,
       confirmed_at: Time.current,
       locale: I18n.default_locale,
       admin: true,
@@ -61,15 +60,18 @@ namespace :decidim_navarra do
       password_confirmation: "decidim123456",
       confirmed_at: Time.current,
       locale: I18n.default_locale,
-      organization: organization,
+      organization:,
       tos_agreement: true,
       accepted_tos_version: organization.tos_version
     )
 
     Decidim::System::CreateDefaultContentBlocks.call(organization)
 
-    hero_content_block = Decidim::ContentBlock.find_by(organization: organization, manifest_name: :hero, scope_name: :homepage)
-    hero_content_block.images_container.background_image.attach(io: File.open(File.join(seeds_root, "homepage_image.jpg")), filename: "homepage_image.pdf")
+    hero_content_block = Decidim::ContentBlock.find_by(organization:, manifest_name: :hero,
+                                                       scope_name: :homepage)
+    hero_content_block.images_container.background_image.attach(
+      io: File.open(File.join(seeds_root, "homepage_image.jpg")), filename: "homepage_image.pdf"
+    )
     settings = {}
     welcome_text = { "es" => "Escucha. Participa. Conversa", "eu" => "Entzun, Parte hartu. Elkarrizketak eduki" }
     settings = welcome_text.inject(settings) { |acc, (k, v)| acc.update("welcome_text_#{k}" => v) }
@@ -78,7 +80,7 @@ namespace :decidim_navarra do
 
     tos_page = Decidim::StaticPage.create(
       slug: "terms-and-conditions",
-      organization: organization,
+      organization:,
       title: { "es" => "Términos y condiciones", "eu" => "Baldintzak eta baldintzak" },
       content: { "es" => "<p>Pendiente</p>", "eu" => "<p>Zain</p>" }
     )
@@ -93,14 +95,15 @@ namespace :decidim_navarra do
     ProcessesParser::PROCESS_GROUPS_ATTRIBUTES.each do |attrs|
       group = Decidim::ParticipatoryProcessGroup.find_or_initialize_by(attrs.slice(:id))
       group.title = nil
-      group.assign_attributes(attrs.except(:id, :hashtag).merge(organization: organization))
+      group.assign_attributes(attrs.except(:id, :hashtag).merge(organization:))
       group.save
-      Decidim::ContentBlock.where(scoped_resource_id: group.id, scope_name: "participatory_process_group_homepage").destroy_all
+      Decidim::ContentBlock.where(scoped_resource_id: group.id,
+                                  scope_name: "participatory_process_group_homepage").destroy_all
       %w(title participatory_processes).each do |manifest_name|
         content_block = Decidim::ContentBlock.create!(
           scoped_resource_id: group.id,
-          organization: organization,
-          manifest_name: manifest_name,
+          organization:,
+          manifest_name:,
           scope_name: "participatory_process_group_homepage",
           settings: nil,
           images: {}
@@ -117,7 +120,7 @@ namespace :decidim_navarra do
     ProcessesParser::AREAS_ATTRIBUTES.each do |attrs|
       area = Decidim::Area.find_or_initialize_by(attrs.slice(:id))
       area.name = nil
-      area.assign_attributes(attrs.except(:id).merge(organization: organization, area_type_id: nil))
+      area.assign_attributes(attrs.except(:id).merge(organization:, area_type_id: nil))
       area.save
     end
   end
@@ -143,7 +146,7 @@ namespace :decidim_navarra do
     end
 
     puts "Importing processes, please wait..."
-    importer = ProcessesImporter.new(args[:csv_path], organization, admin, files_base_url: files_base_url)
+    importer = ProcessesImporter.new(args[:csv_path], organization, admin, files_base_url:)
     importer.import_processes
     puts "Import completed."
   end
@@ -162,7 +165,7 @@ namespace :decidim_navarra do
     end
 
     # Remove assemblies types
-    Decidim::AssembliesType.where(organization: organization).destroy_all
+    Decidim::AssembliesType.where(organization:).destroy_all
 
     puts "Importing assemblies, please wait..."
     importer = AssembliesImporter.new(args[:csv_path], organization, admin)
@@ -200,13 +203,14 @@ namespace :decidim_navarra do
 
   def groups_created?(organization)
     ProcessesParser::PROCESS_GROUPS_ATTRIBUTES.all? do |attrs|
-      Decidim::ParticipatoryProcessGroup.where(attrs.slice(:id, :title, :description).merge(organization: organization)).exists?
+      Decidim::ParticipatoryProcessGroup.where(attrs.slice(:id, :title,
+                                                           :description).merge(organization:)).exists?
     end
   end
 
   def areas_created?(organization)
     ProcessesParser::AREAS_ATTRIBUTES.all? do |attrs|
-      Decidim::Area.where(attrs.merge(organization: organization)).exists?
+      Decidim::Area.where(attrs.merge(organization:)).exists?
     end
   end
 end

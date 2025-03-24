@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_conferences (originally 20181004144411)
 
 class AddConferencesPartner < ActiveRecord::Migration[5.2]
@@ -14,6 +15,6 @@ class AddConferencesPartner < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    add_index :decidim_conferences_partners, [:weight, :partner_type]
+    add_index :decidim_conferences_partners, %i[weight partner_type]
   end
 end

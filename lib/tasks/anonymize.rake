@@ -3,10 +3,9 @@
 require "bcrypt"
 
 namespace :anonymize do
-
   def with_progress(collection, name:)
     total = collection.count
-    progressbar = create_progress_bar(total: total)
+    progressbar = create_progress_bar(total:)
 
     puts "Anonymizing #{total} #{name}...\n"
     skip_logs do
@@ -19,9 +18,9 @@ namespace :anonymize do
 
   def create_progress_bar(total:)
     ProgressBar.create(
-      progress_mark:  " ",
+      progress_mark: " ",
       remainder_mark: "\u{FF65}",
-      total: total,
+      total:,
       format: "%a %e %b\u{15E7}%i %p%% %t"
     )
   end
@@ -34,7 +33,7 @@ namespace :anonymize do
   end
 
   def default_organization
-    ::Decidim::Organization.first
+    Decidim::Organization.first
   end
 
   def default_password
@@ -42,7 +41,7 @@ namespace :anonymize do
   end
 
   def default_encrypted_password
-    ::BCrypt::Password.create(default_password, cost: 1).to_s
+    BCrypt::Password.create(default_password, cost: 1).to_s
   end
 
   def default_user_attributes
@@ -64,11 +63,12 @@ namespace :anonymize do
   end
 
   desc "Anonymizes a production dump."
-  task all: %i(users user_groups create_default_users)
+  task all: [:users, :user_groups, :create_default_users]
 
   task users: [:check, :environment] do
-    Decidim::User.where.not("email ~* ?", "@(navarra\.es)").where.not("email ~* ?", "@(populate\.tools)").find_each do |user|
-      user.update_columns(
+    Decidim::User.where.not("email ~* ?", "@(navarra.es)").where.not("email ~* ?",
+                                                                     "@(populate.tools)").find_each do |user|
+      user.update(
         email: "user-#{user.id}@example.com",
         name: "Anonymized User #{user.id}",
         encrypted_password: default_encrypted_password,
@@ -82,33 +82,33 @@ namespace :anonymize do
         unconfirmed_email: nil
       )
 
-      Decidim::Authorization.where(user: user).find_each do |authorization|
-        authorization.update_columns(unique_id: authorization.id)
+      Decidim::Authorization.where(user:).find_each do |authorization|
+        authorization.update(unique_id: authorization.id)
       end
     end
   end
 
   task user_groups: [:check, :environment] do
     Decidim::UserGroup.find_each do |user_group|
-      user_group.update_columns(
+      user_group.update(
         name: "User Group #{user_group.id}"
       )
     end
   end
 
   task create_default_users: [:check, :environment] do
-    ::Decidim::User.create!(default_user_attributes.merge(
-      email: "user@decidim.dev",
-      name: "Regular User",
-      nickname: "regular-user",
-      admin: false
-    ))
+    Decidim::User.create!(default_user_attributes.merge(
+                            email: "user@decidim.dev",
+                            name: "Regular User",
+                            nickname: "regular-user",
+                            admin: false
+                          ))
 
-    ::Decidim::User.create!(default_user_attributes.merge(
-      email: "admin@decidim.dev",
-      name: "Admin User",
-      nickname: "admin-user",
-      admin: true
-    ))
+    Decidim::User.create!(default_user_attributes.merge(
+                            email: "admin@decidim.dev",
+                            name: "Admin User",
+                            nickname: "admin-user",
+                            admin: true
+                          ))
   end
 end

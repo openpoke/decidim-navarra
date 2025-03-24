@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_proposals (originally 20240404202756)
 
 class AddValuationAssignmentsCountToDecidimProposalsProposals < ActiveRecord::Migration[6.1]

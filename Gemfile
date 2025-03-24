@@ -3,34 +3,26 @@
 source "https://rubygems.org"
 
 ruby RUBY_VERSION
-DECIDIM_VERSION = "0.27.6"
+DECIDIM_VERSION = { github: "decidim/decidim", branch: "release/0.29-stable" }
 
 gem "decidim", DECIDIM_VERSION
+gem "decidim-anonymous_proposals", github: "openpoke/decidim-module-anonymous_proposals", branch: "upgrade-029"
 gem "decidim-conferences", DECIDIM_VERSION
-gem "decidim-consultations", DECIDIM_VERSION
 gem "decidim-initiatives", DECIDIM_VERSION
 gem "decidim-templates", DECIDIM_VERSION
-gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: "release/0.27-stable"
-
-# gem "decidim-term_customizer", git: "https://github.com/mainio/decidim-module-term_customizer.git", branch: "release/0.27-stable"
-gem "decidim-decidim_awesome", "~> 0.8"
 
 gem "bootsnap", "~> 1.4"
+gem "decidim-decidim_awesome", github: "decidim-ice/decidim-module-decidim_awesome", branch: "main"
+gem "decidim-term_customizer", github: "CodiTramuntana/decidim-module-term_customizer", branch: "upgrade/decidim_0.29"
 
-gem "foundation_rails_helper", git: "https://github.com/sgruhier/foundation_rails_helper.git"
-gem "puma", ">= 5.3.1"
-
-gem "faker", "~> 2.14"
-
+gem "deface", ">= 1.9"
 gem "faraday"
-gem "wicked_pdf", "~> 2.1"
-gem "sidekiq", "~> 5.2"
-gem "nokogiri", "~> 1.12"
+gem "health_check"
+gem "puma", ">= 5.3.1"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
-
-  gem "simplecov", "~> 0.21.0"
+  gem "faker", "~> 3.2"
 
   gem "decidim-dev", DECIDIM_VERSION
 
@@ -38,9 +30,11 @@ group :development, :test do
 end
 
 group :development do
-  gem "letter_opener_web", "~> 1.3"
-  gem "listen", "~> 3.1"
+  gem "letter_opener_web"
   gem "rubocop-faker"
-  gem "spring"
-  gem "spring-watcher-listen"
+end
+
+group :production do
+  gem "sidekiq"
+  gem "sidekiq-cron"
 end

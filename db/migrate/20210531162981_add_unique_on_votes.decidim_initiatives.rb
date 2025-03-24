@@ -8,7 +8,7 @@ class AddUniqueOnVotes < ActiveRecord::Migration[5.1]
   end
 
   def get_duplicates(*columns)
-    InitiativesVote.select("#{columns.join(",")}, COUNT(*)").group(columns).having("COUNT(*) > 1")
+    InitiativesVote.select("#{columns.join(',')}, COUNT(*)").group(columns).having('COUNT(*) > 1')
   end
 
   def row_count(issue)
@@ -28,7 +28,7 @@ class AddUniqueOnVotes < ActiveRecord::Migration[5.1]
   end
 
   def up
-    columns = [:decidim_initiative_id, :decidim_author_id, :decidim_user_group_id]
+    columns = %i[decidim_initiative_id decidim_author_id decidim_user_group_id]
 
     get_duplicates(columns).each do |issue|
       find_next(issue)&.destroy while row_count(issue) > 1
@@ -37,6 +37,6 @@ class AddUniqueOnVotes < ActiveRecord::Migration[5.1]
     add_index :decidim_initiatives_votes,
               columns,
               unique: true,
-              name: "decidim_initiatives_voutes_author_uniqueness_index"
+              name: 'decidim_initiatives_voutes_author_uniqueness_index'
   end
 end

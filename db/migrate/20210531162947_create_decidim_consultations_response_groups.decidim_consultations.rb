@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_consultations (originally 20190708114204)
 
 class CreateDecidimConsultationsResponseGroups < ActiveRecord::Migration[5.2]
@@ -7,7 +8,7 @@ class CreateDecidimConsultationsResponseGroups < ActiveRecord::Migration[5.2]
       t.jsonb :title
       t.references :decidim_consultations_questions,
                    foreign_key: true,
-                   index: { name: "index_consultations_response_groups_on_consultation_questions" }
+                   index: { name: 'index_consultations_response_groups_on_consultation_questions' }
       t.integer :responses_count,
                 null: false,
                 default: 0
