@@ -17,10 +17,9 @@ gem "decidim-term_customizer", github: "CodiTramuntana/decidim-module-term_custo
 
 gem "deface", ">= 1.9"
 gem "faraday"
-gem "foundation_rails_helper", git: "https://github.com/sgruhier/foundation_rails_helper.git"
 gem "health_check"
 gem "puma", ">= 5.3.1"
-gem "sidekiq", "~> 5.2"
+gem "sidekiq"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
@@ -33,6 +32,5 @@ end
 
 group :development do
   gem "letter_opener_web"
-  gem "listen"
   gem "rubocop-faker"
 end
