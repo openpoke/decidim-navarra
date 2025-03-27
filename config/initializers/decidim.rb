@@ -40,7 +40,7 @@ Decidim.configure do |config|
   config.maps = {
     provider: :here,
     api_key: Rails.application.secrets.maps[:static_api_key],
-    static: { url: "https://image.maps.ls.hereapi.com/mia/1.6/mapview" }
+    static: { url: "https://image.maps.hereapi.com/mia/v3/base/mc/overlay" }
   }
   #
   # == OpenStreetMap (OSM) services ==
