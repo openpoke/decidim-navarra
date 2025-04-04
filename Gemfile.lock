@@ -8,6 +8,17 @@ GIT
       deface (~> 1.5)
 
 GIT
+  remote: https://github.com/decidim-ice/decidim-module-decidim_awesome.git
+  revision: aedb4caa3fd6bba022e4dd41813b46db523c13af
+  branch: 0.27-backports
+  specs:
+    decidim-decidim_awesome (0.10.4)
+      decidim-admin (>= 0.26.0, < 0.28)
+      decidim-core (>= 0.26.0, < 0.28)
+      deface (>= 1.5)
+      sassc (~> 2.3)
+
+GIT
   remote: https://github.com/openpoke/decidim.git
   revision: 23ae03d796c152efb664b3a88736e7d7756bd038
   branch: 0.27-backports
@@ -369,11 +380,6 @@ GEM
     db-query-matchers (0.10.0)
       activesupport (>= 4.0, < 7)
       rspec (~> 3.0)
-    decidim-decidim_awesome (0.10.3)
-      decidim-admin (>= 0.26.0, < 0.28)
-      decidim-core (>= 0.26.0, < 0.28)
-      deface (>= 1.5)
-      sassc (~> 2.3)
     declarative-builder (0.2.0)
       trailblazer-option (~> 0.1.0)
     declarative-option (0.1.0)
@@ -884,7 +890,7 @@ DEPENDENCIES
   decidim-anonymous_proposals!
   decidim-conferences!
   decidim-consultations!
-  decidim-decidim_awesome (~> 0.8)
+  decidim-decidim_awesome!
   decidim-dev!
   decidim-initiatives!
   decidim-templates!
