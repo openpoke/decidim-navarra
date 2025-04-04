@@ -1,46 +1,47 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 ruby RUBY_VERSION
-DECIDIM_VERSION = { github: "openpoke/decidim", branch: "0.27-backports" }
+DECIDIM_VERSION = { github: 'openpoke/decidim', branch: '0.27-backports' }
 
-gem "decidim", DECIDIM_VERSION
-gem "decidim-conferences", DECIDIM_VERSION
-gem "decidim-consultations", DECIDIM_VERSION
-gem "decidim-initiatives", DECIDIM_VERSION
-gem "decidim-templates", DECIDIM_VERSION
-gem "decidim-anonymous_proposals", git: "https://github.com/PopulateTools/decidim-module-anonymous_proposals", branch: "release/0.27-stable"
+gem 'decidim', DECIDIM_VERSION
+gem 'decidim-anonymous_proposals', git: 'https://github.com/PopulateTools/decidim-module-anonymous_proposals',
+                                   branch: 'release/0.27-stable'
+gem 'decidim-conferences', DECIDIM_VERSION
+gem 'decidim-consultations', DECIDIM_VERSION
+gem 'decidim-initiatives', DECIDIM_VERSION
+gem 'decidim-templates', DECIDIM_VERSION
 
 # gem "decidim-term_customizer", git: "https://github.com/mainio/decidim-module-term_customizer.git", branch: "release/0.27-stable"
-gem "decidim-decidim_awesome", "~> 0.8"
+gem 'decidim-decidim_awesome', github: 'decidim-ice/decidim-module-decidim_awesome', branch: '0.27-backports'
 
-gem "bootsnap", "~> 1.4"
+gem 'bootsnap', '~> 1.4'
 
-gem "foundation_rails_helper", git: "https://github.com/sgruhier/foundation_rails_helper.git"
-gem "puma", ">= 5.3.1"
+gem 'foundation_rails_helper', git: 'https://github.com/sgruhier/foundation_rails_helper.git'
+gem 'puma', '>= 5.3.1'
 
-gem "faker", "~> 2.14"
+gem 'faker', '~> 2.14'
 
-gem "faraday"
-gem "wicked_pdf", "~> 2.1"
-gem "sidekiq", "~> 5.2"
-gem "nokogiri", "~> 1.12"
+gem 'faraday'
+gem 'nokogiri', '~> 1.12'
+gem 'sidekiq', '~> 5.2'
+gem 'wicked_pdf', '~> 2.1'
 
 group :development, :test do
-  gem "byebug", "~> 11.0", platform: :mri
+  gem 'byebug', '~> 11.0', platform: :mri
 
-  gem "simplecov", "~> 0.21.0"
+  gem 'simplecov', '~> 0.21.0'
 
-  gem "decidim-dev", DECIDIM_VERSION
+  gem 'decidim-dev', DECIDIM_VERSION
 
-  gem "brakeman", "~> 5.1"
+  gem 'brakeman', '~> 5.1'
 end
 
 group :development do
-  gem "letter_opener_web", "~> 1.3"
-  gem "listen", "~> 3.1"
-  gem "rubocop-faker"
-  gem "spring"
-  gem "spring-watcher-listen"
+  gem 'letter_opener_web', '~> 1.3'
+  gem 'listen', '~> 3.1'
+  gem 'rubocop-faker'
+  gem 'spring'
+  gem 'spring-watcher-listen'
 end
