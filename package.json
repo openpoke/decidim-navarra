@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "decidim-navarra",
   "private": true,
   "dependencies": {
     "@decidim/browserslist-config": "file:packages/browserslist-config",
