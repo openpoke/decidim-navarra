@@ -1,0 +1,42 @@
+---
+- name: Restart Ssh
+  service: name=ssh state=restarted enabled=yes
+  become: yes
+
+- name: Restart Cron
+  service: name=cron state=restarted enabled=yes
+  become: yes
+
+- name: Restart Monit
+  become: true
+  service: name=monit state=restarted
+
+- name: Reload Monit
+  become: true
+  service: name=monit state=reloaded
+
+- name: Reset Monit
+  become: true
+  shell: "monit quit; sleep 5; monit"
+
+- name: Reload Memcached
+  service: name=memcached state=restarted
+
+- name: Start Nginx
+  service: name=nginx state=started
+
+- name: Restart Nginx
+  service: name=nginx state=restarted
+
+- name: Reload Nginx
+  service: name=nginx state=reloaded
+
+- name: Reload Redis
+  service: name=redis-server state=restarted
+
+- name: Reload Monit
+  become: true
+  service: name=monit state=reloaded
+
+- name: Reload Postgres
+  service: name=postgresql state=restarted

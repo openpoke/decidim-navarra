@@ -1,0 +1,8 @@
+---
+# @title_es Instalar yarn
+# @title_en Install yarn
+# @input #{shell}
+- name: Install yarn
+  become: true
+  shell: npm install -g yarn
+

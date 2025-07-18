@@ -1,0 +1,78 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  become: yes
+  roles:
+    ### Handlers
+    - { role: 'handlers' }
+    ### Provision
+    - { role: 'chores/centos/epel_repository' }
+    - { role: 'chores/centos/install_base_packages' }
+    - { role: 'packages/common/yarn' }
+    - { role: 'chores/centos/set_timezone' }
+    - { role: 'user/centos' }
+    ### Services
+    - { role: 'chores/common/hostname' }
+    - { role: 'packages/centos/fullstaq-ruby', ruby_versions: ['fullstaq-ruby-2.7.4'] }
+    - { role: 'services/centos/monit', monit_services: ['sshd', 'cron', 'disk-usage'] }
+    - { role: 'services/centos/memcached' }
+    - { role: 'services/centos/nginx' }
+    # - { role: 'services/centos/postgresql_server' }
+    - { role: 'services/centos/postgresql_client' }
+    - { role: 'services/centos/redis_server', redis_user: centos }
+    ### Site
+    - { role: 'sites/decidim' }
+    - { role: 'tools/deploy' }
+  vars:
+    app_id: decidim
+    app_git_branch: staging
+    app_group: www-data
+    app_repo_url: "https://gesfuentes.admon-cfnavarra.es/git/r/presidencia/WebParticipacionCiudadana.git"
+    app_user: centos
+    backup_databases:
+      - decidim
+    backups_folder: /backup
+    backups_user: centos
+    databases:
+      - decidim
+    env: production
+    geocoder_lookup_app_code:
+    geocoder_lookup_app_id:
+    hostname: decidim-navarra-production
+    include_passenger: true
+    memcache_listen_address: "127.0.0.1"
+    memcache_memory: 256
+    postgres_bind_address: "127.0.0.1"
+    postgres_version: 11
+    rails_env: production
+    rbenv_user: centos
+    redis_bind_address: "127.0.0.1"
+    redis_url: redis://127.0.0.1:6379/0
+    rollbar_access_token:
+    sites_domains:
+      - desparticipa.admon-cfnavarra.es
+    ssl_certificate_name: decidim
+    internal_server: true
+    ansible_python_interpreter: /usr/bin/python
+    epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+    epel_repo_gpg_key_url: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7"
+    epel_repofile_path: "/etc/yum.repos.d/epel.repo"
+    populate_user: centos
+    populate_user_password: !vault |
+                            $ANSIBLE_VAULT;1.1;AES256
+                            34623866336636323164343262303136373864343235383933383264316236363631353938653464
+                            3064663334626166653265623233616161633163633633320a613038323338353364313235613364
+                            36343031303933306333663034343032376163323635613734626361613561383633653233616535
+                            3737393963646538340a376438656234306138363232653565663264393630636637363362386536
+                            35336435323566316538643836366361356238343539313032343335333336626434
+    site_db_name: webparticipacionciudadana
+    site_db_user: usr_webparticipacionciudadana
+    site_db_host: dc1gvalpsg004
+    site_db_port: 5432
+    site_db_password: !vault |
+                      $ANSIBLE_VAULT;1.1;AES256
+                      63306466633239326436313563363731353636663431306338333238363866333631626362613665
+                      3732613134313163356163396430643766346366353066330a656461323063653534363834313665
+                      34643638626162316464336637343336313863643039363237303331336536613538353466396634
+                      6333653334366430360a363664393038366630376533633033656536376134633639643362386535
+                      6231

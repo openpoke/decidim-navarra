@@ -1,0 +1,37 @@
+## Rails
+RAILS_MAX_THREADS=5
+RACK_ENV={{rails_env}}
+RAILS_ENV={{rails_env}}
+# Use both options for full compatibility
+SECRET_KEY_BASE={{secret_key_base}}
+
+## Redis
+REDIS_URL={{redis_url}}
+
+## Geocoder
+MAPS_API_KEY={{maps_api_key}}
+
+## AppSignal
+APPSIGNAL_PUSH_API_KEY={{appsignal_push_api_key}}
+
+## Language
+LC_ALL=C.UTF-8
+LANG=en_US.UTF-8
+LANGUAGE=en_US.UTF-8
+
+## Census service integration
+CENSUS_WEBSERVICE_ADDRESS={{census_webservice_address}}
+CENSUS_WEBSERVICE_CODE={{census_webservice_code}}
+CENSUS_WEBSERVICE_PURPOSE={{census_webservice_purpose}}
+CENSUS_WEBSERVICE_OFFICIAL_DOCUMENT_NUMBER={{census_webservice_official_document_number}}
+CENSUS_WEBSERVICE_OFFICIAL_NAME={{census_webservice_official_name}}
+CENSUS_WEBSERVICE_EXPEDIENT_ID={{census_webservice_expedient_id}}
+CENSUS_WEBSERVICE_PROCEDURE_CODE={{census_webservice_procedure_code}}
+CENSUS_WEBSERVICE_PROCEDURE_NAME={{census_webservice_procedure_name}}
+CENSUS_WEBSERVICE_PROCESSING_UNIT={{census_webservice_processing_unit}}
+
+## email service integration
+MAILER_DELIVERY_METHOD={{mailer_delivery_method}}
+EMAIL_WEBSERVICE_ADDRESS={{email_webservice_address}}
+EMAIL_WEBSERVICE_USERNAME_TOKEN_USER={{email_webservice_username_token_user}}
+EMAIL_WEBSERVICE_USERNAME_TOKEN_PASSWORD={{email_webservice_username_token_password}}

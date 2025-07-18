@@ -1,0 +1,8 @@
+---
+
+- include: ../../monit/handlers/main.yml
+
+- name: Restart Postgres
+  service:
+    name: postgresql-{{postgres_version}}
+    state: restarted

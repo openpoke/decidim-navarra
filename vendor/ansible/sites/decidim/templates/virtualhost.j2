@@ -1,0 +1,58 @@
+{% if https_enabled %}
+server {
+  listen      8081;
+  server_name {% for domain in sites_domains %} {{domain}}{% endfor %};
+  return       301 https://$host$request_uri;
+}
+{% endif %}
+
+server {
+  {% if https_enabled %}
+  listen 443 default_server ssl http2;
+  listen [::]:443 default_server ssl http2;
+
+  ssl on;
+  ssl_certificate {{ssl_certificate}};
+  ssl_certificate_key {{ssl_certificate_key}};
+  {% else %}
+  listen 8081;
+  {% endif %}
+
+  server_name {% for domain in sites_domains %} {{domain}}{% endfor %};
+
+  {% if http_auth_enabled %}
+  auth_basic "Decidim";
+  auth_basic_user_file {{http_auth_file}};
+  {% endif %}
+
+  passenger_set_header  Host $host;
+  passenger_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+  passenger_set_header  X-Forwarded-Proto https;
+  passenger_set_header  X-Forwarded-Ssl on; # Optional
+  passenger_set_header  X-Forwarded-Port $server_port;
+  passenger_set_header  X-Forwarded-Host $host;
+  passenger_set_header  Ssl on;
+
+  passenger_enabled on;
+  client_max_body_size 50M;
+
+  access_log {{nginx_access_log}};
+  error_log  {{nginx_error_log}};
+
+  root {{app_base_path}}/current/public;
+
+  rails_env {{rails_env}};
+
+  location ~ ^/(assets|uploads)/ {
+    try_files $uri =404;
+    expires max;
+    add_header Cache-Control public;
+    gzip_static on;
+    break;
+  }
+
+#  # Let's encrypt
+#  location /.well-known {
+#    auth_basic off;
+#  }
+}

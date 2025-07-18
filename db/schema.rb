@@ -1264,6 +1264,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.index ["decidim_user_group_id"], name: "index_decidim_meetings_registrations_on_decidim_user_group_id"
     t.index ["decidim_user_id", "decidim_meeting_id"], name: "decidim_meetings_registrations_user_meeting_unique", unique: true
     t.index ["decidim_user_id"], name: "index_decidim_meetings_registrations_on_decidim_user_id"
+    t.index ["status"], name: "index_decidim_meetings_registrations_on_status"
   end
 
   create_table "decidim_meetings_services", force: :cascade do |t|
@@ -1802,6 +1803,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.datetime "created_at"
     t.datetime "last_used_at"
     t.datetime "expires_at"
+    t.boolean "registered_only"
     t.index ["decidim_organization_id"], name: "index_decidim_share_tokens_on_decidim_organization_id"
     t.index ["decidim_user_id"], name: "index_decidim_share_tokens_on_decidim_user_id"
     t.index ["token_for_type", "token_for_id"], name: "decidim_share_tokens_token_for"

@@ -1,0 +1,71 @@
+---
+# @title_es Instalar redis
+# @title_en Install redis
+# @input yum install -y #{package>pkg}
+- name: Install Redis
+  become: true
+  package: pkg=redis state=present
+
+# @title_es Copiar configuración en #{copy>dest}
+# @title_en Copy config in #{copy>dest}
+# @input f{redis-server}
+- name: Reconfigure redis-server
+  become: true
+  copy: src=redis-server dest=/etc/default/redis-server
+
+# @title_es Configurar el servicio
+# @title_en Config service
+# @comment_es Crear el fichero `#{copy>dest}` con el contenido:
+# @comment_en Create the file `#{copy>dest}` with the following content:
+# @input f{service}
+- name: Configure service
+  become: true
+  copy: src=service dest=/usr/lib/systemd/system/redis-server.service
+
+# @title_es Recargar daemons
+# @title_en Reload daemons
+# @input #{command}
+- name: Reload daemons
+  become: true
+  command: systemctl daemon-reload
+
+# @title_es Copiar configuración en #{template>dest}
+# @title_en Copy config in #{template>dest}
+# @input f{redis.conf.j2}
+- name: Reconfigure redis
+  become: true
+  template: src=redis.conf.j2 dest=/etc/redis.conf
+  notify:
+    - Reload Redis
+
+# @title_es Crear directorio
+# @title_en Create folder
+# @input mkdir #{file>path} -o #{file>owner} -g #{file>group} -m #{file>mode}
+- name: Create needed directory
+  become: yes
+  file:
+    state: directory
+    path: /var/run/redis/
+    owner: redis
+    group: redis
+    mode: 0775
+
+# @title_es Habilitar redis en monit. Copiar configuración en #{template>dest}
+# @title_en Enable redis in monit. Copy config in #{template>dest}
+# @input f{monit_redis.j2}
+- name: Enable redis in monit
+  become: true
+  template: src=monit_redis.j2 dest=/etc/monit.d/redis.monit
+  notify:
+    - Reload Monit
+
+# @title_es Añadir el usuario al grupo de redis
+# @title_es Add the user to the redis group
+# @input usermod -a -G #{user>groups} #{user>name}
+- name: Add user to redis group
+  become: true
+  user:
+    name='{{redis_user}}'
+    groups=redis
+    append=yes
+    shell=/bin/bash
