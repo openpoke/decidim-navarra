@@ -38,7 +38,7 @@ jobs:
           DATABASE_PASSWORD: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
       redis:
-        image: valkey:7.2-alpine
+        image: redis:7.2-alpine
         ports: ["6379:6379"]
 
     steps:
