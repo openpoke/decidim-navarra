@@ -16,7 +16,6 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-.rspec-failures
 
 # Ignore uploaded files in development
 /storage/*
@@ -45,6 +44,7 @@ tailwind.config.js
 /public/decidim-packs
 /public/packs
 /public/packs-test
+/public/sw.js*
 /node_modules
 /yarn-error.log
 yarn-debug.log*
@@ -52,3 +52,6 @@ yarn-debug.log*
 
 # Static files
 app/views/static/
+
+# Ignore .rspec-failures
+.rspec-failures
