@@ -1,0 +1,46 @@
+<div class="main-footer bg-white">
+  <div class="main-footer__down">
+    <div class="flex">
+      <div class="w-1/2 lg:w-1/4 text-center">
+        <a href="https://navarra.es/<%= I18n.locale %>">
+          <div class="logo-navarra-footer-detail">
+            <div class="logo-navarra-footer-detail-red"></div>
+            <div class="logo-navarra-footer-detail-blue"></div>
+          </div>
+          <%= image_pack_tag("media/images/logo-navarra-footer.png", class: 'logo-gobierno-navarra-footer', alt: t("layouts.decidim.footer.cc_by_license"), width: 200) %>
+        </a>
+      </div>
+      <div class="w-1/2 lg:w-3/4 text-black">
+        <div>
+          <ul>
+            <% organization_pages = current_organization.static_pages_accessible_for(current_user) %>
+            <% if organization_pages.any? %>
+              <% current_organization.static_page_topics.where(show_in_footer: true).each do |page_topic| %>
+                <% topic_pages = page_topic.accessible_pages_for(current_user) %>
+                <% if topic_pages.any? %>
+                  <li><%= link_to translated_attribute(page_topic.title), decidim.page_path(topic_pages.first) %></li>
+                <% end %>
+              <% end %>
+
+              <% organization_pages.each do |page| %>
+                <li><%= link_to translated_attribute(page.title), decidim.page_path(page) %></li>
+              <% end %>
+            <% end %>
+            <% if footer_contact.present? %>
+              <li class="inline">
+                <a href="<%= footer_contact %>">
+                  <%= t('decidim.contact') %>
+                </a>
+              </li>
+            <% end %>
+            <li>
+              <a href="/users/sign_in">
+                <%= t('layouts.decidim.footer.log_in') %>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
