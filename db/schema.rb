@@ -1217,6 +1217,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.integer "type_of_meeting", default: 0, null: false
     t.integer "registration_type", default: 0, null: false
     t.datetime "withdrawn_at", precision: nil
+    t.boolean "reminder_enabled"
+    t.integer "send_reminders_before_hours"
+    t.jsonb "reminder_message_custom_content"
+    t.boolean "waitlist_enabled", default: false, null: false
     t.index ["decidim_author_id", "decidim_author_type"], name: "index_decidim_meetings_meetings_on_author"
     t.index ["decidim_author_id"], name: "index_decidim_meetings_meetings_on_decidim_author_id"
     t.index ["decidim_component_id"], name: "index_decidim_meetings_meetings_on_decidim_component_id"
@@ -1260,6 +1264,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.datetime "validated_at"
     t.bigint "decidim_user_group_id"
     t.boolean "public_participation", default: false
+    t.string "status", default: "registered", null: false
     t.index ["decidim_meeting_id"], name: "index_decidim_meetings_registrations_on_decidim_meeting_id"
     t.index ["decidim_user_group_id"], name: "index_decidim_meetings_registrations_on_decidim_user_group_id"
     t.index ["decidim_user_id", "decidim_meeting_id"], name: "decidim_meetings_registrations_user_meeting_unique", unique: true

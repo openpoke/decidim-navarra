@@ -10,19 +10,19 @@ on:
 env:
   RUBY_VERSION: 3.2.8
   NODE_VERSION: 18.17.1
+  RAILS_ENV: test
+  DATABASE_USERNAME: postgres
+  DATABASE_PASSWORD: postgres
+  DATABASE_HOST: localhost
+  RUBYOPT: '-W:no-deprecated'
   REDIS_URL: "redis://redis:6379"
-    
+
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
     if: "!startsWith(github.head_ref, 'chore/l10n')"
     timeout-minutes: 60
-    env:
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_HOST: localhost
-      RUBYOPT: '-W:no-deprecated'
     services:
       postgres:
         image: postgres:16
@@ -33,10 +33,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         env:
-          RAILS_ENV: test
-          DATABASE_USERNAME: postgres
-          DATABASE_PASSWORD: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
+         POSTGRES_HOST_AUTH_METHOD: trust
       redis:
         image: redis:7.2-alpine
         ports: ["6379:6379"]
@@ -77,10 +74,6 @@ jobs:
 
       - name: Run RSpec
         run: SIMPLECOV=1 CODECOV=1 bundle exec rspec
-        env:
-          RAILS_ENV: test
-          DATABASE_USERNAME: postgres
-          DATABASE_PASSWORD: postgres
 
       - name: Lint Ruby files
         run: bundle exec rubocop -P
