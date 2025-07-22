@@ -2,11 +2,12 @@
 
 require "rails_helper"
 
-describe "Awesome" do
-  let(:organization) { create(:organization) }
-  let!(:participatory_process) { create(:participatory_process, organization:) }
-  let!(:config) { create(:awesome_config, organization:, var: :scoped_styles, value: styles) }
-  let(:config_helper) { create(:awesome_config, organization:, var: :scoped_style_bar) }
+describe "Custom_styles" do
+  let(:organization) { create :organization }
+  let!(:participatory_process) { create :participatory_process, organization: }
+  let!(:participatory_process_group) { create :participatory_process_group, :with_participatory_processes, organization: }
+  let!(:config) { create :awesome_config, organization:, var: :scoped_styles, value: styles }
+  let(:config_helper) { create :awesome_config, organization:, var: :scoped_style_bar }
   let(:styles) do
     {
       "bar" => "body {background: red;}"
@@ -33,7 +34,7 @@ describe "Awesome" do
       expect(page.body).to have_no_content("body {background: red;}")
     end
 
-    it "css is not applyied" do
+    it "css is not applied" do
       expect(page.execute_script("return window.getComputedStyle($('body')[0]).backgroundColor")).to eq("rgba(0, 0, 0, 0)")
     end
   end
@@ -83,7 +84,7 @@ describe "Awesome" do
 
       context "and page matches the scope" do
         before do
-          click_on "Processes"
+          visit decidim_participatory_processes.participatory_processes_path
         end
 
         it_behaves_like "extra css is added"
