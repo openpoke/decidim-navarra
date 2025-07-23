@@ -26,8 +26,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.rule=PathPrefix('/')"
-      - "traefik.http.routers.app.entrypoints=web,websecure"
-      - "traefik.http.routers.app.tsl=true"
+      - "traefik.http.routers.app.entrypoints=web"
+      - "traefik.http.routers.app.tls=true"
       - "trafeik.http.services.app.loadbalancer.server.port=3000"
     env_file:
       - .env
@@ -79,6 +79,9 @@ services:
       - RORVSWILD_API_KEY
     ports:
       - 3000:3000
+    depends_on:
+      - db
+      - redis
   db:
     container_name: postgres
     image: postgres:16
@@ -97,4 +100,6 @@ services:
     volumes:
       - redis_data:/data
     restart: ${RESTART_POLICY:-always}
-
+volumes:
+  pg_data:
+  redis_data:
