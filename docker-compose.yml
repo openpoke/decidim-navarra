@@ -1,10 +1,40 @@
-version: '3'
 services:
-  app:
-    build: .
+  traefik:
+    image: traefik:v3.4
+    container_name: traefik
+    command:
+      - --api
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.file.directory=/certs/traefik
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+    ports:
+      - "80:80"
+      - "443:443" 
+    restart: unless-stopped
     volumes:
-      - /var/www/decidim/shared/storage:/app/storage
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./certs:/certs"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.service=api@internal" 
+  app:
+    container_name: decidim
+    image: decidim_${DECIDIM_ENV:-production}
+    volumes:
+      - ./storage:/app/storage
     restart: ${RESTART_POLICY:-always}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=PathPrefix('/')"
+      - "traefik.http.routers.app.entrypoints=web,websecure"
+      - "traefik.http.routers.app.tsl=true"
+      - "trafeik.http.services.app.loadbalancer.server.port=3000"
     env_file:
       - .env
     environment:
@@ -55,4 +85,9 @@ services:
       - RORVSWILD_API_KEY
     ports:
       - 3000:3000
-volumes:
+  redis:
+    container_name: redis
+    image: redis
+    volumes:
+      - redis_data:/data
+    restart: ${RESTART_POLICY:-always}
