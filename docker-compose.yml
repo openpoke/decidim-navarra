@@ -4,19 +4,16 @@ services:
     container_name: traefik
     command:
       - --api
-      - --api.insecure=true
       - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
-    ports:
-      - "80:80"
+      - --entrypoints.traefik.address=:8080
     restart: unless-stopped
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./certs:/certs"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.service=api@internal" 
+      - "traefik.http.routers.traefik.service=api@internal"
+    network_mode: host
   app:
     container_name: decidim
     image: decidim_${DECIDIM_ENV:-production}
@@ -25,10 +22,9 @@ services:
     restart: ${RESTART_POLICY:-always}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=PathPrefix('/')"
+      - "traefik.http.routers.app.rule=PathPrefix(`/`)"
       - "traefik.http.routers.app.entrypoints=web"
-      - "traefik.http.routers.app.tls=true"
-      - "trafeik.http.services.app.loadbalancer.server.port=3000"
+      - "traefik.http.services.app.loadbalancer.server.port=3000"
     env_file:
       - .env
     environment:
@@ -77,11 +73,10 @@ services:
       - OMNIAUTH_GOOGLE_CLIENT_SECRET
       - APPSIGNAL_PUSH_API_KEY
       - RORVSWILD_API_KEY
-    ports:
-      - 3000:3000
     depends_on:
       - db
       - redis
+    network_mode: host
   db:
     container_name: postgres
     image: postgres:16
@@ -94,12 +89,14 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     restart: ${RESTART_POLICY:-always}
+    network_mode: host
   redis:
     container_name: redis
     image: redis
     volumes:
       - redis_data:/data
     restart: ${RESTART_POLICY:-always}
+    network_mode: host
 volumes:
   pg_data:
   redis_data:
