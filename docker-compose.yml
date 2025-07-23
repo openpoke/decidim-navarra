@@ -4,18 +4,12 @@ services:
     container_name: traefik
     command:
       - --api
-      - --api.dashboard=true
       - --api.insecure=true
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      - --providers.file.directory=/certs/traefik
-      - --entrypoints.web.http.redirections.entryPoint.to=websecure
-      - --entrypoints.web.http.redirections.entryPoint.scheme=https
     ports:
       - "80:80"
-      - "443:443" 
     restart: unless-stopped
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -85,9 +79,22 @@ services:
       - RORVSWILD_API_KEY
     ports:
       - 3000:3000
+  db:
+    container_name: postgres
+    image: postgres:16
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-decidim}
+      - POSTGRES_DB=${POSTGRES_DB:-decidim}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: ${RESTART_POLICY:-always}
   redis:
     container_name: redis
     image: redis
     volumes:
       - redis_data:/data
     restart: ${RESTART_POLICY:-always}
+
