@@ -36,7 +36,7 @@ class ProcessesParser
 
   FILES_BASE_URL = "https://gobiernoabierto.navarra.es/sites/default/files/"
   DEFAULT_IMAGE_FILENAME = "participacion_proceso_base.png"
-  REGULATORY_PARTICIPATION_GROUP_VALUES = ["Consulta pública previa", "Norma"]
+  REGULATORY_PARTICIPATION_GROUP_VALUES = ["Consulta pública previa", "Norma"].freeze
   PROCESS_GROUPS_ATTRIBUTES = [
     {
       id: 1,
@@ -55,7 +55,9 @@ class ProcessesParser
   DEPARTMENTS_TRANSLATIONS = {
     "Gobierno de Navarra" => "Nafarroako Gobernua",
     "Departamento de Presidencia, Igualdad, Función Pública e Interior" => "Lehendakaritzako, Berdintasuneko, Funtzio Publikoko eta Barneko Departamentua",
+    # rubocop:disable Layout/LineLength
     "Departamento de Ordenación del Territorio, Vivienda, Paisaje y Proyectos Estratégicos" => "Lurralde Antolamenduko, Etxebizitzako, Paisaiako eta Proiektu Estrategikoetako Departamentua",
+    # rubocop:enable Layout/LineLength
     "Departamento de Cohesión Territorial" => "Lurralde Kohesiorako Departamentua",
     "Departamento de Economía y Hacienda" => "Ekonomia eta Ogasun Departamentua",
     "Departamento de Desarrollo Económico y Empresarial" => "Garapen Ekonomiko eta Enpresarialeko Departamentua",
@@ -67,7 +69,9 @@ class ProcessesParser
     "Departamento de Universidad, Innovación y Transformación Digital" => "Unibertsitateko, Berrikuntzako eta Eraldaketa Digitaleko Departamentua",
     "Departamento de Desarrollo Rural y Medio Ambiente" => "Landa Garapeneko eta Ingurumeneko Departamentua",
     "Departamento de Cultura y Deporte" => "Kultura eta Kirol Departamentua",
+    # rubocop:disable Layout/LineLength
     "----------------- Otras legislaturas ----------------------------------------------------" => "----------------- Beste legealdi batzuk ----------------------------------------------------",
+    # rubocop:enable Layout/LineLength
     "Otros órganos" => "Beste organo batzuk",
     "Departamento de Desarrollo Económico" => "Garapen Ekonomikorako Departamentua",
     "Departamento de Hacienda y Política Financiera" => "Ogasuneko eta Finantza Politikako Departamentua",
@@ -91,7 +95,7 @@ class ProcessesParser
     "Departamento de Economía, Hacienda, industria y Empleo" => "Ekonomia, Ogasun, Industria eta Enplegua Departamentua",
     "Departamento de Políticas Sociales" => "Gizarte Politikak Departamentua",
     "Departamento de Fomento" => "Sustapena Departamentua"
-  }
+  }.freeze
 
   AREAS_ATTRIBUTES = [
     { id: 1, name: { es: "Acción Exterior", eu: "Kanpo Ekintza" } },
@@ -173,11 +177,11 @@ class ProcessesParser
       raw_description: raw_content["Descripcion_html"],
       first_paragraph_description: short_description,
       original_url: raw_content["Ruta"],
-      locale: locale,
+      locale:,
       original_language: raw_content["Idioma"],
       es_node_id: raw_content["Nodo castellano"],
-      proposal_status: proposal_status,
-      participation_status: participation_status,
+      proposal_status:,
+      participation_status:,
       start_and_end_date_coincident: start_date_string == end_date_string,
       start_date: start_date.to_date.to_s,
       end_date: end_date&.to_date&.to_s,
@@ -201,7 +205,9 @@ class ProcessesParser
     # GIFs are not accepted for hero images
     return DEFAULT_IMAGE_FILENAME if /\.gif\z/i =~ raw_content["Imagen"]
 
-    raw_content["Imagen"].gsub(/\s/, "").gsub(/\Ahttps:\/gobiernoabierto\.navarra\.es\/sites\/default\/files\//, "").gsub(/\Apublic:\/\//, "")
+    raw_content["Imagen"].gsub(/\s/, "").gsub(%r{\Ahttps:/gobiernoabierto\.navarra\.es/sites/default/files/}, "").gsub(
+      %r{\Apublic://}, ""
+    )
   end
 
   def external_es_id
@@ -213,7 +219,9 @@ class ProcessesParser
   end
 
   def description_first_present_element_index
-    @description_first_present_element_index ||= splitted_description.find_index { |element| element.text.strip.present? }
+    @description_first_present_element_index ||= splitted_description.find_index do |element|
+      element.text.strip.present?
+    end
   end
 
   def short_description
@@ -225,9 +233,9 @@ class ProcessesParser
   end
 
   def participation_steps
-    return unless raw_content["Participacion fases"].present?
+    return if raw_content["Participacion fases"].blank?
 
-    list = raw_content["Participacion fases"].gsub(/,\s*([A-Z])/,"||||\\1").split("||||")
+    list = raw_content["Participacion fases"].gsub(/,\s*([A-Z])/, '||||\\1').split("||||")
 
     html_list = list.map do |step|
       "<li>#{step}</li>"
@@ -321,7 +329,7 @@ class ProcessesParser
     end
 
     extractions = splitted_texts.map do |partition|
-      partition = partition.reject(&:blank?)
+      partition = partition.compact_blank
       url = partition.find { |fragment| url_regexp =~ fragment }
       description = (partition - [url]).first
 
@@ -370,7 +378,7 @@ class ProcessesParser
   def process_type
     @process_type ||= Decidim::ParticipatoryProcessType.find_or_create_by(
       title: translatable_hash(raw_content["Tipo de propuesta"].strip),
-      organization: organization
+      organization:
     )
   end
 
@@ -380,7 +388,7 @@ class ProcessesParser
 
   def extract_date(text)
     day_month, year = text.split(", ")[1, 2]
-    day, month_name = day_month.split(" ")
+    day, month_name = day_month.split
     Date.new(year.to_i, MONTH_NAMES[month_name.titleize], day.to_i)
   end
 
@@ -416,20 +424,20 @@ class ProcessesParser
     return if locale == "eu"
 
     @scope ||= begin
-                 legislature_id = if raw_content["Legislatura"].present?
-                                    legislature_scope_type.scopes.find_or_create_by(
-                                      name: translatable_hash(raw_content["Legislatura"]),
-                                      organization: organization,
-                                      code: raw_content["Legislatura"]
-                                    ).id
-                                  end
-                 department_scope_type.scopes.find_or_create_by(
-                   name: translated_department_name(raw_content["Departamento"].strip),
-                   parent_id: legislature_id,
-                   organization: organization,
-                   code: "#{raw_content["Legislatura"]}-#{raw_content["Departamento"]}"
-                 )
-               end
+      legislature_id = if raw_content["Legislatura"].present?
+                         legislature_scope_type.scopes.find_or_create_by(
+                           name: translatable_hash(raw_content["Legislatura"]),
+                           organization:,
+                           code: raw_content["Legislatura"]
+                         ).id
+                       end
+      department_scope_type.scopes.find_or_create_by(
+        name: translated_department_name(raw_content["Departamento"].strip),
+        parent_id: legislature_id,
+        organization:,
+        code: "#{raw_content["Legislatura"]}-#{raw_content["Departamento"]}"
+      )
+    end
   end
 
   def legislature_scope_type
@@ -451,9 +459,9 @@ class ProcessesParser
   end
 
   def translatable_hash(text)
-    available_locales.map do |locale|
-      [locale, text]
-    end.to_h
+    available_locales.index_with do |_locale|
+      text
+    end
   end
 
   def translated_department_name(text)

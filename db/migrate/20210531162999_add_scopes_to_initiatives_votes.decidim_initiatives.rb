@@ -1,15 +1,16 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_initiatives (originally 20191107134847)
 
 class AddScopesToInitiativesVotes < ActiveRecord::Migration[5.2]
   class InitiativeVote < ApplicationRecord
     self.table_name = :decidim_initiatives_votes
-    belongs_to :initiative, foreign_key: "decidim_initiative_id", class_name: "Initiative"
+    belongs_to :initiative, foreign_key: 'decidim_initiative_id', class_name: 'Initiative'
   end
 
   class Initiative < ApplicationRecord
     self.table_name = :decidim_initiatives
-    belongs_to :scoped_type, class_name: "InitiativesTypeScope"
+    belongs_to :scoped_type, class_name: 'InitiativesTypeScope'
   end
 
   class InitiativesTypeScope < ApplicationRecord

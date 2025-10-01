@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_comments (originally 20240304092558)
 
 class AddCommentVoteCounterCacheToComments < ActiveRecord::Migration[6.1]
@@ -11,10 +12,8 @@ class AddCommentVoteCounterCacheToComments < ActiveRecord::Migration[6.1]
       dir.up do
         Decidim::Comments::Comment.reset_column_information
         Decidim::Comments::Comment.find_each do |record|
-          # rubocop:disable Rails/SkipsModelValidations
           record.class.update_counters(record.id, up_votes_count: record.up_votes.length)
           record.class.update_counters(record.id, down_votes_count: record.down_votes.length)
-          # rubocop:enable Rails/SkipsModelValidations
         end
       end
     end

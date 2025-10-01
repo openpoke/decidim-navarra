@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim (originally 20180730071851)
 
 class AddCoreContentBlocks < ActiveRecord::Migration[5.2]
@@ -18,7 +19,7 @@ class AddCoreContentBlocks < ActiveRecord::Migration[5.2]
         weight = (index + 1) * 10
         ContentBlock.create(
           decidim_organization_id: organization_id,
-          weight: weight,
+          weight:,
           scope: :homepage,
           manifest_name: manifest.name,
           published_at: Time.current

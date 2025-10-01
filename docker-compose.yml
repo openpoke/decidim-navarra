@@ -1,26 +1,102 @@
-version: '3'
 services:
+  traefik:
+    image: traefik:v3.4
+    container_name: traefik
+    command:
+      - --api
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.traefik.address=:8080
+    restart: unless-stopped
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.service=api@internal"
+    network_mode: host
   app:
-    image: decidim/decidim:0.23.1
+    container_name: decidim
+    image: decidim_${DECIDIM_ENV:-production}
     volumes:
-      - .:/app
-      - bundle:/usr/local/bundle
-      - node_modules:/app/node_modules
+      - ./storage:/app/storage
+    restart: ${RESTART_POLICY:-always}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.app.entrypoints=web"
+      - "traefik.http.services.app.loadbalancer.server.port=3000"
+    env_file:
+      - .env
     environment:
-      - PORT=3000
-      - DATABASE_HOST=pg
-      - DATABASE_USERNAME=postgres
-      - RAILS_ENV=development
-    ports:
-      - 3000:3000
-    links:
-      - pg
-    command: bundle exec puma
-  pg:
-    image: postgres
+      - RUN_RAILS=true
+      - RUN_SIDEKIQ=true
+      - DATABASE_URL
+      - SECRET_KEY_BASE
+      - MAILER_DELIVERY_METHOD=${MAILER_DELIVERY_METHOD:-smtp}
+      - EMAIL_WEBSERVICE_ADDRESS
+      - EMAIL_WEBSERVICE_USERNAME_TOKEN_USER
+      - EMAIL_WEBSERVICE_USERNAME_TOKEN_PASSWORD
+      - CENSUS_WEBSERVICE_ADDRESS
+      - CENSUS_WEBSERVICE_CODE
+      - CENSUS_WEBSERVICE_PURPOSE
+      - CENSUS_WEBSERVICE_OFFICIAL_DOCUMENT_NUMBER
+      - CENSUS_WEBSERVICE_OFFICIAL_NAME
+      - CENSUS_WEBSERVICE_EXPEDIENT_ID
+      - CENSUS_WEBSERVICE_PROCEDURE_CODE
+      - CENSUS_WEBSERVICE_PROCEDURE_NAME
+      - CENSUS_WEBSERVICE_PROCESSING_UNIT
+      - DECIDIM_FORCE_SSL=${DECIDIM_FORCE_SSL:-false}
+      - QUEUE_ADAPTER=${QUEUE_ADAPTER:-sidekiq}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+      - WEB_CONCURRENCY=${WEB_CONCURRENCY:-2}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - DECIDIM_ENABLE_HTML_HEADER_SNIPPETS
+      - DECIDIM_ADMIN_PASSWORD_EXPIRATION_DAYS=${DECIDIM_ADMIN_PASSWORD_EXPIRATION_DAYS:-360}
+      - CHANGE_ACTIVE_STEP=${CHANGE_ACTIVE_STEP:-enabled}
+      - SEND_REMINDERS=${SEND_REMINDERS:-enabled}
+      - WEEKLY_NOTIFICATIONS_DIGEST=${WEEKLY_NOTIFICATIONS_DIGEST:-enabled}
+      - DAILY_NOTIFICATIONS_DIGEST=${DAILY_NOTIFICATIONS_DIGEST:-enabled}
+      - HEALTHCHECK_EXCLUDE_CHECKS=${HEALTHCHECK_EXCLUDE_CHECKS:-emailconf}
+      - SMTP_STARTTLS_AUTO=${SMTP_STARTTLS_AUTO:-true}
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - SMTP_ADDRESS
+      - SMTP_DOMAIN
+      - SMTP_PORT
+      - DECIDIM_MAILER_SENDER
+      - MAPS_API_KEY
+      - MAPS_PROVIDER=${MAPS_PROVIDER:-here}
+      - RACK_ATTACK_SECRET
+      - OMNIAUTH_FACEBOOK_APP_ID
+      - OMNIAUTH_FACEBOOK_APP_SECRET
+      - OMNIAUTH_GOOGLE_CLIENT_ID
+      - OMNIAUTH_GOOGLE_CLIENT_SECRET
+      - APPSIGNAL_PUSH_API_KEY
+      - RORVSWILD_API_KEY
+    depends_on:
+      - db
+      - redis
+    network_mode: host
+  db:
+    container_name: postgres
+    image: postgres:16
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-decidim}
+      - POSTGRES_DB=${POSTGRES_DB:-decidim}
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+    restart: ${RESTART_POLICY:-always}
+    network_mode: host
+  redis:
+    container_name: redis
+    image: redis
+    volumes:
+      - redis_data:/data
+    restart: ${RESTART_POLICY:-always}
+    network_mode: host
 volumes:
-  node_modules: {}
-  bundle: {}
-  pg-data: {}
+  pg_data:
+  redis_data:

@@ -8,16 +8,17 @@ namespace :anonymize_private_users do
   end
 
   def random_encrypted_password
-    ::BCrypt::Password.create(random_password, cost: 1).to_s
+    BCrypt::Password.create(random_password, cost: 1).to_s
   end
 
   desc "Anonymize and delete users that have been invited to private space but not accepted the invitation to participate"
   task :remove_private_space_invited_users, [:participatory_space_type, :slug] => [:environment] do |_t, args|
-    raise "Please, provide a participatory process type and slug" if [args[:participatory_space_type], args[:slug]].all?(&:blank?)
+    raise "Please, provide a participatory process type and slug" if [args[:participatory_space_type],
+                                                                      args[:slug]].all?(&:blank?)
 
     participatory_space_type = args[:participatory_space_type]
     slug = args[:slug]
-    participatory_space = participatory_space_type.constantize.find_by(slug: slug)
+    participatory_space = participatory_space_type.constantize.find_by(slug:)
     private_users = Decidim::ParticipatorySpacePrivateUser.by_participatory_space(participatory_space).joins(:user).where(user: { invitation_accepted_at: nil })
 
     puts "\n\n No users found." if private_users.blank?
@@ -32,7 +33,7 @@ namespace :anonymize_private_users do
 
       puts "\n\nDeleting user #{user.email}..."
 
-      user.update_columns(
+      user.update(
         email: "user-#{user.id}@example.com",
         name: "Anonymized User #{user.id}",
         encrypted_password: default_encrypted_password,

@@ -22,6 +22,7 @@
 !/storage/.keep
 
 /node_modules
+/packages/*/node_modules
 /yarn-error.log
 
 /public/assets
@@ -32,6 +33,7 @@
 
 # Ignore public uploads
 public/uploads
+tailwind.config.js
 
 # Environment
 .env
@@ -42,6 +44,7 @@ public/uploads
 /public/decidim-packs
 /public/packs
 /public/packs-test
+/public/sw.js*
 /node_modules
 /yarn-error.log
 yarn-debug.log*
@@ -49,3 +52,6 @@ yarn-debug.log*
 
 # Static files
 app/views/static/
+
+# Ignore .rspec-failures
+.rspec-failures

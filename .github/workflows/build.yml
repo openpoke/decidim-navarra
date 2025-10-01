@@ -8,6 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  REDIS_URL: redis://127.0.0.1:6379
 
 jobs:
   build-and-push-image:

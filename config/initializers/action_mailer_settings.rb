@@ -14,5 +14,5 @@ if ENV["MAILER_DELIVERY_METHOD"] == "smtp"
   }
 elsif ENV["MAILER_DELIVERY_METHOD"] == "webservice"
   Rails.application.config.action_mailer.delivery_method = :webservice
-  ::ActionMailer::Base.add_delivery_method :webservice, MailWebserviceHandler
+  ActionMailer::Base.add_delivery_method :webservice, MailWebserviceHandler
 end
