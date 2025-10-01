@@ -94,6 +94,7 @@ ENV RAILS_ENV production
 
 ARG RUN_RAILS
 ARG RUN_SIDEKIQ
+ARG REDIS_URL
 
 # Add user
 RUN addgroup --system --gid 1000 app && \
