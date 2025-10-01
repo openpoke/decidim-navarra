@@ -20,6 +20,11 @@ eu:
         day: Eguna
         month: Hilabetea
         year: Urtea
+  devise:
+    passwords:
+      edit:
+        password_help: "%{minimun_characters} karaktere gutxienez, ez dira oso ohikoak izan behar (adibidez, 123456) eta zure goitizenetik eta zure helbide elektronikoarekin desberdinak izan behar dira."
+        password_help_admin: "%{minimun_characters} karaktere gutxienez, ez dira oso ohikoak izan behar (adibidez, 123456) eta zure goitizenetik eta zure helbide elektronikoarekin desberdinak izan behar dira."
   decidim:
     admin:
       actions:
