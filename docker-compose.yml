@@ -15,8 +15,9 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
     network_mode: host
   app:
-    container_name: decidim
-    image: decidim_${DECIDIM_ENV:-production}
+    container_name: decidim-${DECIDIM_ENV:-main}
+    image: ghcr.io/openpoke/decidim-navarra:${DECIDIM_ENV:-main}
+    pull_policy: always
     volumes:
       - ./storage:/app/storage
     restart: ${RESTART_POLICY:-always}
@@ -74,21 +75,7 @@ services:
       - APPSIGNAL_PUSH_API_KEY
       - RORVSWILD_API_KEY
     depends_on:
-      - db
       - redis
-    network_mode: host
-  db:
-    container_name: postgres
-    image: postgres:16
-    env_file:
-      - .env
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-decidim}
-      - POSTGRES_DB=${POSTGRES_DB:-decidim}
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    restart: ${RESTART_POLICY:-always}
     network_mode: host
   redis:
     container_name: redis
@@ -98,5 +85,4 @@ services:
     restart: ${RESTART_POLICY:-always}
     network_mode: host
 volumes:
-  pg_data:
   redis_data:
