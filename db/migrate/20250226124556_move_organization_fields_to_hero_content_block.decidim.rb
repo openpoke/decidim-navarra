@@ -14,7 +14,7 @@ class MoveOrganizationFieldsToHeroContentBlock < ActiveRecord::Migration[5.2]
   def change
     Decidim::ContentBlock.reset_column_information
     Organization.find_each do |organization|
-      content_block = Decidim::ContentBlock.find_by(organization:, scope: :homepage, manifest_name: :hero)
+      content_block = Decidim::ContentBlock.find_by(organization:, scope_name: :homepage, manifest_name: :hero)
       settings = {}
       if organization.respond_to?(:welcome_text)
         welcome_text = organization.welcome_text || {}
