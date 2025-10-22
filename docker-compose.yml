@@ -3,6 +3,7 @@ services:
     image: traefik:v3.4
     container_name: traefik
     command:
+      # - --log.level=DEBUG
       - --api
       - --providers.docker=true
       - --entrypoints.web.address=:80
@@ -26,6 +27,8 @@ services:
       - "traefik.http.routers.app.rule=PathPrefix(`/`)"
       - "traefik.http.routers.app.entrypoints=web"
       - "traefik.http.services.app.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.httpsRedirect.headers.customRequestHeaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.app.middlewares=httpsRedirect"
     env_file:
       - .env
     environment:
