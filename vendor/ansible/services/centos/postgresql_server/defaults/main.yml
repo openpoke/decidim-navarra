@@ -1,6 +1,0 @@
----
-pg_port: 5432
-pg_backups_days_to_keep: 30
-pg_listen_addresses: localhost
-pg_user: postgres
-pg_group: "{{pg_user}}"

@@ -1,5 +1,0 @@
-check process sidekiq_{{app_id}}_0
-  with pidfile "{{app_base_path}}/shared/tmp/pids/sidekiq-0.pid"
-  start program = "/bin/su - {{app_user}} -c 'cd {{app_base_path}}/current && /bin/rbenv exec bundle exec sidekiq  --index 0 --pidfile {{app_base_path}}/shared/tmp/pids/sidekiq-0.pid --environment {{rails_env}}  --logfile {{app_base_path}}/shared/log/sidekiq.log -d'" with timeout 30 seconds
-  stop program = "/bin/su - {{app_user}} -c 'cd {{app_base_path}}/current && /bin/rbenv exec bundle exec sidekiqctl stop {{app_base_path}}/shared/tmp/pids/sidekiq-0.pid'" with timeout 20 seconds
-  group {{app_id}}-sidekiq

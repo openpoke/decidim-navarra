@@ -1,8 +1,0 @@
-# frozen_string_literal: true
-
-server "localhost", user: "{{app_user}}", roles: %w(app web db)
-set :sidekiq_role, :app
-set :branch, "{{app_git_branch}}"
-set :rbenv_type, :fullstaq
-set :rbenv_ruby, '2.7.1'
-set :rails_env, '{{env}}'

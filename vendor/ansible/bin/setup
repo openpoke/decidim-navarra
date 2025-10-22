@@ -1,3 +1,0 @@
-#!/bin/bash
-
-ln -s $DEV_DIR/ansible-decidim-navarra/bin/test $DEV_DIR/ansible-decidim-navarra/.git/hooks/pre-commit

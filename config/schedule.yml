@@ -61,3 +61,4 @@ weekly_notifications_digest_job:
   status: <%= ENV.fetch("WEEKLY_NOTIFICATIONS_DIGEST", "enabled") %> # enabled by default
   args:
     task: decidim:mailers:notifications_digest_weekly
+

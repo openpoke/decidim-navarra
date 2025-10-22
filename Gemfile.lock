@@ -673,6 +673,10 @@ GEM
     rails-i18n (7.0.10)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
+    rails_semantic_logger (4.18.0)
+      rack
+      railties (>= 5.1)
+      semantic_logger (~> 4.16)
     railties (7.0.8.7)
       actionpack (= 7.0.8.7)
       activesupport (= 7.0.8.7)
@@ -785,6 +789,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
+    semantic_logger (4.17.0)
+      concurrent-ruby (~> 1.0)
     semantic_range (3.1.0)
     shakapacker (7.1.0)
       activesupport (>= 5.2)
@@ -890,6 +896,7 @@ DEPENDENCIES
   health_check
   letter_opener_web
   puma (>= 5.3.1)
+  rails_semantic_logger
   rubocop-faker
   sidekiq
   sidekiq-cron

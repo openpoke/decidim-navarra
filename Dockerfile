@@ -3,9 +3,7 @@ FROM ruby:3.2.8 AS builder
 RUN apt-get update && apt-get upgrade -y && apt-get install -y ca-certificates curl gnupg && \
     mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    apt-get update && apt-get install -y nodejs yarn \
+    apt-get update && apt-get install -y nodejs \
     build-essential \
     postgresql-client \
     p7zip \
@@ -20,12 +18,14 @@ WORKDIR /app
 # Copy package dependencies files only to ensure maximum cache hit
 COPY ./package-lock.json /app/package-lock.json
 COPY ./package.json /app/package.json
+COPY ./packages /app/packages
 COPY ./Gemfile /app/Gemfile
 COPY ./Gemfile.lock /app/Gemfile.lock
 
 RUN gem install bundler:$(grep -A 1 'BUNDLED WITH' Gemfile.lock | tail -n 1 | xargs) && \
-    bundle config --local without 'development test' && \
+    bundle config --deployment --local without 'development test' && \
     bundle install -j4 --retry 3 && \
+    npm install yarn -g && \
     # Remove unneeded gems
     bundle clean --force && \
     # Remove unneeded files from installed gems (cache, *.o, *.c)
@@ -46,13 +46,12 @@ COPY ./bin /app/bin
 COPY ./config /app/config
 COPY ./db /app/db
 COPY ./lib /app/lib
-COPY ./packages /app/packages
 COPY ./public/*.* /app/public/
 COPY ./config.ru /app/config.ru
 COPY ./Rakefile /app/Rakefile
 COPY ./postcss.config.js /app/postcss.config.js
 
-# Compile assets with Webpacker or Sprockets
+# Compile assets with Shakapacker
 #
 # Notes:
 #   1. Executing "assets:precompile" runs "webpacker:compile", too
@@ -72,7 +71,7 @@ RUN RAILS_ENV=production \
 RUN mv config/credentials.yml.enc.bak config/credentials.yml.enc 2>/dev/null || true
 RUN mv config/credentials.bak config/credentials 2>/dev/null || true
 
-RUN rm -rf node_modules tmp/cache vendor/bundle test spec app/packs .git
+RUN rm -rf node_modules packages/*/node_modules tmp/cache vendor/bundle test spec app/packs .git
 
 # This image is for production env only
 FROM ruby:3.2.8-slim AS final
@@ -92,17 +91,13 @@ ENV RAILS_LOG_TO_STDOUT true
 ENV RAILS_SERVE_STATIC_FILES true
 ENV RAILS_ENV production
 
-ARG RUN_RAILS
-ARG RUN_SIDEKIQ
-ARG REDIS_URL
-
 # Add user
 RUN addgroup --system --gid 1000 app && \
     adduser --system --uid 1000 --home /app --group app
 
 WORKDIR /app
 COPY ./entrypoint.sh /app/entrypoint.sh
-COPY ./supervisord.conf /etc/supervisord.conf 
+COPY ./supervisord.conf /etc/supervisord.conf
 COPY --from=builder --chown=app:app /usr/local/bundle/ /usr/local/bundle/
 COPY --from=builder --chown=app:app /app /app
 

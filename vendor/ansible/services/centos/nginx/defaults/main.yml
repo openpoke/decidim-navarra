@@ -1,6 +1,0 @@
----
-include_passenger: false
-nginx_user: www-data
-nginx_group: www-data
-nginx_home: /var/www
-nginx_config: /etc/nginx

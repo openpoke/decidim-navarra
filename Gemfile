@@ -19,6 +19,7 @@ gem "deface", ">= 1.9"
 gem "faraday"
 gem "health_check"
 gem "puma", ">= 5.3.1"
+gem "rails_semantic_logger"
 
 group :development, :test do
   gem "byebug", "~> 11.0", platform: :mri
