@@ -99,9 +99,9 @@ RSpec.configure do |config|
   config.order = :random
 
   config.before do
-    I18n.available_locales = [:eu, :es, :en]
+    I18n.available_locales = [:eu, :ca, :es, :en]
     I18n.default_locale = :es
-    Decidim.available_locales = [:eu, :es, :en]
+    Decidim.available_locales = [:eu, :ca, :es, :en]
     Decidim.default_locale = :es
   end
 
