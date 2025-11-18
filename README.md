@@ -2,6 +2,78 @@
 
 Herramienta de participación ciudadana para que las ciudadanas puedan participar en los procesos de participación definidos y publicados en la Web.
 
-En la carpeta vendor/ansible se encuentran las recetas de Ansible para instalar la aplicación. No realizar cambios manuales, los cambios se actualizan por medio de un script que obtiene los datos de otra fuente: cualquier cambio que se realice manualmente en esa carpeta y se suba con commits en este repositorio será ignorado cada vez que se ejecute el script de actualización.
+## Server configuration
 
-Para actualizar la carpeta vendor/ansible con la versión más reciente de la fuente original ejecutar desde la raíz del proyecto ./bin/update_ansible.sh. El script elimina la carpeta, la vuelve a crear, descarga la última versión y crea un commit con los cambios
+Docker & Docker Compose is needed, then clone this repository:
+
+```
+git clone https://github.com/openpoke/decidim-navarra
+```
+
+or update:
+```
+cd decidim_navarra
+git pull
+```
+
+Ensure the `.env` file has these values defined:
+
+```bash
+DATABASE_URL=postgres://xxxxx:xxxxx@db/xxxxx
+POSTGRES_USER=XXXXXX
+POSTGRES_PASSWORD=XXXXXX
+POSTGRES_DB=XXXXXX
+SECRET_KEY_BASE=XXXXXX
+MAPS_PROVIDER=here
+MAPS_API_KEY=XXXXXX
+EMAIL=XXXXXX
+SMTP_USERNAME=XXXXXX
+SMTP_PASSWORD=XXXXXX
+SMTP_ADDRESS=XXXXXX
+SMTP_DOMAIN=XXXXXX
+SMTP_PORT=XXXXXX
+DECIDIM_ENV=production
+```
+
+## Deploy
+
+### Pull from Github Repository
+
+This instance uses Docker Compose to deploy the application into the port 3015.
+
+First, you need to make sure you are logged into the Github Docker registry (ghcr.io).
+
+1. Go to your personal Github account, into tokens settings https://github.com/settings/tokens
+2. Generate a new token (Classic)
+3. Ensure you check the permission "read:packages" and "No expiration".
+4. In the server, login into docker, introduce your username and the token generated:
+  ```bash
+  docker login ghcr.io --username github-username
+  ```
+5. You should stay logged permanently, you should not need to repeat this process.
+
+To re-deploy the image this should suffice:
+
+`docker compose up -d`
+
+### Locally building the Docker image
+
+This instance uses Docker Compose to deploy the application with Traefik as a proxy.
+
+> If you want to locally build the docker image, change the line `image: ghcr.io/openpoke/decidim-navarra:${GIT_REF:-main}` for `image: decidim-${DECIDIM_ENV:-production}` first!
+
+You need to build and tag the image:
+
+1. Ensure you have the ENV value `DECIDIM_ENV=staging` or `DECIDIM_ENV=production`
+2. Run:
+   `./build.sh`
+3. Deploy:
+  `docker compose up -d`
+
+## Backups
+
+Database is backup every day using https://github.com/tiredofit/docker-db-backup (see docker-compose.yml for details)
+
+Backups are stored in:
+
+- `backups/*`
