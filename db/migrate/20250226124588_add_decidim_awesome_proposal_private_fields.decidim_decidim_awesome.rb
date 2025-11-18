@@ -7,8 +7,8 @@ class AddDecidimAwesomeProposalPrivateFields < ActiveRecord::Migration[6.0]
   end
 
   def change
-    add_column :decidim_awesome_proposal_extra_fields, :private_body, :string
-    add_column :decidim_awesome_proposal_extra_fields, :decidim_proposal_type, :string
+    add_column(:decidim_awesome_proposal_extra_fields, :private_body, :string) unless column_exists?(:decidim_awesome_proposal_extra_fields, :private_body)
+    add_column(:decidim_awesome_proposal_extra_fields, :decidim_proposal_type, :string) unless column_exists?(:decidim_awesome_proposal_extra_fields, :decidim_proposal_type)
     reversible do |direction|
       direction.up do
         execute <<~SQL.squish
@@ -18,10 +18,10 @@ class AddDecidimAwesomeProposalPrivateFields < ActiveRecord::Migration[6.0]
       end
     end
 
-    remove_index :decidim_awesome_proposal_extra_fields, name: "decidim_awesome_extra_fields_on_proposal"
-    add_index :decidim_awesome_proposal_extra_fields,
+    remove_index(:decidim_awesome_proposal_extra_fields, name: "decidim_awesome_extra_fields_on_proposal") if index_name_exists?(:decidim_awesome_proposal_extra_fields, "decidim_awesome_extra_fields_on_proposal")
+    add_index(:decidim_awesome_proposal_extra_fields,
               [:decidim_proposal_id, :decidim_proposal_type],
-              name: "index_decidim_awesome_proposal_extra_fields_on_decidim_proposal"
+              name: "index_decidim_awesome_proposal_extra_fields_on_decidim_proposal") unless index_name_exists?(:decidim_awesome_proposal_extra_fields, "index_decidim_awesome_proposal_extra_fields_on_decidim_proposal")
 
     change_column_null :decidim_awesome_proposal_extra_fields, :decidim_proposal_id, false
     change_column_null :decidim_awesome_proposal_extra_fields, :decidim_proposal_type, false

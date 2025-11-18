@@ -7,7 +7,7 @@ class AddDecidimAwesomeProposalPrivateFieldsDate < ActiveRecord::Migration[6.1]
   end
 
   def change
-    add_column :decidim_awesome_proposal_extra_fields, :private_body_updated_at, :datetime
+    add_column(:decidim_awesome_proposal_extra_fields, :private_body_updated_at, :datetime) unless column_exists?(:decidim_awesome_proposal_extra_fields, :private_body_updated_at)
 
     reversible do |direction|
       direction.up do
