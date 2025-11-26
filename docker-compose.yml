@@ -18,7 +18,6 @@ services:
   app:
     container_name: decidim-${DECIDIM_ENV:-production}
     image: ghcr.io/openpoke/decidim-navarra:${GIT_REF:-main}
-    pull_policy: always
     volumes:
       - ./storage:/app/storage
     restart: ${RESTART_POLICY:-always}

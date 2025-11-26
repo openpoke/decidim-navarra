@@ -52,6 +52,10 @@ First, you need to make sure you are logged into the Github Docker registry (ghc
   ```
 5. You should stay logged permanently, you should not need to repeat this process.
 
+If you want to update the image (anything in the code has change), execute:
+
+`docker pull ghcr.io/openpoke/decidim-navarra:main`
+
 To re-deploy the image this should suffice:
 
 `docker compose up -d`
