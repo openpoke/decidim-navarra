@@ -3,8 +3,8 @@
 require "base64"
 
 class MailWebserviceHandler < Decidim::ApplicationMailer
-  def settings
-    @settings ||= {}
+  def initialize(values = {})
+    @settings = values.dup
   end
 
   def send_raw_email(mail, _args = {})
