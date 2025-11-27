@@ -2,7 +2,7 @@
 
 require "base64"
 
-class MailWebserviceHandler < Decidim::ApplicationMailer
+class MailWebserviceHandler
   def initialize(values = {})
     @settings = values.dup
   end
