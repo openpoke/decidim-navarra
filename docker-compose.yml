@@ -16,7 +16,6 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
     network_mode: host
   app:
-    container_name: decidim-${DECIDIM_ENV:-production}
     image: ghcr.io/openpoke/decidim-navarra:${GIT_REF:-main}
     volumes:
       - ./storage:/app/storage

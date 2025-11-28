@@ -54,11 +54,33 @@ First, you need to make sure you are logged into the Github Docker registry (ghc
 
 If you want to update the image (anything in the code has change), execute:
 
-`docker pull ghcr.io/openpoke/decidim-navarra:main`
+`docker pull ghcr.io/openpoke/decidim-navarra:main` (or `staging`)
 
 To re-deploy the image this should suffice:
 
 `docker compose up -d`
+
+### Zero Downtime with docker compose
+
+It is possible to redeploy with zero downtime by using the docker plugin https://github.com/wowu/docker-rollout
+
+#### Install plugin
+
+ For production or when using `sudo`, install the plugin to `/usr/local/lib/docker/cli-plugins/` so it's available for all users.
+  ```bash
+  # production only
+  sudo mkdir -p /usr/local/lib/docker/cli-plugins
+  sudo curl https://raw.githubusercontent.com/wowu/docker-rollout/main/docker-rollout -o /usr/local/lib/docker/cli-plugins/docker-rollout
+  sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-rollout
+  ```
+
+#### Zero-downtime deploy
+
+Just execute:
+
+```
+docker rollout app --wait-after-healthy 15
+```
 
 ### Locally building the Docker image
 
