@@ -13,7 +13,9 @@
 ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "active_hashcash_stamps", force: :cascade do |t|
     t.string "version", null: false
@@ -862,14 +864,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.index ["resource_type", "resource_id"], name: "index_decidim_endorsements_on_resource_type_and_resource_id"
   end
 
-  create_table "decidim_file_authorization_handler_census_data", force: :cascade do |t|
-    t.bigint "decidim_organization_id"
-    t.string "id_document"
-    t.date "birthdate"
-    t.datetime "created_at", precision: nil, null: false
-    t.index ["decidim_organization_id"], name: "decidim_census_data_org_id_index"
-  end
-
   create_table "decidim_follows", force: :cascade do |t|
     t.bigint "decidim_user_id", null: false
     t.string "decidim_followable_type"
@@ -1208,9 +1202,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.string "online_meeting_url"
     t.string "registration_url"
     t.string "salt"
+    t.integer "follows_count", default: 0, null: false
     t.boolean "customize_registration_email", default: false
     t.jsonb "registration_email_custom_content"
-    t.integer "follows_count", default: 0, null: false
     t.datetime "published_at", precision: nil
     t.string "video_url"
     t.string "audio_url"
@@ -1221,13 +1215,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.string "state"
     t.integer "iframe_access_level", default: 0
     t.integer "iframe_embed_type", default: 0
-    t.integer "type_of_meeting", default: 0, null: false
-    t.integer "registration_type", default: 0, null: false
-    t.datetime "withdrawn_at", precision: nil
     t.boolean "reminder_enabled"
     t.integer "send_reminders_before_hours"
     t.jsonb "reminder_message_custom_content"
     t.boolean "waitlist_enabled", default: false, null: false
+    t.integer "type_of_meeting", default: 0, null: false
+    t.integer "registration_type", default: 0, null: false
+    t.datetime "withdrawn_at", precision: nil
     t.index ["decidim_author_id", "decidim_author_type"], name: "index_decidim_meetings_meetings_on_author"
     t.index ["decidim_author_id"], name: "index_decidim_meetings_meetings_on_decidim_author_id"
     t.index ["decidim_component_id"], name: "index_decidim_meetings_meetings_on_decidim_component_id"
@@ -1542,10 +1536,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.boolean "show_metrics", default: true
     t.integer "weight", default: 1, null: false
     t.integer "follows_count", default: 0, null: false
+    t.bigint "decidim_participatory_process_type_id"
     t.index ["decidim_area_id"], name: "index_decidim_participatory_processes_on_decidim_area_id"
     t.index ["decidim_organization_id", "slug"], name: "index_unique_process_slug_and_organization", unique: true
     t.index ["decidim_organization_id"], name: "index_decidim_processes_on_decidim_organization_id"
     t.index ["decidim_participatory_process_group_id"], name: "idx_process_on_process_group_id"
+    t.index ["decidim_participatory_process_type_id"], name: "index_decidim_processes_on_decidim_process_type_id"
     t.index ["decidim_scope_id"], name: "idx_process_on_scope_id"
     t.index ["decidim_scope_type_id"], name: "index_decidim_participatory_processes_on_decidim_scope_type_id"
   end
@@ -2033,14 +2029,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.datetime "locked_at", precision: nil
     t.string "session_token"
     t.string "direct_message_types", default: "all", null: false
+    t.datetime "officialized_at", precision: nil
+    t.jsonb "officialized_as"
+    t.datetime "admin_terms_accepted_at", precision: nil
     t.boolean "blocked", default: false, null: false
     t.datetime "blocked_at", precision: nil
     t.integer "block_id"
     t.boolean "email_on_moderations", default: true
     t.integer "follows_count", default: 0, null: false
-    t.datetime "officialized_at", precision: nil
-    t.jsonb "officialized_as"
-    t.datetime "admin_terms_accepted_at", precision: nil
     t.jsonb "notification_settings", default: {}
     t.string "notifications_sending_frequency", default: "daily"
     t.datetime "digest_sent_at", precision: nil
@@ -2129,6 +2125,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "spatial_ref_sys", primary_key: "srid", id: :integer, default: nil, force: :cascade do |t|
+    t.string "auth_name", limit: 256
+    t.integer "auth_srid"
+    t.string "srtext", limit: 2048
+    t.string "proj4text", limit: 2048
+    t.check_constraint "srid > 0 AND srid <= 998999", name: "spatial_ref_sys_srid_check"
+  end
+
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.integer "item_id", null: false
@@ -2172,7 +2176,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_101531) do
   add_foreign_key "decidim_initiatives_settings", "decidim_organizations"
   add_foreign_key "decidim_newsletters", "decidim_users", column: "author_id"
   add_foreign_key "decidim_participatory_process_steps", "decidim_participatory_processes"
+  add_foreign_key "decidim_participatory_process_types", "decidim_organizations"
   add_foreign_key "decidim_participatory_processes", "decidim_organizations"
+  add_foreign_key "decidim_participatory_processes", "decidim_participatory_process_types"
   add_foreign_key "decidim_participatory_processes", "decidim_scope_types"
   add_foreign_key "decidim_proposals_proposals", "decidim_proposals_proposal_states"
   add_foreign_key "decidim_reminder_deliveries", "decidim_reminders"

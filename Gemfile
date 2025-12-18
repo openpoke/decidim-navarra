@@ -17,6 +17,7 @@ gem "decidim-term_customizer", github: "openpoke/decidim-module-term_customizer"
 
 gem "deface", ">= 1.9"
 gem "faraday"
+gem "faraday-multipart"
 gem "health_check"
 gem "puma", ">= 5.3.1"
 gem "rails_semantic_logger"

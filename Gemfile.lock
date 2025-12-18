@@ -416,6 +416,8 @@ GEM
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
+    faraday-multipart (1.1.1)
+      multipart-post (~> 2.0)
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     ffi (1.17.2-x86_64-linux-gnu)
@@ -547,6 +549,7 @@ GEM
     msgpack (1.8.0)
     multi_xml (0.7.2)
       bigdecimal (~> 3.1)
+    multipart-post (2.4.1)
     net-http (0.6.0)
       uri
     net-imap (0.5.12)
@@ -893,6 +896,7 @@ DEPENDENCIES
   deface (>= 1.9)
   faker (~> 3.2)
   faraday
+  faraday-multipart
   health_check
   letter_opener_web
   puma (>= 5.3.1)
