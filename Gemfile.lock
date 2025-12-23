@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/decidim-ice/decidim-module-decidim_awesome.git
-  revision: b6b98f16c89395e6239bed143f782615438ebdc8
+  revision: a9f2077f80438f6bc7b9fa7c26aa150cac46523a
   branch: release/0.29-stable
   specs:
-    decidim-decidim_awesome (0.12.5)
+    decidim-decidim_awesome (0.12.6)
       active_hashcash (~> 0.4.0)
       decidim-admin (>= 0.29.1, < 0.30)
       decidim-core (>= 0.29.1, < 0.30)
@@ -203,7 +203,7 @@ GIT
 GIT
   remote: https://github.com/openpoke/decidim-module-anonymous_proposals.git
   revision: 54aa291751760345a382bd455530393bca4964ce
-  branch: main
+  branch: release/0.29-stable
   specs:
     decidim-anonymous_proposals (0.29)
       decidim-core (>= 0.29)
@@ -410,7 +410,7 @@ GEM
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
-    faker (3.5.2)
+    faker (3.5.3)
       i18n (>= 1.8.11, < 2)
     faraday (2.14.0)
       faraday-net_http (>= 2.0, < 3.5)
@@ -800,12 +800,12 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    sidekiq (7.3.9)
+    sidekiq (7.3.10)
       base64
-      connection_pool (>= 2.3.0)
+      connection_pool (>= 2.3.0, < 3)
       logger
-      rack (>= 2.2.4)
-      redis-client (>= 0.22.2)
+      rack (>= 2.2.4, < 3.3)
+      redis-client (>= 0.23.0, < 1)
     sidekiq-cron (2.3.1)
       cronex (>= 0.13.0)
       fugit (~> 1.8, >= 1.11.1)

@@ -6,7 +6,7 @@ ruby RUBY_VERSION
 DECIDIM_VERSION = { github: "decidim/decidim", branch: "release/0.29-stable" }.freeze
 
 gem "decidim", DECIDIM_VERSION
-gem "decidim-anonymous_proposals", github: "openpoke/decidim-module-anonymous_proposals", branch: "main"
+gem "decidim-anonymous_proposals", github: "openpoke/decidim-module-anonymous_proposals", branch: "release/0.29-stable"
 gem "decidim-conferences", DECIDIM_VERSION
 gem "decidim-initiatives", DECIDIM_VERSION
 gem "decidim-templates", DECIDIM_VERSION
