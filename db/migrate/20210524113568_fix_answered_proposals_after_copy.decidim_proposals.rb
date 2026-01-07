@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_proposals (originally 20210127115628)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class FixAnsweredProposalsAfterCopy < ActiveRecord::Migration[5.2]
   def change
-    proposals_after_copy = Decidim::ResourceLink.where(from_type: 'Decidim::Proposals::Proposal').pluck(:from_id)
+    proposals_after_copy = Decidim::ResourceLink.where(from_type: "Decidim::Proposals::Proposal").pluck(:from_id)
 
     result = Decidim::Proposals::Proposal.where.not(state_published_at: nil).where(state: nil, id: proposals_after_copy)
 

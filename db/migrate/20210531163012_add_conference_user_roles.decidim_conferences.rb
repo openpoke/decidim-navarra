@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_conferences (originally 20180626152015)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:04 UTC
 class AddConferenceUserRoles < ActiveRecord::Migration[5.2]
   def change
     create_table :decidim_conference_user_roles do |t|
@@ -12,8 +12,8 @@ class AddConferenceUserRoles < ActiveRecord::Migration[5.2]
     end
 
     add_index :decidim_conference_user_roles,
-              %i[decidim_conference_id decidim_user_id role],
+              [:decidim_conference_id, :decidim_user_id, :role],
               unique: true,
-              name: 'index_unique_user_and_conference_role'
+              name: "index_unique_user_and_conference_role"
   end
 end

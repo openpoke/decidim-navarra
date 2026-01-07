@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_surveys (originally 20180405015147)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class CreateDecidimSurveyAnswerChoices < ActiveRecord::Migration[5.1]
   class SurveyAnswer < ApplicationRecord
     self.table_name = :decidim_surveys_survey_answers
@@ -21,9 +21,8 @@ class CreateDecidimSurveyAnswerChoices < ActiveRecord::Migration[5.1]
 
   def up
     create_table :decidim_surveys_survey_answer_choices do |t|
-      t.references :decidim_survey_answer, index: { name: 'index_decidim_surveys_answer_choices_answer_id' }
-      t.references :decidim_survey_answer_option,
-                   index: { name: 'index_decidim_surveys_answer_choices_answer_option_id' }
+      t.references :decidim_survey_answer, index: { name: "index_decidim_surveys_answer_choices_answer_id" }
+      t.references :decidim_survey_answer_option, index: { name: "index_decidim_surveys_answer_choices_answer_option_id" }
       t.jsonb :body
     end
 
@@ -35,7 +34,7 @@ class CreateDecidimSurveyAnswerChoices < ActiveRecord::Migration[5.1]
         answer_options = SurveyAnswerOption.where(decidim_survey_question_id: question.id)
 
         answer_option = answer_options.find do |option|
-          option.body.value?(answer_choice)
+          option.body.has_value?(answer_choice)
         end
 
         SurveyAnswerChoice.create!(

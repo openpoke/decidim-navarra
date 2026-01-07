@@ -37,7 +37,7 @@ class SendmailRestHandler
       f.request :multipart
       f.request :url_encoded
       f.adapter Faraday.default_adapter
-    end.tap do |conn|
+    end.tap do |conn| # rubocop:disable Style/MultilineBlockChain
       auth = Base64.strict_encode64("api:#{api_key}")
       conn.headers["Authorization"] = "Basic #{auth}"
     end

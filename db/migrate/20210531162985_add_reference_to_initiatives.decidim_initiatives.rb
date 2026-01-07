@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_initiatives (originally 20181211112538)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class AddReferenceToInitiatives < ActiveRecord::Migration[5.2]
   class Initiative < ApplicationRecord
     self.table_name = :decidim_initiatives
 
     belongs_to :organization,
-               foreign_key: 'decidim_organization_id',
-               class_name: 'Decidim::Organization'
+               foreign_key: "decidim_organization_id",
+               class_name: "Decidim::Organization"
 
     include Decidim::Participable
     include Decidim::HasReference

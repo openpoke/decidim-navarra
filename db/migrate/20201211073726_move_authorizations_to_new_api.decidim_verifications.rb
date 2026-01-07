@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_verifications (originally 20171030133426)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:06 UTC
 #
 # Assumes to authorizations in the old format (as rectify form classes) will be
 # registered as the underscored class name using the new API. For example, a
@@ -44,8 +44,8 @@ class MoveAuthorizationsToNewApi < ActiveRecord::Migration[5.1]
         next if value.nil?
 
         {
-          'authorization_handler_name' => value['authorization_handler_name']&.classify&.demodulize&.underscore,
-          'options' => value['options']
+          "authorization_handler_name" => value["authorization_handler_name"]&.classify&.demodulize&.underscore,
+          "options" => value["options"]
         }
       end
 
