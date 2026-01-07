@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 ruby RUBY_VERSION
-DECIDIM_VERSION = { github: "decidim/decidim", branch: "release/0.29-stable" }.freeze
+DECIDIM_VERSION = { github: "decidim/decidim", branch: "release/0.31-stable" }.freeze
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-anonymous_proposals", github: "openpoke/decidim-module-anonymous_proposals", branch: "release/0.29-stable"
@@ -13,6 +13,7 @@ gem "decidim-templates", DECIDIM_VERSION
 
 gem "bootsnap", "~> 1.4"
 gem "decidim-decidim_awesome", github: "decidim-ice/decidim-module-decidim_awesome", branch: "release/0.29-stable"
+gem "decidim-module-pokecode", github: "openpoke/decidim-module-pokecode"
 gem "decidim-term_customizer", github: "openpoke/decidim-module-term_customizer", branch: "release/0.29-stable"
 
 gem "deface", ">= 1.9"
