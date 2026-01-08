@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_assemblies (originally 20170727190859)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:04 UTC
 class AddAssemblies < ActiveRecord::Migration[5.0]
   def change
     create_table :decidim_assemblies do |t|
@@ -10,7 +10,7 @@ class AddAssemblies < ActiveRecord::Migration[5.0]
 
       t.integer :decidim_organization_id,
                 foreign_key: true,
-                index: { name: 'index_decidim_assemblies_on_decidim_organization_id' }
+                index: { name: "index_decidim_assemblies_on_decidim_organization_id" }
 
       t.datetime :created_at, null: false
       t.datetime :updated_at, null: false
@@ -31,8 +31,8 @@ class AddAssemblies < ActiveRecord::Migration[5.0]
       t.boolean :show_statistics, default: false
       t.integer :decidim_scope_id
 
-      t.index %i[decidim_organization_id slug],
-              name: 'index_unique_assembly_slug_and_organization',
+      t.index [:decidim_organization_id, :slug],
+              name: "index_unique_assembly_slug_and_organization",
               unique: true
     end
   end

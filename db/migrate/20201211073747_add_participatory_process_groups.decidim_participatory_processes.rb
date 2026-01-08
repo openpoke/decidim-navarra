@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_participatory_processes (originally 20170228142440)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class AddParticipatoryProcessGroups < ActiveRecord::Migration[5.0]
   def change
     create_table :decidim_participatory_process_groups do |t|
@@ -9,7 +9,7 @@ class AddParticipatoryProcessGroups < ActiveRecord::Migration[5.0]
       t.jsonb :description, null: false
       t.string :hero_image
 
-      t.references :decidim_organization, index: { name: 'decidim_participatory_process_group_organization' }
+      t.references :decidim_organization, index: { name: "decidim_participatory_process_group_organization" }
 
       t.timestamps
     end

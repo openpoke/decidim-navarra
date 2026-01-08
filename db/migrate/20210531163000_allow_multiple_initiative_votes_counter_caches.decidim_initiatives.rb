@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_initiatives (originally 20191116170841)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class AllowMultipleInitiativeVotesCounterCaches < ActiveRecord::Migration[5.2]
   class InitiativeVote < ApplicationRecord
     self.table_name = :decidim_initiatives_votes
@@ -9,7 +9,7 @@ class AllowMultipleInitiativeVotesCounterCaches < ActiveRecord::Migration[5.2]
 
   class Initiative < ApplicationRecord
     self.table_name = :decidim_initiatives
-    has_many :votes, foreign_key: 'decidim_initiative_id', class_name: 'InitiativeVote'
+    has_many :votes, foreign_key: "decidim_initiative_id", class_name: "InitiativeVote"
   end
 
   def change
@@ -19,11 +19,13 @@ class AllowMultipleInitiativeVotesCounterCaches < ActiveRecord::Migration[5.2]
 
     Initiative.find_each do |initiative|
       online_votes = initiative.votes.group(:decidim_scope_id).count.each_with_object({}) do |(scope_id, count), counters|
-        counters[scope_id || 'global'] = count
-        counters['total'] = count
+        counters[scope_id || "global"] = count
+        counters["total"] = count
       end
 
-      initiative.update_column('online_votes', online_votes)
+      # rubocop:disable Rails/SkipsModelValidations
+      initiative.update_column("online_votes", online_votes)
+      # rubocop:enable Rails/SkipsModelValidations
     end
 
     remove_column :decidim_initiatives, :initiative_supports_count

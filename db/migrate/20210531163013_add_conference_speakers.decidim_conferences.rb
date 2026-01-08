@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_conferences (originally 20180702084256)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:04 UTC
 class AddConferenceSpeakers < ActiveRecord::Migration[5.2]
   def change
     create_table :decidim_conference_speakers do |t|
@@ -13,7 +13,7 @@ class AddConferenceSpeakers < ActiveRecord::Migration[5.2]
       t.jsonb :short_bio
       t.string :personal_url
       t.string :avatar
-      t.references :decidim_user, index: { name: 'index_decidim_conference_speaker_on_decidim_user_id' }
+      t.references :decidim_user, index: { name: "index_decidim_conference_speaker_on_decidim_user_id" }
 
       t.timestamps
     end

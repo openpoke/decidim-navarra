@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_meetings (originally 20210512100333)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class DropDecidimMeetingsMinutesTable < ActiveRecord::Migration[6.0]
   class Minutes < ApplicationRecord
-    self.table_name = 'decidim_meetings_minutes'
+    self.table_name = "decidim_meetings_minutes"
   end
 
   class ActionLog < ApplicationRecord
-    self.table_name = 'decidim_action_logs'
+    self.table_name = "decidim_action_logs"
   end
 
   class Version < ApplicationRecord
@@ -16,16 +16,17 @@ class DropDecidimMeetingsMinutesTable < ActiveRecord::Migration[6.0]
   end
 
   class Meeting < ApplicationRecord
-    self.table_name = 'decidim_meetings_meetings'
+    self.table_name = "decidim_meetings_meetings"
   end
 
   def up
-    ActionLog.where(resource_type: 'Decidim::Meetings::Minutes').each do |action_log|
+    ActionLog.where(resource_type: "Decidim::Meetings::Minutes").each do |action_log|
       minutes = Minutes.find_by(id: action_log.resource_id)
       version = Version.find_by(id: action_log.version_id)
+      next unless minutes && version
 
       version_updates = {
-        item_type: 'Decidim::Meetings::Meeting',
+        item_type: "Decidim::Meetings::Meeting",
         item_id: minutes.decidim_meeting_id
       }
       if version.object_changes.present?
@@ -36,9 +37,9 @@ class DropDecidimMeetingsMinutesTable < ActiveRecord::Migration[6.0]
 
       version.update!(version_updates)
       action_log.update!(
-        resource_type: 'Decidim::Meetings::Meeting',
+        resource_type: "Decidim::Meetings::Meeting",
         resource_id: minutes.decidim_meeting_id,
-        action: 'close'
+        action: "close"
       )
     end
 
@@ -73,7 +74,7 @@ end
 private
 
 def blank_minutes?(meeting)
-  meeting.video_url.blank? &&
+  (meeting.video_url.blank? &&
     meeting.audio_url.blank? &&
-    meeting.minutes_description.blank? || meeting.minutes_description.is_a?(Hash) && meeting.minutes_description.values.all?(&:blank?)
+    meeting.minutes_description.blank?) || (meeting.minutes_description.is_a?(Hash) && meeting.minutes_description.values.all?(&:blank?))
 end

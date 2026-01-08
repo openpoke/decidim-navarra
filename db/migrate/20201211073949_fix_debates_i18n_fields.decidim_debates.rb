@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_debates (originally 20200708072042)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class FixDebatesI18nFields < ActiveRecord::Migration[5.2]
   class User < ApplicationRecord
     self.table_name = :decidim_users
@@ -19,7 +19,7 @@ class FixDebatesI18nFields < ActiveRecord::Migration[5.2]
     reset_column_information
 
     debates.find_each do |debate|
-      locale, org_id = User.where(id: debate.decidim_author_id).pluck(:locale, :decidim_organization_id).first
+      locale, org_id = User.where(id: debate.decidim_author_id).pick(:locale, :decidim_organization_id)
       locale = locale.presence || Organization.find(org_id).default_locale
       locale = locale.to_s
 
@@ -38,7 +38,7 @@ class FixDebatesI18nFields < ActiveRecord::Migration[5.2]
 
   def debates
     Debate
-      .where.not(decidim_author_type: 'Decidim::Organization')
+      .where.not(decidim_author_type: "Decidim::Organization")
       .select(:id, :decidim_author_id, :title, :description)
   end
 

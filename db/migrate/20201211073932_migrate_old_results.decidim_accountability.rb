@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_accountability (originally 20170928073905)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:04 UTC
 class MigrateOldResults < ActiveRecord::Migration[5.1]
   class OldResult < ApplicationRecord
     self.table_name = :decidim_results_results
@@ -26,6 +26,7 @@ class MigrateOldResults < ActiveRecord::Migration[5.1]
   def up
     return unless ActiveRecord::Base.connection.data_source_exists? :decidim_results_results
 
+    # rubocop:disable Rails/SkipsModelValidations
     OldResult.find_each do |old_result|
       Result.create!(
         id: old_result.id,
@@ -37,17 +38,18 @@ class MigrateOldResults < ActiveRecord::Migration[5.1]
 
       Categorization.where(
         categorizable_id: old_result.id,
-        categorizable_type: 'Decidim::Results::Result'
+        categorizable_type: "Decidim::Results::Result"
       ).update_all("categorizable_type = 'Decidim::Accountability::Result'")
 
       ResourceLink.where(
         from_id: old_result.id,
-        from_type: 'Decidim::Results::Result'
+        from_type: "Decidim::Results::Result"
       ).update_all("from_type = 'Decidim::Accountability::Result'")
     end
 
-    Feature.where(manifest_name: 'results').update_all("manifest_name = 'accountability'")
+    Feature.where(manifest_name: "results").update_all("manifest_name = 'accountability'")
 
     drop_table :decidim_results_results
   end
+  # rubocop:enable Rails/SkipsModelValidations
 end

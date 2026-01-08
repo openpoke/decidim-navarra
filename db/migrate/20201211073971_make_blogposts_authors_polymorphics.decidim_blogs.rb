@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_blogs (originally 20181017084519)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:04 UTC
 class MakeBlogpostsAuthorsPolymorphics < ActiveRecord::Migration[5.2]
   class Post < ApplicationRecord
     self.table_name = :decidim_blogs_posts
@@ -15,17 +15,17 @@ class MakeBlogpostsAuthorsPolymorphics < ActiveRecord::Migration[5.2]
     Post.reset_column_information
     Post.find_each do |post|
       if post.decidim_author_id.present?
-        post.decidim_author_type = 'Decidim::UserBaseEntity'
+        post.decidim_author_type = "Decidim::UserBaseEntity"
       else
         post.decidim_author_id = post.organization.id
-        post.decidim_author_type = 'Decidim::Organization'
+        post.decidim_author_type = "Decidim::Organization"
       end
       post.save!
     end
 
     add_index :decidim_blogs_posts,
-              %i[decidim_author_id decidim_author_type],
-              name: 'index_decidim_blogs_posts_on_decidim_author'
+              [:decidim_author_id, :decidim_author_type],
+              name: "index_decidim_blogs_posts_on_decidim_author"
     change_column_null :decidim_blogs_posts, :decidim_author_id, false
     change_column_null :decidim_blogs_posts, :decidim_author_type, false
 
