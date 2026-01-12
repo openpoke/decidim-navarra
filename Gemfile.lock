@@ -208,6 +208,15 @@ GIT
       decidim-core (= 0.31.0)
 
 GIT
+  remote: https://github.com/openpoke/decidim-module-anonymous_proposals.git
+  revision: a2970c999eb7a0271ae44b738c8e3d423252e86e
+  branch: upgrade-0.31
+  specs:
+    decidim-anonymous_proposals (0.31)
+      decidim-core (>= 0.31)
+      deface (~> 1.9)
+
+GIT
   remote: https://github.com/openpoke/decidim-module-pokecode.git
   revision: 22eba99a4052e0453758742ca8781859f7b11843
   branch: release/0.31-stable
@@ -507,7 +516,7 @@ GEM
     geom2d (0.4.1)
     globalid (1.3.0)
       activesupport (>= 6.1)
-    google-protobuf (4.33.2-x86_64-linux-gnu)
+    google-protobuf (4.33.3-x86_64-linux-gnu)
       bigdecimal
       rake (>= 13)
     graphql (2.4.17)
@@ -622,7 +631,7 @@ GEM
     minitest (6.0.1)
       prism (~> 1.5)
     msgpack (1.8.0)
-    multi_xml (0.8.0)
+    multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     net-http (0.9.1)
@@ -954,7 +963,7 @@ GEM
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
     thor (1.5.0)
-    tilt (2.6.1)
+    tilt (2.7.0)
     timeout (0.6.0)
     trailblazer-option (0.1.2)
     tsort (0.2.0)
@@ -1012,6 +1021,7 @@ DEPENDENCIES
   brakeman (~> 5.1)
   byebug (~> 11.0)
   decidim!
+  decidim-anonymous_proposals!
   decidim-conferences!
   decidim-decidim_awesome!
   decidim-dev!
