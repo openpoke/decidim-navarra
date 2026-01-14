@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_conferences (originally 20181004144411)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:04 UTC
 class AddConferencesPartner < ActiveRecord::Migration[5.2]
   def change
     create_table :decidim_conferences_partners do |t|
@@ -15,6 +15,6 @@ class AddConferencesPartner < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    add_index :decidim_conferences_partners, %i[weight partner_type]
+    add_index :decidim_conferences_partners, [:weight, :partner_type]
   end
 end

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_meetings (originally 20210518133236)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class MergeMinutesWithClosingReportInMeetingsTable < ActiveRecord::Migration[6.0]
   class Meeting < ApplicationRecord
-    self.table_name = 'decidim_meetings_meetings'
+    self.table_name = "decidim_meetings_meetings"
   end
 
   def up
@@ -55,5 +55,5 @@ end
 
 def minutes_data?(meeting)
   [meeting.video_url, meeting.audio_url].any?(&:present?) ||
-    meeting.minutes_description.is_a?(Hash) && meeting.minutes_description.values.any?(&:present?)
+    (meeting.minutes_description.is_a?(Hash) && meeting.minutes_description.values.any?(&:present?))
 end

@@ -3,11 +3,11 @@
 require "rails_helper"
 
 describe "Custom_styles" do
-  let(:organization) { create :organization }
-  let!(:participatory_process) { create :participatory_process, organization: }
-  let!(:participatory_process_group) { create :participatory_process_group, :with_participatory_processes, organization: }
-  let!(:config) { create :awesome_config, organization:, var: :scoped_styles, value: styles }
-  let(:config_helper) { create :awesome_config, organization:, var: :scoped_style_bar }
+  let(:organization) { create(:organization) }
+  let!(:participatory_process) { create(:participatory_process, organization:) }
+  let!(:participatory_process_group) { create(:participatory_process_group, :with_participatory_processes, organization:) }
+  let!(:config) { create(:awesome_config, organization:, var: :scoped_styles, value: styles) }
+  let(:config_helper) { create(:awesome_config, organization:, var: :scoped_style_bar) }
   let(:styles) do
     {
       "bar" => "body {background: red;}"

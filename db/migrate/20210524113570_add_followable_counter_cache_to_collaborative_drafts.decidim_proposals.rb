@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_proposals (originally 20210310120812)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class AddFollowableCounterCacheToCollaborativeDrafts < ActiveRecord::Migration[5.2]
   def change
     add_column :decidim_proposals_collaborative_drafts, :follows_count, :integer, null: false, default: 0, index: true

@@ -1,25 +1,36 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_sortitions (originally 20181017110803)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class MakeSortitionsAuthorsPolymorphic < ActiveRecord::Migration[5.2]
+  class User < ApplicationRecord
+    self.table_name = :decidim_users
+    self.inheritance_column = nil # disable the default inheritance
+
+    default_scope { where(type: "Decidim::User") }
+  end
+
+  class Sortition < ApplicationRecord
+    include Decidim::HasComponent
+
+    self.table_name = :decidim_sortitions_sortitions
+  end
+
   def change
     add_column :decidim_sortitions_sortitions, :decidim_author_type, :string
 
-    Decidim::Sortitions::Sortition.reset_column_information
-    Decidim::Sortitions::Sortition.includes(:author).find_each do |sortition|
-      author = if sortition.decidim_author_id.present?
-                 Decidim::User.find(sortition.decidim_author_id)
-               else
-                 sortition.organization
-               end
-      sortition.author = author
-      sortition.save!
+    Sortition.find_each do |sortition|
+      author = User.find_by(id: sortition.decidim_author_id) if sortition.decidim_author_id.present?
+      author ||= sortition.organization
+      sortition.update!(
+        decidim_author_type: author.is_a?(User) ? author.type : "Decidim::Organization",
+        decidim_author_id: author.id
+      )
     end
 
     add_index :decidim_sortitions_sortitions,
-              %i[decidim_author_id decidim_author_type],
-              name: 'index_decidim_sortitions_sortitions_on_decidim_author'
+              [:decidim_author_id, :decidim_author_type],
+              name: "index_decidim_sortitions_sortitions_on_decidim_author"
     change_column_null :decidim_sortitions_sortitions, :decidim_author_id, false
     change_column_null :decidim_sortitions_sortitions, :decidim_author_type, false
   end

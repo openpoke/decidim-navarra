@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_proposals (originally 20170307085300)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class MigrateProposalReportsDataToReports < ActiveRecord::Migration[5.0]
-  class ProposalReport < ApplicationRecord
-    self.table_name = "decidim_proposals_proposal_reports"
-    belongs_to :user, foreign_key: 'decidim_user_id', class_name: 'Decidim::User'
-    belongs_to :proposal, foreign_key: 'decidim_proposal_id', class_name: 'Decidim::Proposals::Proposal'
+  class Decidim::Proposals::ProposalReport < ApplicationRecord
+    belongs_to :user, foreign_key: "decidim_user_id", class_name: "Decidim::User"
+    belongs_to :proposal, foreign_key: "decidim_proposal_id", class_name: "Decidim::Proposals::Proposal"
   end
 
   def change
-    ProposalReport.find_each do |proposal_report|
+    Decidim::Proposals::ProposalReport.find_each do |proposal_report|
       moderation = Decidim::Moderation.find_or_create_by!(reportable: proposal_report.proposal,
                                                           participatory_process: proposal_report.proposal.feature.participatory_space)
       Decidim::Report.create!(moderation:,

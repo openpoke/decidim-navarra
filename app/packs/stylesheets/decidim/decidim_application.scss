@@ -43,19 +43,6 @@ $white: #fff;
       }
     }
   }
-  .main-header__language-chooser {
-    @apply relative z-10;
-
-    > ul {
-      @apply absolute left-0 bg-white p-4 shadow-md text-left;
-      >li {
-        @apply text-secondary text-md hover:underline hover:bg-secondary hover:text-white transition;
-        >a {
-          @apply p-2 w-full block;
-        }
-      }
-    }
-  }
 }
 
 // Personalization for topbar____logo_gobierno
