@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim_conferences (originally 20180626151505)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:04 UTC
 class AddConferences < ActiveRecord::Migration[5.2]
   def change
     create_table :decidim_conferences do |t|
@@ -13,7 +13,7 @@ class AddConferences < ActiveRecord::Migration[5.2]
       t.string :location
       t.integer :decidim_organization_id,
                 foreign_key: true,
-                index: { name: 'index_decidim_conferences_on_decidim_organization_id' }
+                index: { name: "index_decidim_conferences_on_decidim_organization_id" }
 
       t.jsonb :short_description, null: false
       t.jsonb :description, null: false
@@ -32,8 +32,8 @@ class AddConferences < ActiveRecord::Migration[5.2]
       t.integer :available_slots, null: false, default: 0
       t.jsonb :registration_terms
 
-      t.index %i[decidim_organization_id slug],
-              name: 'index_unique_conference_slug_and_organization',
+      t.index [:decidim_organization_id, :slug],
+              name: "index_unique_conference_slug_and_organization",
               unique: true
 
       t.timestamps

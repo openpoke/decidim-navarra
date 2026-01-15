@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim (originally 20181016091601)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class MakeAuthorsPolymorphic < ActiveRecord::Migration[5.2]
   class Coauthorship < ApplicationRecord
     self.table_name = :decidim_coauthorships
@@ -22,8 +22,8 @@ class MakeAuthorsPolymorphic < ActiveRecord::Migration[5.2]
     end
 
     add_index :decidim_coauthorships,
-              %i[decidim_author_id decidim_author_type],
-              name: 'index_decidim_coauthorships_on_decidim_author'
+              [:decidim_author_id, :decidim_author_type],
+              name: "index_decidim_coauthorships_on_decidim_author"
 
     change_column_null :decidim_coauthorships, :decidim_author_id, false
     change_column_null :decidim_coauthorships, :decidim_author_type, false

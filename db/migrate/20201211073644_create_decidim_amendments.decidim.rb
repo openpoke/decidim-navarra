@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim (originally 20180720114847)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class CreateDecidimAmendments < ActiveRecord::Migration[5.2]
   def change
     create_table :decidim_amendments do |t|
@@ -13,11 +13,11 @@ class CreateDecidimAmendments < ActiveRecord::Migration[5.2]
     end
 
     add_index :decidim_amendments,
-              %i[decidim_user_id decidim_amendable_id decidim_amendable_type],
-              name: 'index_on_amender_and_amendable'
+              [:decidim_user_id, :decidim_amendable_id, :decidim_amendable_type],
+              name: "index_on_amender_and_amendable"
 
     add_index :decidim_amendments,
-              %i[decidim_amendable_id decidim_amendable_type],
-              name: 'index_on_amendable'
+              [:decidim_amendable_id, :decidim_amendable_type],
+              name: "index_on_amendable"
   end
 end

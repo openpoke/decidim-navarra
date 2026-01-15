@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from decidim (originally 20200327082257)
-
+# This file has been modified by `decidim upgrade:migrations` task on 2026-01-07 14:30:05 UTC
 class MigrateNewslettersToTemplates < ActiveRecord::Migration[5.2]
   class ContentBlock < ApplicationRecord
     self.table_name = :decidim_content_blocks
@@ -12,7 +12,7 @@ class MigrateNewslettersToTemplates < ActiveRecord::Migration[5.2]
   end
 
   def change
-    remove_index :decidim_content_blocks, name: 'idx_dcdm_content_blocks_uniq_org_id_scope_manifest_name'
+    remove_index :decidim_content_blocks, name: "idx_dcdm_content_blocks_uniq_org_id_scope_manifest_name"
 
     Newsletter.find_each do |newsletter|
       existing_content_block = ContentBlock

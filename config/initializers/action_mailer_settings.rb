@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "sendmail_rest_handler"
+
 case ENV.fetch("MAILER_DELIVERY_METHOD", nil)
 when "webservice"
   require "mail_webservice_handler"

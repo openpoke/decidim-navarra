@@ -16,22 +16,22 @@ class AssembliesParser
 
   def transformed_data
     {
-      "title": localized_values("title"),
-      "subtitle": localized_values("subtitle"),
-      "slug": slug_value,
-      "hashtag": nil,
-      "short_description": localized_values("short_description"),
-      "description": localized_values("description"),
-      "weight": raw_content["weight"],
-      "attachments": { "files": nil },
-      "components": nil,
-      "scopes_enabled": true,
-      "decidim_scope_id": scope&.id,
-      "decidim_area_id": area&.id,
-      "decidim_assemblies_type_id": nil,
-      "private_space": false,
-      "is_transparent": false,
-      "original_id": external_id
+      title: localized_values("title"),
+      subtitle: localized_values("subtitle"),
+      slug: slug_value,
+      hashtag: nil,
+      short_description: localized_values("short_description"),
+      description: localized_values("description"),
+      weight: raw_content["weight"],
+      attachments: { files: nil },
+      components: nil,
+      scopes_enabled: true,
+      decidim_scope_id: scope&.id,
+      decidim_area_id: area&.id,
+      decidim_assemblies_type_id: nil,
+      private_space: false,
+      is_transparent: false,
+      original_id: external_id
     }
   end
 
