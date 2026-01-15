@@ -63,6 +63,7 @@ Rails.application.configure do
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
+  config.action_mailer.delivery_method = ENV.fetch("MAILER_DELIVERY_METHOD", "smtp").to_sym
   config.action_mailer.smtp_settings = {
     :address => Decidim::Env.new("SMTP_ADDRESS").to_s,
     :port => Decidim::Env.new("SMTP_PORT", 587).to_i,
