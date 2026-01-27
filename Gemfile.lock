@@ -11,9 +11,43 @@ GIT
       sassc (~> 2.3)
 
 GIT
-  remote: https://github.com/decidim/decidim.git
-  revision: e3f6fc3ac643056bff85f880290ab68c900a6bfb
+  remote: https://github.com/openpoke/decidim-module-anonymous_proposals.git
+  revision: a2970c999eb7a0271ae44b738c8e3d423252e86e
+  branch: upgrade-0.31
+  specs:
+    decidim-anonymous_proposals (0.31)
+      decidim-core (>= 0.31)
+      deface (~> 1.9)
+
+GIT
+  remote: https://github.com/openpoke/decidim-module-pokecode.git
+  revision: 22eba99a4052e0453758742ca8781859f7b11843
   branch: release/0.31-stable
+  specs:
+    decidim-pokecode (0.2.0)
+      aws-sdk-s3
+      decidim-core (>= 0.31.0, < 0.32)
+      deface (>= 1.5)
+      health_check
+      rails_semantic_logger
+      sentry-rails
+      sentry-ruby
+      sidekiq
+      sidekiq-cron
+
+GIT
+  remote: https://github.com/openpoke/decidim-module-term_customizer.git
+  revision: 8cd8bafc273b34ff7dae7c0dcbf231062aa68466
+  branch: release/0.31-stable
+  specs:
+    decidim-term_customizer (0.31)
+      decidim-admin (~> 0.31.0)
+      decidim-core (~> 0.31.0)
+
+GIT
+  remote: https://github.com/openpoke/decidim.git
+  revision: 4866bd781f5c33619e950f4839a5047b5cae0ceb
+  branch: fix/attachment_notification
   specs:
     decidim (0.31.0)
       decidim-accountability (= 0.31.0)
@@ -38,12 +72,6 @@ GIT
     decidim-accountability (0.31.0)
       decidim-comments (= 0.31.0)
       decidim-core (= 0.31.0)
-    decidim-admin (0.31.0)
-      active_link_to (~> 1.0)
-      decidim-core (= 0.31.0)
-      devise (~> 4.7)
-      devise-i18n (~> 1.2)
-      devise_invitable (~> 2.0, >= 2.0.9)
     decidim-api (0.31.0)
       decidim-core (= 0.31.0)
       devise-jwt (~> 0.12.1)
@@ -65,61 +93,6 @@ GIT
     decidim-conferences (0.31.0)
       decidim-core (= 0.31.0)
       decidim-meetings (= 0.31.0)
-    decidim-core (0.31.0)
-      active_link_to (~> 1.0)
-      acts_as_list (~> 1.0)
-      batch-loader (~> 2.0)
-      browser (~> 6.2.0)
-      cells-erb (~> 0.1.0)
-      cells-rails (~> 0.1.3)
-      charlock_holmes (~> 0.7)
-      chartkick (~> 5.1.2)
-      concurrent-ruby (~> 1.3.0)
-      connection_pool (< 3)
-      data_migrate (~> 11.3)
-      date_validator (~> 0.12.0)
-      devise (~> 4.7)
-      devise-i18n (~> 1.2)
-      diffy (~> 3.3)
-      doorkeeper (~> 5.6, >= 5.6.6)
-      doorkeeper-i18n (~> 4.0)
-      file_validators (~> 3.0)
-      fog-local (~> 0.6)
-      geocoder (~> 1.8)
-      hashdiff (>= 0.4.0, < 2.0.0)
-      hexapdf (~> 1.1.0)
-      image_processing (~> 1.2)
-      invisible_captcha (~> 0.12)
-      kaminari (~> 1.2, >= 1.2.1)
-      loofah (~> 2.19, >= 2.19.1)
-      mime-types (>= 1.16, < 4.0)
-      mini_magick (~> 4.9)
-      net-smtp (~> 0.5.0)
-      nokogiri (~> 1.16, >= 1.16.2)
-      omniauth (~> 2.0)
-      omniauth-facebook (~> 5.0)
-      omniauth-google-oauth2 (~> 1.0)
-      omniauth-rails_csrf_protection (~> 1.0)
-      omniauth-twitter (~> 1.4)
-      paper_trail (~> 16.0)
-      paranoia (~> 3.0.0)
-      pg (~> 1.5.0, < 2)
-      pg_search (~> 2.2)
-      premailer-rails (~> 1.10)
-      rack (~> 2.2, >= 2.2.8.1)
-      rack-attack (~> 6.0)
-      rails (~> 7.2.0, >= 7.2.2.2)
-      rails-i18n (~> 7.0)
-      ransack (~> 4.2.0)
-      redis (~> 4.1)
-      request_store (~> 1.7.0)
-      rqrcode (~> 2.2.0)
-      rubyXL (~> 3.4)
-      rubyzip (~> 2.0)
-      shakapacker (~> 8.3.0)
-      valid_email2 (~> 7.0)
-      web-push (~> 3.0)
-      wisper (~> 3.0)
     decidim-debates (0.31.0)
       decidim-comments (= 0.31.0)
       decidim-core (= 0.31.0)
@@ -206,40 +179,6 @@ GIT
       decidim-forms (= 0.31.0)
     decidim-verifications (0.31.0)
       decidim-core (= 0.31.0)
-
-GIT
-  remote: https://github.com/openpoke/decidim-module-anonymous_proposals.git
-  revision: a2970c999eb7a0271ae44b738c8e3d423252e86e
-  branch: upgrade-0.31
-  specs:
-    decidim-anonymous_proposals (0.31)
-      decidim-core (>= 0.31)
-      deface (~> 1.9)
-
-GIT
-  remote: https://github.com/openpoke/decidim-module-pokecode.git
-  revision: 22eba99a4052e0453758742ca8781859f7b11843
-  branch: release/0.31-stable
-  specs:
-    decidim-pokecode (0.2.0)
-      aws-sdk-s3
-      decidim-core (>= 0.31.0, < 0.32)
-      deface (>= 1.5)
-      health_check
-      rails_semantic_logger
-      sentry-rails
-      sentry-ruby
-      sidekiq
-      sidekiq-cron
-
-GIT
-  remote: https://github.com/openpoke/decidim-module-term_customizer.git
-  revision: 8cd8bafc273b34ff7dae7c0dcbf231062aa68466
-  branch: release/0.31-stable
-  specs:
-    decidim-term_customizer (0.31)
-      decidim-admin (~> 0.31.0)
-      decidim-core (~> 0.31.0)
 
 GEM
   remote: https://rubygems.org/
@@ -398,7 +337,7 @@ GEM
     commonmarker (0.23.12)
     concurrent-ruby (1.3.6)
     connection_pool (2.5.5)
-    crack (1.0.0)
+    crack (1.0.1)
       bigdecimal
       rexml
     crass (1.0.6)
@@ -415,6 +354,67 @@ GEM
     date_validator (0.12.0)
       activemodel (>= 3)
       activesupport (>= 3)
+    decidim-admin (0.31.0)
+      active_link_to (~> 1.0)
+      decidim-core (= 0.31.0)
+      devise (~> 4.7)
+      devise-i18n (~> 1.2)
+      devise_invitable (~> 2.0, >= 2.0.9)
+    decidim-core (0.31.0)
+      active_link_to (~> 1.0)
+      acts_as_list (~> 1.0)
+      batch-loader (~> 2.0)
+      browser (~> 6.2.0)
+      cells-erb (~> 0.1.0)
+      cells-rails (~> 0.1.3)
+      charlock_holmes (~> 0.7)
+      chartkick (~> 5.1.2)
+      concurrent-ruby (~> 1.3.0)
+      connection_pool (< 3)
+      data_migrate (~> 11.3)
+      date_validator (~> 0.12.0)
+      devise (~> 4.7)
+      devise-i18n (~> 1.2)
+      diffy (~> 3.3)
+      doorkeeper (~> 5.6, >= 5.6.6)
+      doorkeeper-i18n (~> 4.0)
+      file_validators (~> 3.0)
+      fog-local (~> 0.6)
+      geocoder (~> 1.8)
+      hashdiff (>= 0.4.0, < 2.0.0)
+      hexapdf (~> 1.1.0)
+      image_processing (~> 1.2)
+      invisible_captcha (~> 0.12)
+      kaminari (~> 1.2, >= 1.2.1)
+      loofah (~> 2.19, >= 2.19.1)
+      mime-types (>= 1.16, < 4.0)
+      mini_magick (~> 4.9)
+      net-smtp (~> 0.5.0)
+      nokogiri (~> 1.16, >= 1.16.2)
+      omniauth (~> 2.0)
+      omniauth-facebook (~> 5.0)
+      omniauth-google-oauth2 (~> 1.0)
+      omniauth-rails_csrf_protection (~> 1.0)
+      omniauth-twitter (~> 1.4)
+      paper_trail (~> 16.0)
+      paranoia (~> 3.0.0)
+      pg (~> 1.5.0, < 2)
+      pg_search (~> 2.2)
+      premailer-rails (~> 1.10)
+      rack (~> 2.2, >= 2.2.8.1)
+      rack-attack (~> 6.0)
+      rails (~> 7.2.0, >= 7.2.2.2)
+      rails-i18n (~> 7.0)
+      ransack (~> 4.2.0)
+      redis (~> 4.1)
+      request_store (~> 1.7.0)
+      rqrcode (~> 2.2.0)
+      rubyXL (~> 3.4)
+      rubyzip (~> 2.0)
+      shakapacker (~> 8.3.0)
+      valid_email2 (~> 7.0)
+      web-push (~> 3.0)
+      wisper (~> 3.0)
     declarative-builder (0.2.0)
       trailblazer-option (~> 0.1.0)
     declarative-option (0.1.0)
@@ -477,7 +477,7 @@ GEM
       logger
     extended-markdown-filter (0.7.0)
       html-pipeline (~> 2.9)
-    factory_bot (6.5.5)
+    factory_bot (6.5.6)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
@@ -516,7 +516,7 @@ GEM
     geom2d (0.4.1)
     globalid (1.3.0)
       activesupport (>= 6.1)
-    google-protobuf (4.33.3-x86_64-linux-gnu)
+    google-protobuf (4.33.4-x86_64-linux-gnu)
       bigdecimal
       rake (>= 13)
     graphql (2.4.17)
@@ -551,13 +551,14 @@ GEM
     htmlentities (4.4.2)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
-    i18n-tasks (1.0.15)
+    i18n-tasks (1.1.2)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
       erubi
-      highline (>= 2.0.0)
+      highline (>= 3.0.0)
       i18n
       parser (>= 3.2.2.1)
+      prism
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.8, >= 1.8.1)
@@ -607,7 +608,8 @@ GEM
       railties (>= 6.1)
       rexml
     lint_roller (1.1.0)
-    listen (3.9.0)
+    listen (3.10.0)
+      logger
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.7.0)
@@ -832,7 +834,7 @@ GEM
     rspec-html-matchers (0.10.0)
       nokogiri (~> 1)
       rspec (>= 3.0.0.a)
-    rspec-mocks (3.13.6)
+    rspec-mocks (3.13.7)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-rails (6.1.5)
@@ -903,12 +905,12 @@ GEM
       nokogiri (>= 1.10.8)
       rubyzip (>= 1.3.0)
     rubyzip (2.3.2)
-    sass-embedded (1.97.2-x86_64-linux-gnu)
+    sass-embedded (1.97.3-x86_64-linux-gnu)
       google-protobuf (~> 4.31)
     sassc (2.4.0)
       ffi (~> 1.9)
     securerandom (0.4.1)
-    selenium-webdriver (4.37.0)
+    selenium-webdriver (4.40.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -997,7 +999,7 @@ GEM
     web-push (3.1.0)
       jwt (~> 3.0)
       openssl (>= 3.0)
-    webmock (3.25.1)
+    webmock (3.26.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
