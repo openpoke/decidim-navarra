@@ -80,6 +80,11 @@ services:
     depends_on:
       - redis
     network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
   redis:
     container_name: redis
     image: redis
