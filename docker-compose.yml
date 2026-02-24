@@ -90,7 +90,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1G
+          memory: 200M 
     network_mode: host
 volumes:
   redis_data:
