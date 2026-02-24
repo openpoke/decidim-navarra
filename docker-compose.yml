@@ -86,6 +86,7 @@ services:
     volumes:
       - redis_data:/data
     restart: ${RESTART_POLICY:-always}
+    command: ["redis-server", "--appendonly", "no", "--maxmemory", "100mb", "--maxmemory-policy", "allkeys-lru"]
     deploy:
       resources:
         limits:
