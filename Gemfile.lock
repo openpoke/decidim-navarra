@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/decidim-ice/decidim-module-decidim_awesome.git
-  revision: 10c7c729d0bac9c35f3df7e3708c2e3c16719889
+  revision: 823c15b11ee9a9a0fdbea3c14bb980ed4b47b243
   branch: feature/process-groups-content-block-filters
   specs:
     decidim-decidim_awesome (0.14.0)
