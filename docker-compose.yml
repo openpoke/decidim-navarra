@@ -86,6 +86,10 @@ services:
     volumes:
       - redis_data:/data
     restart: ${RESTART_POLICY:-always}
+    deploy:
+      resources:
+        limits:
+          memory: 1G
     network_mode: host
 volumes:
   redis_data:
