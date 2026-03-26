@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_14_172302) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_26_103819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
   enable_extension "plpgsql"
@@ -414,7 +414,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_172302) do
     t.jsonb "title"
     t.integer "weight", default: 0, null: false
     t.jsonb "description"
-    t.integer "total_budget", default: 0
+    t.bigint "total_budget", default: 0
     t.integer "decidim_component_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -874,6 +874,14 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_172302) do
     t.index ["decidim_organization_id"], name: "decidim_editor_images_constraint_organization"
   end
 
+  create_table "decidim_file_authorization_handler_census_data", force: :cascade do |t|
+    t.bigint "decidim_organization_id"
+    t.string "id_document"
+    t.date "birthdate"
+    t.datetime "created_at", precision: nil, null: false
+    t.index ["decidim_organization_id"], name: "decidim_census_data_org_id_index"
+  end
+
   create_table "decidim_follows", force: :cascade do |t|
     t.bigint "decidim_user_id", null: false
     t.string "decidim_followable_type"
@@ -1201,9 +1209,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_172302) do
     t.string "online_meeting_url"
     t.string "registration_url"
     t.string "salt"
-    t.integer "follows_count", default: 0, null: false
     t.boolean "customize_registration_email", default: false
     t.jsonb "registration_email_custom_content"
+    t.integer "follows_count", default: 0, null: false
     t.datetime "published_at", precision: nil
     t.string "video_url"
     t.string "audio_url"
@@ -1214,13 +1222,13 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_172302) do
     t.string "state"
     t.integer "iframe_access_level", default: 0
     t.integer "iframe_embed_type", default: 0
+    t.integer "type_of_meeting", default: 0, null: false
+    t.integer "registration_type", default: 0, null: false
+    t.datetime "withdrawn_at", precision: nil
     t.boolean "reminder_enabled"
     t.integer "send_reminders_before_hours"
     t.jsonb "reminder_message_custom_content"
     t.boolean "waitlist_enabled", default: false, null: false
-    t.integer "type_of_meeting", default: 0, null: false
-    t.integer "registration_type", default: 0, null: false
-    t.datetime "withdrawn_at", precision: nil
     t.datetime "deleted_at"
     t.index ["decidim_author_id", "decidim_author_type"], name: "index_decidim_meetings_meetings_on_author"
     t.index ["decidim_author_id"], name: "index_decidim_meetings_meetings_on_decidim_author_id"
@@ -2134,14 +2142,14 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_172302) do
     t.datetime "locked_at", precision: nil
     t.string "session_token"
     t.string "direct_message_types", default: "all", null: false
-    t.datetime "officialized_at", precision: nil
-    t.jsonb "officialized_as"
-    t.datetime "admin_terms_accepted_at", precision: nil
     t.boolean "blocked", default: false, null: false
     t.datetime "blocked_at", precision: nil
     t.integer "block_id"
     t.boolean "email_on_moderations", default: true
     t.integer "follows_count", default: 0, null: false
+    t.datetime "officialized_at", precision: nil
+    t.jsonb "officialized_as"
+    t.datetime "admin_terms_accepted_at", precision: nil
     t.jsonb "notification_settings", default: {}
     t.string "notifications_sending_frequency", default: "daily"
     t.datetime "digest_sent_at", precision: nil
@@ -2279,7 +2287,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_172302) do
   add_foreign_key "decidim_initiatives_settings", "decidim_organizations"
   add_foreign_key "decidim_newsletters", "decidim_users", column: "author_id"
   add_foreign_key "decidim_participatory_process_steps", "decidim_participatory_processes"
-  add_foreign_key "decidim_participatory_process_types", "decidim_organizations"
   add_foreign_key "decidim_participatory_processes", "decidim_organizations"
   add_foreign_key "decidim_participatory_processes", "decidim_participatory_process_types"
   add_foreign_key "decidim_participatory_processes", "decidim_scope_types"
