@@ -22,7 +22,7 @@ namespace :decidim_navarra do
 
         spaces.each do |space|
           scope_name = manifest.content_blocks_scope_name
-          has_documents = space.attachments.where.not("content_type LIKE ?", "image/%").exists?
+          has_documents = space.attachments.documents.exists?
 
           if has_documents
             RelatedDocumentsContentBlockSync.activate(organization:, scope_name:, resource: space)
