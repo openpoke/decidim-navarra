@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 namespace :decidim_navarra do
-  desc "Activate or deactivate the 'related_documents' content block for each participatory space " \
-       "based on whether it has document attachments"
+  desc "Activate or deactivate the 'related_documents' content block for each participatory space" \
+       " based on whether it has document attachments"
   task sync_related_documents_content_blocks: :environment do
     manifests_with_related_documents = Decidim.participatory_space_manifests.select do |manifest|
       scope_name = manifest.content_blocks_scope_name
