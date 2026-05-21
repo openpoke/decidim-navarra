@@ -54,3 +54,10 @@ weekly_notifications_digest_job:
   args:
     task: decidim:mailers:notifications_digest_weekly
 
+daily_sync_related_documents_content_blocks:
+  cron: "3 2 * * *"
+  class: "InvokeRakeTaskJob"
+  queue: default
+  status: <%= ENV.fetch("SYNC_RELATED_DOCUMENTS_CONTENT_BLOCKS", "enabled") %> # enabled by default
+  args:
+    task: decidim_navarra:sync_related_documents_content_blocks
