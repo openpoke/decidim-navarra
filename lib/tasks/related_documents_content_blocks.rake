@@ -19,9 +19,9 @@ namespace :decidim_navarra do
     Decidim::Organization.find_each do |organization|
       manifests_with_related_documents.each do |manifest|
         spaces = manifest.participatory_spaces.call(organization)
+        scope_name = manifest.content_blocks_scope_name
 
         spaces.each do |space|
-          scope_name = manifest.content_blocks_scope_name
           has_documents = space.attachments.documents.exists?
 
           if has_documents
