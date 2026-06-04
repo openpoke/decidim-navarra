@@ -419,6 +419,10 @@ GEM
     date_validator (0.12.0)
       activemodel (>= 3)
       activesupport (>= 3)
+    decidim-elections (0.31.5)
+      decidim-admin (= 0.31.5)
+      decidim-core (= 0.31.5)
+      decidim-forms (= 0.31.5)
     declarative-builder (0.2.0)
       trailblazer-option (~> 0.1.0)
     declarative-option (0.1.0)
@@ -1098,23 +1102,24 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  bootsnap (~> 1.4)
-  brakeman (~> 5.1)
-  byebug (~> 11.0)
+  bootsnap
+  brakeman
+  byebug
   decidim!
   decidim-anonymous_proposals!
   decidim-conferences!
   decidim-decidim_awesome!
   decidim-dev!
+  decidim-elections!
   decidim-initiatives!
   decidim-pokecode!
   decidim-templates!
   decidim-term_customizer!
-  faker (~> 3.2)
+  faker
   faraday
   faraday-multipart
   letter_opener_web
-  puma (>= 5.3.1)
+  puma
   rubocop-faker
 
 CHECKSUMS
@@ -1188,6 +1193,7 @@ CHECKSUMS
   decidim-debates (0.31.5)
   decidim-decidim_awesome (0.14.2)
   decidim-dev (0.31.5)
+  decidim-elections (0.31.5) sha256=360949afab8c551260e34da07821d2c30b395eaa758856be7db090e31e4d1084
   decidim-forms (0.31.5)
   decidim-generators (0.31.5)
   decidim-initiatives (0.31.5)
