@@ -7,12 +7,11 @@ DECIDIM_VERSION = { github: "openpoke/decidim", branch: "0.31-backports" }.freez
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-anonymous_proposals", github: "openpoke/decidim-module-anonymous_proposals", branch: "main"
+gem "decidim-collaborative_texts", DECIDIM_VERSION
 gem "decidim-conferences", DECIDIM_VERSION
+gem "decidim-elections", DECIDIM_VERSION
 gem "decidim-initiatives", DECIDIM_VERSION
 gem "decidim-templates", DECIDIM_VERSION
-gem "decidim-elections", DECIDIM_VERSION
-gem "decidim-collaborative_texts", DECIDIM_VERSION
-
 
 gem "bootsnap"
 gem "decidim-decidim_awesome", github: "decidim-ice/decidim-module-decidim_awesome", branch: "main"
@@ -35,4 +34,3 @@ group :development do
   gem "letter_opener_web"
   gem "rubocop-faker"
 end
-
