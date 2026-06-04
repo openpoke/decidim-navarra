@@ -7,24 +7,26 @@ DECIDIM_VERSION = { github: "openpoke/decidim", branch: "0.31-backports" }.freez
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-anonymous_proposals", github: "openpoke/decidim-module-anonymous_proposals", branch: "main"
+gem "decidim-collaborative_texts", DECIDIM_VERSION
 gem "decidim-conferences", DECIDIM_VERSION
+gem "decidim-elections", DECIDIM_VERSION
 gem "decidim-initiatives", DECIDIM_VERSION
 gem "decidim-templates", DECIDIM_VERSION
 
-gem "bootsnap", "~> 1.4"
+gem "bootsnap"
 gem "decidim-decidim_awesome", github: "decidim-ice/decidim-module-decidim_awesome", branch: "main"
 gem "decidim-pokecode", github: "openpoke/decidim-module-pokecode", branch: "main"
 gem "decidim-term_customizer", github: "openpoke/decidim-module-term_customizer", branch: "main"
 
 gem "faraday"
 gem "faraday-multipart"
-gem "puma", ">= 5.3.1"
+gem "puma"
 
 group :development, :test do
-  gem "byebug", "~> 11.0", platform: :mri
-  gem "faker", "~> 3.2"
+  gem "byebug"
+  gem "faker"
 
-  gem "brakeman", "~> 5.1"
+  gem "brakeman"
   gem "decidim-dev", DECIDIM_VERSION
 end
 
