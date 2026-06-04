@@ -95,6 +95,8 @@ GIT
     decidim-budgets (0.31.5)
       decidim-comments (= 0.31.5)
       decidim-core (= 0.31.5)
+    decidim-collaborative_texts (0.31.5)
+      decidim-core (= 0.31.5)
     decidim-comments (0.31.5)
       decidim-core (= 0.31.5)
       redcarpet (~> 3.5, >= 3.5.1)
@@ -201,6 +203,10 @@ GIT
       w3c_rspec_validators (~> 0.3.0)
       webmock (~> 3.18)
       wisper-rspec (~> 1.0)
+    decidim-elections (0.31.5)
+      decidim-admin (= 0.31.5)
+      decidim-core (= 0.31.5)
+      decidim-forms (= 0.31.5)
     decidim-forms (0.31.5)
       decidim-core (= 0.31.5)
     decidim-generators (0.31.5)
@@ -419,10 +425,6 @@ GEM
     date_validator (0.12.0)
       activemodel (>= 3)
       activesupport (>= 3)
-    decidim-elections (0.31.5)
-      decidim-admin (= 0.31.5)
-      decidim-core (= 0.31.5)
-      decidim-forms (= 0.31.5)
     declarative-builder (0.2.0)
       trailblazer-option (~> 0.1.0)
     declarative-option (0.1.0)
@@ -1107,6 +1109,7 @@ DEPENDENCIES
   byebug
   decidim!
   decidim-anonymous_proposals!
+  decidim-collaborative_texts!
   decidim-conferences!
   decidim-decidim_awesome!
   decidim-dev!
@@ -1187,13 +1190,14 @@ CHECKSUMS
   decidim-assemblies (0.31.5)
   decidim-blogs (0.31.5)
   decidim-budgets (0.31.5)
+  decidim-collaborative_texts (0.31.5)
   decidim-comments (0.31.5)
   decidim-conferences (0.31.5)
   decidim-core (0.31.5)
   decidim-debates (0.31.5)
   decidim-decidim_awesome (0.14.2)
   decidim-dev (0.31.5)
-  decidim-elections (0.31.5) sha256=360949afab8c551260e34da07821d2c30b395eaa758856be7db090e31e4d1084
+  decidim-elections (0.31.5)
   decidim-forms (0.31.5)
   decidim-generators (0.31.5)
   decidim-initiatives (0.31.5)

@@ -11,6 +11,8 @@ gem "decidim-conferences", DECIDIM_VERSION
 gem "decidim-initiatives", DECIDIM_VERSION
 gem "decidim-templates", DECIDIM_VERSION
 gem "decidim-elections", DECIDIM_VERSION
+gem "decidim-collaborative_texts", DECIDIM_VERSION
+
 
 gem "bootsnap"
 gem "decidim-decidim_awesome", github: "decidim-ice/decidim-module-decidim_awesome", branch: "main"
