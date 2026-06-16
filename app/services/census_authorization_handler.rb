@@ -1,95 +1,69 @@
 # frozen_string_literal: true
 
-# Checks the authorization against the census for Getxo.
-require "digest/md5"
-
-# This class performs a check against the official census database in order
-# to verify the citizen's residence.
+# This class performs a check against the ANIMSA-PMH census webservice in order
+# to verify the citizen is registered in the municipal census (padrón).
 class CensusAuthorizationHandler < Decidim::AuthorizationHandler
   include ActionView::Helpers::SanitizeHelper
 
+  DOCUMENT_TYPES = [:nif, :nie, :passport].freeze
+
+  attribute :name, String
+  attribute :first_surname, String
+  attribute :document_type, Symbol
   attribute :document_number, String
-  attribute :date_of_birth, Date
+  attribute :personal_data_access_consent, const_get(:Boolean), default: false
 
-  validates :date_of_birth, presence: true
-  validates :document_number, format: { with: /(^[a-zA-Z]*)(\d+)([a-zA-Z]*$)/ }, presence: true
+  validates :name, :first_surname, presence: true
+  validates :document_type, inclusion: { in: DOCUMENT_TYPES }, presence: true
+  validates :document_number, format: { with: /\A[A-Za-z0-9]*\z/ }, presence: true
+  validates :personal_data_access_consent, presence: true, inclusion: [true]
 
-  validate :document_number_valid
+  validate :census_service_verification, if: :personal_data_access_consent
 
-  def date_of_birth
-    return super if user.blank?
-
-    Date.parse(user.extended_data["date_of_birth"]) if user.extended_data["date_of_birth"].present?
-  end
-
-  # If you need to store any of the defined attributes in the authorization you
-  # can do it here.
-  #
-  # You must return a Hash that will be serialized to the authorization when
-  # it's created, and available though authorization.metadata
-  def metadata
-    {
-      date_of_birth: date_of_birth&.strftime("%Y-%m-%d"),
-      street: extract_xpath_text("//calle"),
-      street_number: extract_xpath_text("//portal").to_i
-    }
-  end
-
-  def unique_id
-    Digest::MD5.hexdigest(
-      "#{document_number&.upcase}-#{Rails.application.secret_key_base}"
-    )
-  end
-
-  def slim_response
-    response.search("Body").children
+  def document_types_for_select
+    DOCUMENT_TYPES.map do |type|
+      [I18n.t(type, scope: "decidim.census_authorization_handler.document_types"), type]
+    end
   end
 
   private
 
-  def extract_xpath_text(xpath)
-    node = response&.xpath(xpath)
-    node&.text&.strip
+  def citizen_found?
+    return false unless response
+
+    estado = response.xpath("//ESTADO").text
+    cod_resultado = response.xpath("//CODRESULTADO").text
+
+    estado == "E" && cod_resultado == "0"
   end
 
-  def sanitized_date_of_birth
-    @sanitized_date_of_birth ||= date_of_birth&.strftime("%Y%m%d")
+  def census_service_verification
+    return if missing_attributes?
+
+    return if citizen_found?
+
+    errors.add(:base,
+               I18n.t("decidim.census_authorization_handler.invalid_census_service_verification"))
   end
 
-  def extract_parts
-    @extract_parts ||= /(^[a-zA-Z]*)(\d+)([a-zA-Z]*$)/.match document_number
-  end
-
-  def sanitized_document_number
-    "#{extract_parts[1].upcase}#{extract_parts[2]}" if extract_parts
-  end
-
-  def sanitized_document_letter
-    extract_parts[3].upcase if extract_parts
-  end
-
-  def document_number_valid
-    return if response.blank?
-
-    return if response.xpath("//existe").text == "SI"
-
-    errors.add(:document_number, I18n.t("census_authorization_handler.invalid_document", scope: "decidim.authorization_handlers"))
+  def missing_attributes?
+    [name, first_surname, document_type, document_number].any?(&:blank?)
   end
 
   def response
-    return nil if document_number.blank? ||
-                  date_of_birth.blank?
+    return @response if defined?(@response)
 
-    begin
-      service = GetxoWebservice.new("Validar")
-      service.body = <<~XML
-        <strDNI>#{sanitized_document_number}</strDNI>
-        <strLetra>#{sanitized_document_letter}</strLetra>
-        <strNacimiento>#{sanitized_date_of_birth}</strNacimiento>
-      XML
-      service.response
-    rescue StandardError
-      errors.add(:base, I18n.t("census_authorization_handler.connection_error", scope: "decidim.authorization_handlers"))
+    @response = begin
+      service = ParticipandoCensusWebservice.new
+      service.check_person(
+        document_type: document_type,
+        document_number: document_number,
+        first_surname: first_surname,
+        name: name
+      )
+    rescue StandardError => e
+      Rails.logger.error "CENSUS WEBSERVICE ERROR: #{e.message}"
+      errors.add(:base, I18n.t("decidim.census_authorization_handler.connection_error"))
       nil
     end
   end
