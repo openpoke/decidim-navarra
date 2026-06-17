@@ -11,14 +11,12 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
   attribute :first_surname, String
   attribute :document_type, Symbol
   attribute :document_number, String
-  attribute :personal_data_access_consent, const_get(:Boolean), default: false
 
   validates :name, :first_surname, presence: true
   validates :document_type, inclusion: { in: DOCUMENT_TYPES }, presence: true
   validates :document_number, format: { with: /\A[A-Za-z0-9]*\z/ }, presence: true
-  validates :personal_data_access_consent, presence: true, inclusion: [true]
 
-  validate :census_service_verification, if: :personal_data_access_consent
+  validate :census_service_verification
 
   def document_types_for_select
     DOCUMENT_TYPES.map do |type|
@@ -29,8 +27,6 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
   private
 
   def citizen_found?
-    return false unless response
-
     estado = response.xpath("//ESTADO").text
     cod_resultado = response.xpath("//CODRESULTADO").text
 
@@ -38,6 +34,7 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
   end
 
   def census_service_verification
+    return unless response
     return if missing_attributes?
 
     return if citizen_found?
@@ -63,7 +60,7 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
       )
     rescue StandardError => e
       Rails.logger.error "CENSUS WEBSERVICE ERROR: #{e.message}"
-      errors.add(:base, I18n.t("decidim.census_authorization_handler.connection_error"))
+      errors.add(:base, I18n.t("decidim.census_authorization_handler.connection_error") + " (#{e.message})")
       nil
     end
   end

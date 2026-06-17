@@ -28,10 +28,9 @@ en:
         nie: NIE
         nif: NIF
         passport: Passport
-      invalid_census_service_verification: Unidentified Resident or Wrong Territorial
-        Area of Residence
+      connection_error: Could not connect to the census service.
+      invalid_census_service_verification: Person not found in the municipal census.
   open_data: Open Data
   open_government: Open Government of Navarra
   participation: Participation
   transparency: Transparency
-

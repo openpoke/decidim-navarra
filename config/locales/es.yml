@@ -30,8 +30,8 @@ es:
         nie: NIE
         nif: NIF
         passport: Pasaporte
-      invalid_census_service_verification: Titular no Identificado o Ámbito Territorial
-        de Residencia Incorrecto
+      connection_error: No se ha podido conectar con el servicio del padrón.
+      invalid_census_service_verification: Titular no identificado en el padrón municipal.
   open_data: Datos Abiertos
   open_government: Gobierno Abierto de Navarra
   participation: Participacion

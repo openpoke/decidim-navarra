@@ -17,12 +17,12 @@ require "digest"
 #   PARTICIPANDO_ENCRYPTION_KEY   - 32-byte AES-256 key provided by ANIMSA
 #   PARTICIPANDO_ENCRYPTION_VECTOR - 16-byte IV provided by ANIMSA
 #
-# NOTE: The SOAP namespace and parameter name below ("xmlEntrada") should be
+# NOTE: The SOAP namespace and parameter name below ("strXmlLogin") should be
 # verified against the actual WSDL at PARTICIPANDO_URL?WSDL if the service
 # rejects requests.
 class ParticipandoCensusWebservice
   IDOPERACION = "NAVARRA_SEDE_PADRON_ComprobarPersona_WS"
-  SOAP_NAMESPACE = "http://colaboradores.animsa.es/"
+  SOAP_NAMESPACE = "http://tempuri.org/"
 
   # TIDEO values for document types
   DOCUMENT_TIDEO = {
@@ -48,13 +48,11 @@ class ParticipandoCensusWebservice
     contrasena = encrypt_password(fechahora)
 
     config_content = login_config_xml(fechahora, contrasena)
-    control = generate_control_hash(config_content: config_content, fechahora: fechahora)
+    control_data = control_hash_data(config_content: config_content, fechahora: fechahora)
 
-    peticion = build_peticion(config_content: config_content, control: control)
-    parsed = call_soap("LogIn", peticion)
-
+    parsed = call_soap("Login", build_peticion(config_content: config_content, control: control_data[:lower]))
     cod_error = parsed.xpath("//COD_ERROR").text
-    raise "LogIn error #{cod_error}: #{parsed.xpath("//DES_ERROR").text}" unless cod_error == "0"
+    raise "Login error #{cod_error}: #{parsed.xpath("//DES_ERROR").text}" unless cod_error == "0"
 
     parsed.xpath("//IDSESION").text
   end
@@ -68,7 +66,7 @@ class ParticipandoCensusWebservice
 
     config_content = operation_config_xml(fechahora, session_id)
     datos_content = operation_datos_xml(document_number, tideo, first_surname, name)
-    control = generate_control_hash(config_content: config_content, datos_content: datos_content, fechahora: fechahora)
+    control = control_hash_data(config_content: config_content, datos_content: datos_content, fechahora: fechahora)[:lower]
 
     peticion = build_peticion(config_content: config_content, datos_content: datos_content, control: control)
     call_soap("SolicitarOperacion", peticion)
@@ -92,18 +90,21 @@ class ParticipandoCensusWebservice
 
   # Generates the CONTROL SHA256 hash as specified in section 5.3 of the doc.
   # Pass fechahora only for request hashes (omit for responses).
-  def generate_control_hash(config_content:, datos_content: nil, fechahora: nil)
-    config_children = count_xml_children(config_content)
-    datos_children = datos_content ? count_xml_children(datos_content) : nil
+  def control_hash_data(config_content:, fechahora:, datos_content: nil)
+    normalized_config_content = normalize_xml_content(config_content)
+    normalized_datos_content = datos_content ? normalize_xml_content(datos_content) : nil
+
+    config_children = count_xml_children(normalized_config_content)
+    datos_children = normalized_datos_content ? count_xml_children(normalized_datos_content) : nil
 
     parts = [
       66.chr, # "B"
       52.chr, # "4"
-      (datos_content || ""), # DATOS inner content (if exists)
+      (normalized_datos_content ? "<DATOS>#{normalized_datos_content}</DATOS>" : ""), # DATOS content (if exists)
       69.chr, # "E"
-      config_content, # CONFIG inner content
+      "<CONFIG>#{normalized_config_content}</CONFIG>", # CONFIG content
       55.chr, # "7"
-      (fechahora ? Time.now.strftime("%Y%m%d%H%M") : ""), # yyyymmddHHMM (requests only)
+      fechahora.slice(0, 12), # FECHAHORA (if exists)
       95.chr, # "_"
       76.chr, # "L"
       76.chr, # "L"
@@ -119,7 +120,26 @@ class ParticipandoCensusWebservice
       54.chr # "6"
     ]
 
-    Digest::SHA256.hexdigest(parts.join).upcase
+    control_input = parts.join
+    digest = Digest::SHA256.hexdigest(control_input)
+
+    {
+      lower: digest,
+      upper: digest.upcase,
+      input: control_input,
+      config_children: config_children,
+      datos_children: datos_children
+    }
+  end
+
+  def log_control_debug(action:, control_data:)
+    return unless ENV["PARTICIPANDO_DEBUG_CONTROL"] == "1"
+
+    Rails.logger.warn(
+      "PARTICIPANDO CONTROL DEBUG [#{action}] upper=#{control_data[:upper]} lower=#{control_data[:lower]} " \
+      "config_children=#{control_data[:config_children]} datos_children=#{control_data[:datos_children].to_s.empty? ? "-" : control_data[:datos_children]} " \
+      "input=#{control_data[:input]}"
+    )
   end
 
   def count_xml_children(xml_content)
@@ -127,7 +147,7 @@ class ParticipandoCensusWebservice
   end
 
   def login_config_xml(fechahora, contrasena)
-    <<~XML.strip
+    normalize_xml_content(<<~XML)
       <FECHAHORA>#{fechahora}</FECHAHORA>
       <CIFENTIDAD>#{@entity_nif}</CIFENTIDAD>
       <APLICACION>#{@application}</APLICACION>
@@ -137,7 +157,7 @@ class ParticipandoCensusWebservice
   end
 
   def operation_config_xml(fechahora, session_id)
-    <<~XML.strip
+    normalize_xml_content(<<~XML)
       <FECHAHORA>#{fechahora}</FECHAHORA>
       <IDSESION>#{session_id}</IDSESION>
       <IDOPERACION>#{IDOPERACION}</IDOPERACION>
@@ -145,7 +165,7 @@ class ParticipandoCensusWebservice
   end
 
   def operation_datos_xml(document_number, tideo, first_surname, name)
-    <<~XML.strip
+    normalize_xml_content(<<~XML)
       <ENTRADA>
         <PERSONA>
           <DNI>#{document_number}</DNI>
@@ -159,7 +179,7 @@ class ParticipandoCensusWebservice
 
   def build_peticion(config_content:, control:, datos_content: nil)
     datos_node = datos_content ? "<DATOS>#{datos_content}</DATOS>" : ""
-    <<~XML.strip
+    normalize_xml_content(<<~XML)
       <WS_PETICION>
         <CONFIG>#{config_content}</CONFIG>
         #{datos_node}
@@ -169,29 +189,59 @@ class ParticipandoCensusWebservice
   end
 
   def call_soap(action, peticion_xml)
+    parameter_name = soap_parameter_name(action)
     envelope = <<~SOAP
       <?xml version="1.0" encoding="UTF-8"?>
       <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
           <#{action} xmlns="#{SOAP_NAMESPACE}">
-            <xmlEntrada>#{peticion_xml}</xmlEntrada>
+            <#{parameter_name}><![CDATA[#{peticion_xml}]]></#{parameter_name}>
           </#{action}>
         </soap:Body>
       </soap:Envelope>
     SOAP
-
+    envelope.gsub!(/>\s+</, "><") # Remove whitespace between tags
     begin
-      response = Faraday.new(ssl: { verify: false }).post(@url) do |request|
-        request.headers["Content-Type"] = "text/xml; charset=UTF-8"
-        request.headers["SOAPAction"] = "#{SOAP_NAMESPACE}#{action}"
-        request.headers["Host"] = URI.parse(@url).host
-        request.body = envelope
+      conn = Faraday.new(
+        url: @url,
+        ssl: { verify: false },
+        headers: {
+          "Content-Type" => "text/xml; charset=UTF-8",
+          "SOAPAction" => "http://tempuri.org/#{action}",
+          "Host" => "colabora.animsa.es"
+        }
+      )
+
+      response = conn.post("/serviciocolaboradores/servicios.asmx") do |req|
+        req.body = envelope
       end
     rescue Faraday::Error => e
       Rails.logger.error "PARTICIPANDO WEBSERVICE CONNECTION ERROR: #{e.message}"
-      raise
+      raise e
     end
 
-    Nokogiri::XML(response.body).remove_namespaces!
+    parsed_response = Nokogiri::XML(response.body).remove_namespaces!
+    result_node = parsed_response.at_xpath("//#{action}Response/#{action}Result")
+    return parsed_response unless result_node
+
+    result_payload = result_node.text.to_s.strip
+    return parsed_response if result_payload.empty?
+
+    Nokogiri::XML(result_payload).remove_namespaces!
+  end
+
+  def soap_parameter_name(action)
+    case action
+    when "Login"
+      "strXmlLogin"
+    when "SolicitarOperacion"
+      "strXmlSolicitudOperacion"
+    else
+      "xmlEntrada"
+    end
+  end
+
+  def normalize_xml_content(xml)
+    xml.to_s.strip.gsub(/>\s+</, "><")
   end
 end
