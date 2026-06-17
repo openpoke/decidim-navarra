@@ -24,7 +24,9 @@ en:
         nif: NIF
         none: Without document
         passport: Passport
-      invalid_participando_service_verification: Person not found in the municipal census.
-  open_government: Open Government of Navarra
+      invalid_participando_service_verification: Person not found in the municipal
+        census.
+  open_data: Open Data
+  open_government: Open Government of
   participation: Participation
   transparency: Transparency
