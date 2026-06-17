@@ -26,6 +26,7 @@ class ParticipandoCensusWebservice
 
   # TIDEO values for document types
   DOCUMENT_TIDEO = {
+    none: 0,
     nif: 1,
     passport: 2,
     nie: 3
@@ -70,6 +71,9 @@ class ParticipandoCensusWebservice
 
     peticion = build_peticion(config_content: config_content, datos_content: datos_content, control: control)
     call_soap("SolicitarOperacion", peticion)
+  rescue StandardError => e
+    Rails.logger.error "PARTICIPANDO WEBSERVICE ERROR: #{e.message}"
+    raise e
   end
 
   private

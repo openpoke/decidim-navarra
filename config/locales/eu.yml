@@ -29,6 +29,7 @@ eu:
       document_types:
         nie: NIE
         nif: IFZ
+        none: Dokumenturik gabe
         passport: Pasaporte
       invalid_census_service_verification: Identifikatu gabeko titularra edo bizileku
         lurralde eremu okerra

@@ -5,17 +5,19 @@
 class CensusAuthorizationHandler < Decidim::AuthorizationHandler
   include ActionView::Helpers::SanitizeHelper
 
-  DOCUMENT_TYPES = [:nif, :nie, :passport].freeze
+  DOCUMENT_TYPES = [:none, :nif, :nie, :passport].freeze
 
   attribute :name, String
   attribute :first_surname, String
   attribute :document_type, Symbol
   attribute :document_number, String
+  attribute :date_of_birth, Decidim::Attributes::LocalizedDate
 
   validates :name, :first_surname, presence: true
   validates :document_type, inclusion: { in: DOCUMENT_TYPES }, presence: true
-  validates :document_number, format: { with: /\A[A-Za-z0-9]*\z/ }, presence: true
+  validates :date_of_birth, presence: true
 
+  validate :document_number_verification
   validate :census_service_verification
 
   def document_types_for_select
@@ -24,27 +26,46 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
     end
   end
 
+  def metadata
+    {
+      birthdate: birthdate&.strftime("%Y-%m-%d"),
+      document_type: document_type
+    }
+  end
+
   private
 
+  def birthdate
+    return unless response
+
+    date = response.xpath("//FECHANAC")&.text
+    return nil if date.blank?
+
+    Date.parse(date)
+  end
+
   def citizen_found?
+    return unless response
+
     estado = response.xpath("//ESTADO").text
     cod_resultado = response.xpath("//CODRESULTADO").text
 
     estado == "E" && cod_resultado == "0"
   end
 
-  def census_service_verification
-    return unless response
-    return if missing_attributes?
+  def document_number_verification
+    return if document_type == :none
 
-    return if citizen_found?
+    return if document_number.present? && document_number.match?(/\A[A-Za-z0-9]*\z/)
+
+    errors.add(:document_number, :invalid)
+  end
+
+  def census_service_verification
+    return if citizen_found? && birthdate == date_of_birth
 
     errors.add(:base,
                I18n.t("decidim.census_authorization_handler.invalid_census_service_verification"))
-  end
-
-  def missing_attributes?
-    [name, first_surname, document_type, document_number].any?(&:blank?)
   end
 
   def response

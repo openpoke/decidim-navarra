@@ -26,13 +26,14 @@ es:
         explanation: Verificación de datos padronales
         name: Padrón
     census_authorization_handler:
+      connection_error: No se ha podido conectar con el servicio del padrón.
       document_types:
         nie: NIE
         nif: NIF
+        none: Sin documento
         passport: Pasaporte
-      connection_error: No se ha podido conectar con el servicio del padrón.
       invalid_census_service_verification: Titular no identificado en el padrón municipal.
   open_data: Datos Abiertos
   open_government: Gobierno Abierto de Navarra
-  participation: Participacion
+  participation: Participación
   transparency: Transparencia
