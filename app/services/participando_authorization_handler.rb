@@ -2,7 +2,7 @@
 
 # This class performs a check against the ANIMSA-PMH census webservice in order
 # to verify the citizen is registered in the municipal census (padrón).
-class CensusAuthorizationHandler < Decidim::AuthorizationHandler
+class ParticipandoAuthorizationHandler < Decidim::AuthorizationHandler
   include ActionView::Helpers::SanitizeHelper
 
   DOCUMENT_TYPES = [:none, :nif, :nie, :passport].freeze
@@ -18,11 +18,11 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
   validates :date_of_birth, presence: true
 
   validate :document_number_verification
-  validate :census_service_verification
+  validate :participando_service_verification
 
   def document_types_for_select
     DOCUMENT_TYPES.map do |type|
-      [I18n.t(type, scope: "decidim.census_authorization_handler.document_types"), type]
+      [I18n.t(type, scope: "decidim.participando_authorization_handler.document_types"), type]
     end
   end
 
@@ -61,11 +61,11 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
     errors.add(:document_number, :invalid)
   end
 
-  def census_service_verification
+  def participando_service_verification
     return if citizen_found? && birthdate == date_of_birth
 
     errors.add(:base,
-               I18n.t("decidim.census_authorization_handler.invalid_census_service_verification"))
+               I18n.t("decidim.participando_authorization_handler.participando_service_verification"))
   end
 
   def response
@@ -81,7 +81,7 @@ class CensusAuthorizationHandler < Decidim::AuthorizationHandler
       )
     rescue StandardError => e
       Rails.logger.error "CENSUS WEBSERVICE ERROR: #{e.message}"
-      errors.add(:base, I18n.t("decidim.census_authorization_handler.connection_error") + " (#{e.message})")
+      errors.add(:base, I18n.t("decidim.participando_authorization_handler.connection_error") + " (#{e.message})")
       nil
     end
   end

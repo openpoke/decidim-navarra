@@ -2,7 +2,7 @@
 eu:
   activemodel:
     attributes:
-      census_authorization_handler:
+      participando_authorization_handler:
         date_of_birth: Jaiotze data
         document_number: Dokumentu zenbakia
         document_type: Dokumentu mota
@@ -14,24 +14,18 @@ eu:
         second_surname: Bigarren abizena
       participatory_process_type:
         title: Izenburua
-  census_authorization:
-    form:
-      date_select:
-        day: Eguna
-        month: Hilabetea
-        year: Urtea
   decidim:
     authorization_handlers:
-      census_authorization_handler:
+      participando_authorization_handler:
         explanation: Erregistro datuen egiaztapena
         name: Padrón
-    census_authorization_handler:
+    participando_authorization_handler:
       document_types:
         nie: NIE
         nif: IFZ
         none: Dokumenturik gabe
         passport: Pasaporte
-      invalid_census_service_verification: Identifikatu gabeko titularra edo bizileku
+      invalid_participando_service_verification: Identifikatu gabeko titularra edo bizileku
         lurralde eremu okerra
   locale:
     name: Euskera
