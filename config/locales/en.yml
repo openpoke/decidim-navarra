@@ -2,7 +2,7 @@
 en:
   activemodel:
     attributes:
-      census_authorization_handler:
+      participando_authorization_handler:
         date_of_birth: Date of birth
         document_number: Document number
         document_type: Document type
@@ -12,26 +12,21 @@ en:
           consulted
         province_id: Province
         second_surname: Second surname
-  census_authorization:
-    form:
-      date_select:
-        day: Day
-        month: Month
-        year: Year
   decidim:
     authorization_handlers:
-      census_authorization_handler:
-        explanation: Census data verification
-        name: Census
-    census_authorization_handler:
+      participando_authorization_handler:
+        explanation: Municipal Census data verification
+        name: Municipal Census
+    participando_authorization_handler:
+      connection_error: Could not connect to the municipal census service.
       document_types:
         nie: NIE
         nif: NIF
+        none: Without document
         passport: Passport
-      invalid_census_service_verification: Unidentified Resident or Wrong Territorial
-        Area of Residence
+      invalid_participando_service_verification: Person not found in the municipal
+        census.
   open_data: Open Data
-  open_government: Open Government of Navarra
+  open_government: Open Government of
   participation: Participation
   transparency: Transparency
-
