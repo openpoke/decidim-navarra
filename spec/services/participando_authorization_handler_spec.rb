@@ -14,6 +14,7 @@ RSpec.describe ParticipandoAuthorizationHandler do
   end
 
   let(:document_type) { :nif }
+  let(:service_double) { instance_double(ParticipandoCensusWebservice) }
   let(:document_number) { "12345678A" }
   let(:date_of_birth) { Date.parse("1990-02-10") }
 
@@ -23,8 +24,6 @@ RSpec.describe ParticipandoAuthorizationHandler do
     allow(I18n).to receive(:t).and_call_original
     allow(I18n).to receive(:t).with(/\Adecidim\.participando_authorization_handler\./).and_return("translation")
   end
-
-  let(:service_double) { instance_double(ParticipandoCensusWebservice) }
 
   describe "validations" do
     context "when census response is valid and birthdate matches" do

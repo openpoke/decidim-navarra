@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Multiselect for street verificator
 Decidim::Verifications.register_workflow(:participando_authorization_handler) do |workflow|
   workflow.form = "ParticipandoAuthorizationHandler"

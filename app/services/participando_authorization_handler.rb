@@ -45,7 +45,7 @@ class ParticipandoAuthorizationHandler < Decidim::AuthorizationHandler
   end
 
   def citizen_found?
-    return unless response
+    return false unless response
 
     estado = response.xpath("//ESTADO").text
     cod_resultado = response.xpath("//CODRESULTADO").text

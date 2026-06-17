@@ -79,7 +79,7 @@ class ParticipandoCensusWebservice
   private
 
   def current_fechahora
-    Time.now.strftime("%Y%m%d%H%M%S")
+    Time.zone.now.strftime("%Y%m%d%H%M%S")
   end
 
   # Encrypts "#{password}#{fechahora}" using AES-256-CBC and returns Base64.
