@@ -65,7 +65,7 @@ class ParticipandoAuthorizationHandler < Decidim::AuthorizationHandler
     return if citizen_found? && birthdate == date_of_birth
 
     errors.add(:base,
-               I18n.t("decidim.participando_authorization_handler.participando_service_verification"))
+               I18n.t("decidim.participando_authorization_handler.invalid"))
   end
 
   def response

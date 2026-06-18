@@ -12,21 +12,27 @@ eu:
           Nortasun datuak
         province_id: Probintzia
         second_surname: Bigarren abizena
-      participatory_process_type:
-        title: Izenburua
   decidim:
     authorization_handlers:
+      admin:
+        participando_authorization_handler:
+          help:
+          - Baimen kudeatzaile honek herritarren nortasuna egiaztatzeko aukera ematen
+            du Udal Erregistroaren zerbitzuaren bidez.
       participando_authorization_handler:
         explanation: Erregistro datuen egiaztapena
+        fields:
+          birthdate: Jaiotze data
+          document_type: Dokumentu mota
         name: Padrón
     participando_authorization_handler:
+      connection_error: Ezin izan da konektatu Udal Erroldaren zerbitzuarekin.
       document_types:
         nie: NIE
         nif: IFZ
         none: Dokumenturik gabe
         passport: Pasaporte
-      invalid_participando_service_verification: Identifikatu gabeko titularra edo bizileku
-        lurralde eremu okerra
+      invalid: Identifikatu gabeko titularra edo bizileku lurralde eremu okerra
   locale:
     name: Euskera
   open_data: Datu Irekiak

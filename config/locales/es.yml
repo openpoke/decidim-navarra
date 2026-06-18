@@ -12,12 +12,18 @@ es:
           los datos de Identidad
         province_id: Provincia
         second_surname: Segundo apellido
-      participatory_process_type:
-        title: Título
   decidim:
     authorization_handlers:
+      admin:
+        participando_authorization_handler:
+          help:
+          - Este gestor de autorización permite verificar la identidad de un ciudadano
+            a través del servicio del Padrón Municipal.
       participando_authorization_handler:
         explanation: Verificación de datos del Padrón Municipal
+        fields:
+          birthdate: Fecha de nacimiento
+          document_type: Tipo de documento
         name: Padrón Municipal
     participando_authorization_handler:
       connection_error: No se ha podido conectar con el servicio del Padrón Municipal.
@@ -26,7 +32,7 @@ es:
         nif: NIF
         none: Sin documento
         passport: Pasaporte
-      invalid_participando_service_verification: Titular no identificado en el padrón municipal.
+      invalid: Titular no identificado en el padrón municipal.
   open_data: Datos Abiertos
   open_government: Gobierno Abierto de Navarra
   participation: Participación

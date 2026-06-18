@@ -14,8 +14,16 @@ en:
         second_surname: Second surname
   decidim:
     authorization_handlers:
+      admin:
+        participando_authorization_handler:
+          help:
+          - This authorization handler allows you to verify the identity of a citizen
+            through the Municipal Census service.
       participando_authorization_handler:
         explanation: Municipal Census data verification
+        fields:
+          birthdate: Date of birth
+          document_type: Document type
         name: Municipal Census
     participando_authorization_handler:
       connection_error: Could not connect to the municipal census service.
@@ -24,9 +32,8 @@ en:
         nif: NIF
         none: Without document
         passport: Passport
-      invalid_participando_service_verification: Person not found in the municipal
-        census.
+      invalid: Person not found in the municipal census.
   open_data: Open Data
-  open_government: Open Government of
+  open_government: Open Government of Navarra
   participation: Participation
   transparency: Transparency
