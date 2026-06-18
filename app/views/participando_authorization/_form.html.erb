@@ -1,0 +1,13 @@
+<div class="form__wrapper">
+  <%= form.text_field :name %>
+
+  <%= form.text_field :first_surname %>
+
+  <%= form.select :document_type, handler.document_types_for_select, prompt: true %>
+
+  <%= form.text_field :document_number %>
+
+  <%= form.date_field :date_of_birth %>
+
+  <%= form.hidden_field :handler_name %>
+</div>
