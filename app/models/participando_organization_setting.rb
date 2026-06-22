@@ -2,6 +2,7 @@
 
 class ParticipandoOrganizationSetting < ApplicationRecord
   include Decidim::Traceable
+  include Decidim::RecordEncryptor
 
   belongs_to :organization,
              class_name: "Decidim::Organization",

@@ -12,6 +12,12 @@ es:
           los datos de Identidad
         province_id: Provincia
         second_surname: Segundo apellido
+      participando_organization_setting:
+        application: Identificador de aplicación
+        decidim_organization_id: Organización
+        encryption_key: Clave de cifrado
+        password: Contraseña Padrón Municipal
+        user: Usuario
   decidim:
     authorization_handlers:
       admin:
@@ -33,6 +39,30 @@ es:
         none: Sin documento
         passport: Pasaporte
       invalid: Titular no identificado en el padrón municipal.
+      organization_setting_not_found: No se ha encontrado la configuración de conexión
+        al Padrón Municipal para la organización %{organization}.
+      system_name: Padrón Municipal
+    system:
+      participando_organization_settings:
+        edit:
+          application_identifier: Identificador de aplicación
+          save: Guardar
+          select_organization: Seleccionar una organización
+          title: Nueva configuración del censo
+        index:
+          description: Esta sección le permite configurar la conexión al servicio
+            del Padrón Municipal para su organización. Si habilita este gestor de
+            autorización sin la configuración adecuada, los usuarios recibirán un
+            mensaje de error al intentar verificar su identidad a través del servicio
+            del Padrón Municipal.
+          new_setting: Agregar nueva configuración
+          no_settings: No se encontró configuración para esta organización.
+          participando_settings: Configuración del Padrón Municipal
+          title: Configuración del Padrón Municipal
+          updated_at: Actualizado el
+        update:
+          error: Hubo un error al actualizar la configuración del Padrón Municipal.
+          success: Configuración del Padrón Municipal actualizada correctamente.
   open_data: Datos Abiertos
   open_government: Gobierno Abierto de Navarra
   participation: Participación

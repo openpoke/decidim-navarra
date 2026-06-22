@@ -26,6 +26,8 @@ eu:
           document_type: Dokumentu mota
         name: Padrón
     participando_authorization_handler:
+      system_name: Padrón Municipal
+      organization_setting_not_found: Ez da aurkitu Udal Erroldaren konexioaren konfigurazioa %{organization} erakundearentzat.
       connection_error: Ezin izan da konektatu Udal Erroldaren zerbitzuarekin.
       document_types:
         nie: NIE

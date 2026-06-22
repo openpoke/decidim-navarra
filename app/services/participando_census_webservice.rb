@@ -32,7 +32,12 @@ class ParticipandoCensusWebservice
     nie: 3
   }.freeze
 
-  def initialize
+  attr_reader :organization
+
+  def initialize(organization)
+    @organization = organization
+    raise I18n.t("decidim.participando_authorization_handler.organization_setting_not_found", organization: organization.host) unless setting
+
     @url = ENV.fetch("PARTICIPANDO_URL")
     @entity_nif = ENV.fetch("PARTICIPANDO_ENTITY_NIF")
     @application = ENV.fetch("PARTICIPANDO_APPLICATION")
@@ -40,6 +45,10 @@ class ParticipandoCensusWebservice
     @password = ENV.fetch("PARTICIPANDO_PASSWORD")
     @encryption_key = ENV.fetch("PARTICIPANDO_ENCRYPTION_KEY")
     @encryption_vector = ENV.fetch("PARTICIPANDO_ENCRYPTION_VECTOR")
+  end
+
+  def setting
+    @setting ||= ParticipandoOrganizationSetting.find_by(organization: organization)
   end
 
   # Calls LogIn and returns the IDSESION string (valid for 8 minutes).
