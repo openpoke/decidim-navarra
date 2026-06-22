@@ -35,6 +35,29 @@ SMTP_PORT=XXXXXX
 DECIDIM_ENV=production
 ```
 
+### Municipal Census (Padrón) Configuration
+
+The Municipal Census service integration requires environment variables to be configured:
+
+```bash
+# Required
+PARTICIPANDO_URL=https://www.animsa.es/ws/padron/v1
+PARTICIPANDO_ENTITY_NIF=XXXXXXXX
+PARTICIPANDO_ENCRYPTION_VECTOR=XXXXXXXXXXXXXXXX  # 16-byte IV
+
+# Optional
+PARTICIPANDO_SOAP_NAMESPACE=http://tempuri.org/  # Defaults to http://tempuri.org/
+```
+
+**Important:** Each tenant organization must be configured individually through the admin panel at `/system/participando_organization_settings` with their own credentials:
+
+- Application identifier
+- Username
+- Password
+- Encryption key (32-byte AES-256 key)
+
+These tenant-specific settings are encrypted and stored in the database.
+
 ## Deploy
 
 ### Pull from Github Repository
