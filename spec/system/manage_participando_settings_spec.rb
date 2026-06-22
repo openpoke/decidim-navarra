@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "ParticipandoOrganizationSetting", perform_enqueued: true do
+describe "Admin participando settings", perform_enqueued: true do
   let(:admin) { create(:admin) }
   let(:organization) { admin.organization }
 
@@ -67,19 +67,19 @@ describe "ParticipandoOrganizationSetting", perform_enqueued: true do
       it "has empty form fields" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        expect(page).to have_field("participando_organization_setting_form_application", with: "")
-        expect(page).to have_field("participando_organization_setting_form_user", with: "")
-        expect(page).to have_field("participando_organization_setting_form_password", with: "")
-        expect(page).to have_field("participando_organization_setting_form_encryption_key", with: "")
+        expect(page).to have_field("participando_organization_setting_application", with: "")
+        expect(page).to have_field("participando_organization_setting_user", with: "")
+        expect(page).to have_field("participando_organization_setting_password", with: "")
+        expect(page).to have_field("participando_organization_setting_encryption_key", with: "")
       end
 
       it "creates a new setting" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        fill_in "participando_organization_setting_form_application", with: "new_app"
-        fill_in "participando_organization_setting_form_user", with: "new_user"
-        fill_in "participando_organization_setting_form_password", with: "new_password"
-        fill_in "participando_organization_setting_form_encryption_key", with: "new_key"
+        fill_in "participando_organization_setting_application", with: "new_app"
+        fill_in "participando_organization_setting_user", with: "new_user"
+        fill_in "participando_organization_setting_password", with: "new_password"
+        fill_in "participando_organization_setting_encryption_key", with: "new_key"
 
         click_button "Save"
 
@@ -102,16 +102,16 @@ describe "ParticipandoOrganizationSetting", perform_enqueued: true do
       it "loads the edit form with existing data" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        expect(page).to have_field("participando_organization_setting_form_application", with: "old_app")
-        expect(page).to have_field("participando_organization_setting_form_user", with: "old_user")
-        expect(page).to have_field("participando_organization_setting_form_password", with: "old_password")
-        expect(page).to have_field("participando_organization_setting_form_encryption_key", with: "old_key")
+        expect(page).to have_field("participando_organization_setting_application", with: "old_app")
+        expect(page).to have_field("participando_organization_setting_user", with: "old_user")
+        expect(page).to have_field("participando_organization_setting_password", with: "old_password")
+        expect(page).to have_field("participando_organization_setting_encryption_key", with: "old_key")
       end
 
       it "updates the setting" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        fill_in "participando_organization_setting_form_application", with: "updated_app"
+        fill_in "participando_organization_setting_application", with: "updated_app"
         click_button "Save"
 
         expect(page).to have_content("configuration updated successfully")
@@ -123,10 +123,10 @@ describe "ParticipandoOrganizationSetting", perform_enqueued: true do
       it "shows an error when application is empty" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        fill_in "participando_organization_setting_form_application", with: ""
-        fill_in "participando_organization_setting_form_user", with: "user"
-        fill_in "participando_organization_setting_form_password", with: "password"
-        fill_in "participando_organization_setting_form_encryption_key", with: "key"
+        fill_in "participando_organization_setting_application", with: ""
+        fill_in "participando_organization_setting_user", with: "user"
+        fill_in "participando_organization_setting_password", with: "password"
+        fill_in "participando_organization_setting_encryption_key", with: "key"
 
         click_button "Save"
 
