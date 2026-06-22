@@ -19,6 +19,9 @@ es:
         password: Contraseña Padrón Municipal
         user: Usuario
   decidim:
+    admin_log:
+      participando_organization_setting:
+        update: "%{user_name} actualizó la configuración del Padrón Municipal de %{resource_name} para la organización %{organization_name}"
     authorization_handlers:
       admin:
         participando_authorization_handler:

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "Admin participando settings", perform_enqueued: true do
+describe "ParticipandoOrganizationSetting", perform_enqueued: true do
   let(:admin) { create(:admin) }
   let(:organization) { admin.organization }
 

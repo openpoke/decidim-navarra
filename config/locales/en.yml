@@ -19,6 +19,10 @@ en:
         password: Password
         user: User
   decidim:
+    admin_log:
+      participando_organization_setting:
+        update: "%{user_name} updated the %{resource_name} Municipal Census configuration
+          for organization %{organization_name}"
     authorization_handlers:
       admin:
         participando_authorization_handler:

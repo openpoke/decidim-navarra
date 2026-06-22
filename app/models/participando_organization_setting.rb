@@ -16,4 +16,8 @@ class ParticipandoOrganizationSetting < ApplicationRecord
 
   validates :decidim_organization_id, uniqueness: true
   validates :application, :user, :password, :encryption_key, presence: true
+
+  def self.log_presenter_class_for(_log)
+    Decidim::AdminLog::ParticipandoOrganizationSettingPresenter
+  end
 end
