@@ -9,7 +9,7 @@ module Decidim
 
       def diff_fields_mapping
         {
-          application: :string,
+          entity_nif: :string,
           user: :string,
           password: :string,
           encryption_key: :string

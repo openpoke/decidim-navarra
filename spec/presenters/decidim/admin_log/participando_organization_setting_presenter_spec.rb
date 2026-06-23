@@ -26,7 +26,7 @@ RSpec.describe Decidim::AdminLog::ParticipandoOrganizationSettingPresenter do
 
     it "limits the diff to the configurable attributes" do
       expect(presenter.send(:diff_fields_mapping)).to eq(
-        application: :string,
+        entity_nif: :string,
         user: :string,
         password: :string,
         encryption_key: :string
