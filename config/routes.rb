@@ -12,3 +12,8 @@ Rails.application.routes.draw do
   mount Decidim::Core::Engine => "/"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
+
+# Add a simple menu in the admin part
+Decidim::System::Engine.routes.draw do
+  resources :participando_organization_settings, only: [:index, :edit, :update]
+end

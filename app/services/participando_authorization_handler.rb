@@ -36,8 +36,6 @@ class ParticipandoAuthorizationHandler < Decidim::AuthorizationHandler
   private
 
   def birthdate
-    return unless response
-
     date = response.xpath("//FECHANAC")&.text
     return nil if date.blank?
 
@@ -62,17 +60,18 @@ class ParticipandoAuthorizationHandler < Decidim::AuthorizationHandler
   end
 
   def participando_service_verification
+    return unless response
+
     return if citizen_found? && birthdate == date_of_birth
 
-    errors.add(:base,
-               I18n.t("decidim.participando_authorization_handler.participando_service_verification"))
+    errors.add(:base, I18n.t("decidim.participando_authorization_handler.invalid"))
   end
 
   def response
     return @response if defined?(@response)
 
     @response = begin
-      service = ParticipandoCensusWebservice.new
+      service = ParticipandoCensusWebservice.new(user.organization)
       service.check_person(
         document_type: document_type,
         document_number: document_number,
