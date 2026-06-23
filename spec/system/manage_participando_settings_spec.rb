@@ -3,19 +3,18 @@
 require "rails_helper"
 
 describe "Admin participando settings", perform_enqueued: true do
-  let(:admin) { create(:user, :admin) }
-  let(:organization) { admin.organization }
+  let(:admin) { Decidim::System::Admin.create!(email: "system-admin@example.org", password: "password123456", password_confirmation: "password123456") }
+  let(:organization) { create(:organization) }
 
   before do
-    switch_to_host(organization.host)
-    login_as admin, scope: :user
+    login_as admin, scope: :admin
   end
 
   describe "visiting participando settings index" do
     it "shows the participando settings page" do
       visit decidim_system.participando_organization_settings_path
 
-      expect(page).to have_content("Municipal Census Configuration")
+      expect(page).to have_content(I18n.t("decidim.system.participando_organization_settings.index.title"))
     end
 
     it "lists all organizations" do
@@ -23,8 +22,8 @@ describe "Admin participando settings", perform_enqueued: true do
 
       visit decidim_system.participando_organization_settings_path
 
-      expect(page).to have_content(organization.name)
-      expect(page).to have_content(other_organization.name)
+      expect(page).to have_content(organization.host)
+      expect(page).to have_content(other_organization.host)
     end
 
     context "when organization has a participando setting" do
@@ -51,7 +50,7 @@ describe "Admin participando settings", perform_enqueued: true do
       it "shows no settings message" do
         visit decidim_system.participando_organization_settings_path
 
-        expect(page).to have_content("No configuration found for this organization")
+        expect(page).to have_content(I18n.t("decidim.system.participando_organization_settings.index.no_settings"))
       end
     end
   end
@@ -61,7 +60,7 @@ describe "Admin participando settings", perform_enqueued: true do
       it "loads the edit form" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        expect(page).to have_content("New Census Configuration")
+        expect(page).to have_content(I18n.t("decidim.system.participando_organization_settings.edit.title"))
       end
 
       it "has empty form fields" do
@@ -81,9 +80,9 @@ describe "Admin participando settings", perform_enqueued: true do
         fill_in "participando_organization_setting_password", with: "new_password"
         fill_in "participando_organization_setting_encryption_key", with: "new_key"
 
-        click_button "Save"
+        click_button I18n.t("decidim.system.participando_organization_settings.edit.save")
 
-        expect(page).to have_content("configuration updated successfully")
+        expect(page).to have_content(I18n.t("decidim.system.participando_organization_settings.update.success"))
         expect(organization.reload.participando_organization_setting).to be_present
         expect(organization.participando_organization_setting.application).to eq("new_app")
       end
@@ -112,9 +111,9 @@ describe "Admin participando settings", perform_enqueued: true do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
         fill_in "participando_organization_setting_application", with: "updated_app"
-        click_button "Save"
+        click_button I18n.t("decidim.system.participando_organization_settings.edit.save")
 
-        expect(page).to have_content("configuration updated successfully")
+        expect(page).to have_content(I18n.t("decidim.system.participando_organization_settings.update.success"))
         expect(setting.reload.application).to eq("updated_app")
       end
     end
@@ -128,17 +127,17 @@ describe "Admin participando settings", perform_enqueued: true do
         fill_in "participando_organization_setting_password", with: "password"
         fill_in "participando_organization_setting_encryption_key", with: "key"
 
-        click_button "Save"
+        click_button I18n.t("decidim.system.participando_organization_settings.edit.save")
 
-        expect(page).to have_content("There was an error updating the Municipal Census configuration")
+        expect(page).to have_content(I18n.t("decidim.forms.errors.error"))
       end
 
       it "shows an error when required fields are missing" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        click_button "Save"
+        click_button I18n.t("decidim.system.participando_organization_settings.edit.save")
 
-        expect(page).to have_content("There was an error updating the Municipal Census configuration")
+        expect(page).to have_content(I18n.t("decidim.forms.errors.error"))
       end
     end
   end

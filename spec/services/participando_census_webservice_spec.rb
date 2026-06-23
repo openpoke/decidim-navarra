@@ -4,23 +4,28 @@ require "rails_helper"
 require "cgi"
 
 RSpec.describe ParticipandoCensusWebservice do
-  subject(:service) { described_class.new }
+  subject(:service) { described_class.new(organization) }
 
+  let(:organization) { create(:organization, :with_participando_setting) }
   let(:env_values) do
     {
       "PARTICIPANDO_URL" => "https://example.test",
       "PARTICIPANDO_ENTITY_NIF" => "B00000000",
-      "PARTICIPANDO_APPLICATION" => "PMH-UDALA",
-      "PARTICIPANDO_USER" => "demo",
-      "PARTICIPANDO_PASSWORD" => "password",
       "PARTICIPANDO_ENCRYPTION_KEY" => "12345678901234567890123456789012",
       "PARTICIPANDO_ENCRYPTION_VECTOR" => "Hello,FromANIMSA"
     }
   end
 
   before do
-    allow(ENV).to receive(:fetch) do |key|
-      env_values.fetch(key)
+    original_fetch = ENV.method(:fetch)
+    allow(ENV).to receive(:fetch) do |key, *args|
+      if env_values.key?(key)
+        env_values.fetch(key)
+      elsif args.empty?
+        original_fetch.call(key)
+      else
+        args.first
+      end
     end
   end
 
