@@ -13,7 +13,7 @@ en:
         province_id: Province
         second_surname: Second surname
       participando_organization_setting:
-        application: Application identifier
+        entity_nif: Entity NIF
         decidim_organization_id: Organization
         encryption_key: Encryption key
         password: Password
@@ -49,7 +49,7 @@ en:
     system:
       participando_organization_settings:
         edit:
-          application_identifier: Application identifier
+          entity_nif: Entity NIF
           save: Save
           select_organization: Select an organization
           title: New Census Configuration

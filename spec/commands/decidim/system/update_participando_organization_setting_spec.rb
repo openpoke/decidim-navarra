@@ -16,7 +16,7 @@ RSpec.describe Decidim::System::UpdateParticipandoOrganizationSetting do
 
   let(:form_params) do
     {
-      application: "new_app",
+      entity_nif: "B12345678",
       user: "new_user",
       password: "new_password",
       encryption_key: "new_encryption_key"
@@ -39,7 +39,7 @@ RSpec.describe Decidim::System::UpdateParticipandoOrganizationSetting do
         it "sets the correct attributes" do
           command.call
           setting = organization.participando_organization_setting
-          expect(setting.application).to eq("new_app")
+          expect(setting.entity_nif).to eq("B12345678")
           expect(setting.user).to eq("new_user")
           expect(setting.password).to eq("new_password")
           expect(setting.encryption_key).to eq("new_encryption_key")
@@ -50,7 +50,7 @@ RSpec.describe Decidim::System::UpdateParticipandoOrganizationSetting do
         let!(:existing_setting) do
           create(:participando_organization_setting,
                  organization: organization,
-                 application: "old_app",
+                 entity_nif: "B87654321",
                  user: "old_user",
                  password: "old_password",
                  encryption_key: "old_encryption_key")
@@ -69,7 +69,7 @@ RSpec.describe Decidim::System::UpdateParticipandoOrganizationSetting do
         it "updates the existing setting" do
           command.call
           existing_setting.reload
-          expect(existing_setting.application).to eq("new_app")
+          expect(existing_setting.entity_nif).to eq("B12345678")
           expect(existing_setting.user).to eq("new_user")
           expect(existing_setting.password).to eq("new_password")
           expect(existing_setting.encryption_key).to eq("new_encryption_key")
@@ -80,7 +80,7 @@ RSpec.describe Decidim::System::UpdateParticipandoOrganizationSetting do
     context "when form is invalid" do
       let(:form_params) do
         {
-          application: nil,
+          entity_nif: nil,
           user: "new_user",
           password: "new_password",
           encryption_key: "new_encryption_key"

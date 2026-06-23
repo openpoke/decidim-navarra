@@ -6,7 +6,7 @@ require "decidim/decidim_awesome/test/factories"
 FactoryBot.define do
   factory :participando_organization_setting do
     organization
-    application { "test_application" }
+    entity_nif { "B00000000" }
     user { "test_user" }
     password { "test_password" }
     encryption_key { "12345678901234567890123456789012" }
