@@ -19,7 +19,7 @@ RSpec.describe ParticipandoCensusWebservice do
   before do
     original_fetch = ENV.method(:fetch)
     allow(ENV).to receive(:fetch) do |key, *args|
-      if env_values.key?(key)
+      if env_values.has_key?(key)
         env_values.fetch(key)
       elsif args.empty?
         original_fetch.call(key)
