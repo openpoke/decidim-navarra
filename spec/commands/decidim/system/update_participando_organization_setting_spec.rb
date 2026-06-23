@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe Decidim::System::UpdateParticipandoOrganizationSetting do
   subject(:command) { described_class.new(form, user) }
 
-  let(:user) { create(:admin, organization: organization) }
+  let(:user) { create(:user, :admin, organization: organization) }
   let(:organization) { create(:organization) }
 
   let(:form) do

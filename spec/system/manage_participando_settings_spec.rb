@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe "Admin participando settings", perform_enqueued: true do
-  let(:admin) { create(:admin) }
+  let(:admin) { create(:user, :admin) }
   let(:organization) { admin.organization }
 
   before do
