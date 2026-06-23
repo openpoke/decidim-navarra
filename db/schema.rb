@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_06_19_120000) do
+ActiveRecord::Schema[7.2].define(version: 2026_06_23_101500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
   enable_extension "plpgsql"
@@ -2359,7 +2359,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_19_120000) do
 
   create_table "participando_organization_settings", force: :cascade do |t|
     t.bigint "decidim_organization_id", null: false
-    t.text "application", null: false
+    t.text "entity_nif", null: false
     t.text "user", null: false
     t.text "password", null: false
     t.text "encryption_key", null: false
