@@ -12,12 +12,27 @@ es:
           los datos de Identidad
         province_id: Provincia
         second_surname: Segundo apellido
-      participatory_process_type:
-        title: Título
+      participando_organization_setting:
+        application: Identificador de aplicación
+        decidim_organization_id: Organización
+        encryption_key: Clave de cifrado
+        password: Contraseña Padrón Municipal
+        user: Usuario
   decidim:
+    admin_log:
+      participando_organization_setting:
+        update: "%{user_name} actualizó la configuración del Padrón Municipal de %{resource_name} para la organización %{organization_name}"
     authorization_handlers:
+      admin:
+        participando_authorization_handler:
+          help:
+          - Este gestor de autorización permite verificar la identidad de un ciudadano
+            a través del servicio del Padrón Municipal.
       participando_authorization_handler:
         explanation: Verificación de datos del Padrón Municipal
+        fields:
+          birthdate: Fecha de nacimiento
+          document_type: Tipo de documento
         name: Padrón Municipal
     participando_authorization_handler:
       connection_error: No se ha podido conectar con el servicio del Padrón Municipal.
@@ -26,7 +41,31 @@ es:
         nif: NIF
         none: Sin documento
         passport: Pasaporte
-      invalid_participando_service_verification: Titular no identificado en el padrón municipal.
+      invalid: Titular no identificado en el padrón municipal.
+      organization_setting_not_found: No se ha encontrado la configuración de conexión
+        al Padrón Municipal para la organización %{organization}.
+      system_name: Padrón Municipal
+    system:
+      participando_organization_settings:
+        edit:
+          application_identifier: Identificador de aplicación
+          save: Guardar
+          select_organization: Seleccionar una organización
+          title: Nueva configuración del censo
+        index:
+          description: Esta sección le permite configurar la conexión al servicio
+            del Padrón Municipal para su organización. Si habilita este gestor de
+            autorización sin la configuración adecuada, los usuarios recibirán un
+            mensaje de error al intentar verificar su identidad a través del servicio
+            del Padrón Municipal.
+          new_setting: Agregar nueva configuración
+          no_settings: No se encontró configuración para esta organización.
+          participando_settings: Configuración del Padrón Municipal
+          title: Configuración del Padrón Municipal
+          updated_at: Actualizado el
+        update:
+          error: Hubo un error al actualizar la configuración del Padrón Municipal.
+          success: Configuración del Padrón Municipal actualizada correctamente.
   open_data: Datos Abiertos
   open_government: Gobierno Abierto de Navarra
   participation: Participación

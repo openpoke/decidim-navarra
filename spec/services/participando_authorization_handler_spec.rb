@@ -9,10 +9,13 @@ RSpec.describe ParticipandoAuthorizationHandler do
       first_surname: "Lopez",
       document_type: document_type,
       document_number: document_number,
-      date_of_birth: date_of_birth
+      date_of_birth: date_of_birth,
+      user: user
     )
   end
 
+  let(:organization) { create(:organization) }
+  let(:user) { create(:user, organization:) }
   let(:document_type) { :nif }
   let(:service_double) { instance_double(ParticipandoCensusWebservice) }
   let(:document_number) { "12345678A" }

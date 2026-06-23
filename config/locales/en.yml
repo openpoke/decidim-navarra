@@ -12,10 +12,28 @@ en:
           consulted
         province_id: Province
         second_surname: Second surname
+      participando_organization_setting:
+        application: Application identifier
+        decidim_organization_id: Organization
+        encryption_key: Encryption key
+        password: Password
+        user: User
   decidim:
+    admin_log:
+      participando_organization_setting:
+        update: "%{user_name} updated the %{resource_name} Municipal Census configuration
+          for organization %{organization_name}"
     authorization_handlers:
+      admin:
+        participando_authorization_handler:
+          help:
+          - This authorization handler allows you to verify the identity of a citizen
+            through the Municipal Census service.
       participando_authorization_handler:
         explanation: Municipal Census data verification
+        fields:
+          birthdate: Date of birth
+          document_type: Document type
         name: Municipal Census
     participando_authorization_handler:
       connection_error: Could not connect to the municipal census service.
@@ -24,9 +42,32 @@ en:
         nif: NIF
         none: Without document
         passport: Passport
-      invalid_participando_service_verification: Person not found in the municipal
-        census.
+      invalid: Person not found in the municipal census.
+      organization_setting_not_found: Could not find the Municipal Census connection
+        configuration for organization %{organization}.
+      system_name: Municipal Census
+    system:
+      participando_organization_settings:
+        edit:
+          application_identifier: Application identifier
+          save: Save
+          select_organization: Select an organization
+          title: New Census Configuration
+        index:
+          description: This section allows you to configure the connection to the
+            Municipal Census service for your organization. If you enable this the
+            authorization handler without the proper configuration, users will receive
+            an error message when attempting to verify their identity through the
+            Municipal Census service.
+          new_setting: Add new configuration
+          no_settings: No configuration found for this organization.
+          participando_settings: Municipal Census settings
+          title: Municipal Census Configuration
+          updated_at: Updated at
+        update:
+          error: There was an error updating the Municipal Census configuration.
+          success: Municipal Census configuration updated successfully.
   open_data: Open Data
-  open_government: Open Government of
+  open_government: Open Government of Navarra
   participation: Participation
   transparency: Transparency

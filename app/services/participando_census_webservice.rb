@@ -11,18 +11,20 @@ require "digest"
 # Required ENV vars (see .rbenv-vars):
 #   PARTICIPANDO_URL              - webservice endpoint
 #   PARTICIPANDO_ENTITY_NIF       - CIF of the entity (CIFENTIDAD)
-#   PARTICIPANDO_APPLICATION      - application identifier (e.g. PMH-UDALA)
-#   PARTICIPANDO_USER             - username provided by ANIMSA
-#   PARTICIPANDO_PASSWORD         - base password provided by ANIMSA
-#   PARTICIPANDO_ENCRYPTION_KEY   - 32-byte AES-256 key provided by ANIMSA
 #   PARTICIPANDO_ENCRYPTION_VECTOR - 16-byte IV provided by ANIMSA
+#
+# Configuration is read from ParticipandoOrganizationSetting:
+#   application      - application identifier (e.g. PMH-UDALA)
+#   user             - username provided by ANIMSA
+#   password         - base password provided by ANIMSA
+#   encryption_key   - 32-byte AES-256 key provided by ANIMSA
 #
 # NOTE: The SOAP namespace and parameter name below ("strXmlLogin") should be
 # verified against the actual WSDL at PARTICIPANDO_URL?WSDL if the service
 # rejects requests.
 class ParticipandoCensusWebservice
   IDOPERACION = "NAVARRA_SEDE_PADRON_ComprobarPersona_WS"
-  SOAP_NAMESPACE = "http://tempuri.org/"
+  SOAP_NAMESPACE = ENV.fetch("PARTICIPANDO_SOAP_NAMESPACE", "http://tempuri.org/")
 
   # TIDEO values for document types
   DOCUMENT_TIDEO = {
@@ -32,14 +34,23 @@ class ParticipandoCensusWebservice
     nie: 3
   }.freeze
 
-  def initialize
+  attr_reader :organization
+
+  def initialize(organization)
+    @organization = organization
+    raise I18n.t("decidim.participando_authorization_handler.organization_setting_not_found", organization: organization.host) unless setting
+
     @url = ENV.fetch("PARTICIPANDO_URL")
     @entity_nif = ENV.fetch("PARTICIPANDO_ENTITY_NIF")
-    @application = ENV.fetch("PARTICIPANDO_APPLICATION")
-    @user = ENV.fetch("PARTICIPANDO_USER")
-    @password = ENV.fetch("PARTICIPANDO_PASSWORD")
-    @encryption_key = ENV.fetch("PARTICIPANDO_ENCRYPTION_KEY")
+    @application = setting.application
+    @user = setting.user
+    @password = setting.password
+    @encryption_key = setting.encryption_key
     @encryption_vector = ENV.fetch("PARTICIPANDO_ENCRYPTION_VECTOR")
+  end
+
+  def setting
+    @setting ||= organization.participando_organization_setting
   end
 
   # Calls LogIn and returns the IDSESION string (valid for 8 minutes).
