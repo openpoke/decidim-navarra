@@ -30,13 +30,13 @@ describe "ManageParticipandoSettings", perform_enqueued: true do
       let!(:setting) do
         create(:participando_organization_setting,
                organization:,
-               application: "test_app")
+               entity_nif: "B12345678")
       end
 
-      it "shows the application identifier" do
+      it "shows the entity nif" do
         visit decidim_system.participando_organization_settings_path
 
-        expect(page).to have_content("test_app")
+        expect(page).to have_content("B12345678")
       end
 
       it "shows the updated date" do
@@ -66,7 +66,7 @@ describe "ManageParticipandoSettings", perform_enqueued: true do
       it "has empty form fields" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        expect(page).to have_field("participando_organization_setting_application", with: "")
+        expect(page).to have_field("participando_organization_setting_entity_nif", with: "")
         expect(page).to have_field("participando_organization_setting_user", with: "")
         expect(page).to have_field("participando_organization_setting_password", with: "")
         expect(page).to have_field("participando_organization_setting_encryption_key", with: "")
@@ -75,7 +75,7 @@ describe "ManageParticipandoSettings", perform_enqueued: true do
       it "creates a new setting" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        fill_in "participando_organization_setting_application", with: "new_app"
+        fill_in "participando_organization_setting_entity_nif", with: "B11111111"
         fill_in "participando_organization_setting_user", with: "new_user"
         fill_in "participando_organization_setting_password", with: "new_password"
         fill_in "participando_organization_setting_encryption_key", with: "new_key"
@@ -84,7 +84,7 @@ describe "ManageParticipandoSettings", perform_enqueued: true do
 
         expect(page).to have_content(I18n.t("decidim.system.participando_organization_settings.update.success"))
         expect(organization.reload.participando_organization_setting).to be_present
-        expect(organization.participando_organization_setting.application).to eq("new_app")
+        expect(organization.participando_organization_setting.entity_nif).to eq("B11111111")
       end
     end
 
@@ -92,7 +92,7 @@ describe "ManageParticipandoSettings", perform_enqueued: true do
       let!(:setting) do
         create(:participando_organization_setting,
                organization:,
-               application: "old_app",
+               entity_nif: "B22222222",
                user: "old_user",
                password: "old_password",
                encryption_key: "old_key")
@@ -101,7 +101,7 @@ describe "ManageParticipandoSettings", perform_enqueued: true do
       it "loads the edit form with existing data" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        expect(page).to have_field("participando_organization_setting_application", with: "old_app")
+        expect(page).to have_field("participando_organization_setting_entity_nif", with: "B22222222")
         expect(page).to have_field("participando_organization_setting_user", with: "old_user")
         expect(page).to have_field("participando_organization_setting_password", with: "old_password")
         expect(page).to have_field("participando_organization_setting_encryption_key", with: "old_key")
@@ -110,19 +110,19 @@ describe "ManageParticipandoSettings", perform_enqueued: true do
       it "updates the setting" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        fill_in "participando_organization_setting_application", with: "updated_app"
+        fill_in "participando_organization_setting_entity_nif", with: "B33333333"
         click_button I18n.t("decidim.system.participando_organization_settings.edit.save")
 
         expect(page).to have_content(I18n.t("decidim.system.participando_organization_settings.update.success"))
-        expect(setting.reload.application).to eq("updated_app")
+        expect(setting.reload.entity_nif).to eq("B33333333")
       end
     end
 
     context "when submitting invalid data" do
-      it "shows an error when application is empty" do
+      it "shows an error when entity_nif is empty" do
         visit decidim_system.edit_participando_organization_setting_path(organization)
 
-        fill_in "participando_organization_setting_application", with: ""
+        fill_in "participando_organization_setting_entity_nif", with: ""
         fill_in "participando_organization_setting_user", with: "user"
         fill_in "participando_organization_setting_password", with: "password"
         fill_in "participando_organization_setting_encryption_key", with: "key"

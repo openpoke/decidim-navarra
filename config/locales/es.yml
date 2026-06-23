@@ -13,7 +13,7 @@ es:
         province_id: Provincia
         second_surname: Segundo apellido
       participando_organization_setting:
-        application: Identificador de aplicación
+        entity_nif: NIF de la entidad
         decidim_organization_id: Organización
         encryption_key: Clave de cifrado
         password: Contraseña Padrón Municipal
@@ -48,7 +48,7 @@ es:
     system:
       participando_organization_settings:
         edit:
-          application_identifier: Identificador de aplicación
+          entity_nif: NIF de la entidad
           save: Guardar
           select_organization: Seleccionar una organización
           title: Nueva configuración del censo

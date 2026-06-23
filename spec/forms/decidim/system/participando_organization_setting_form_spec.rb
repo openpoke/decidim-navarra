@@ -7,7 +7,7 @@ RSpec.describe Decidim::System::ParticipandoOrganizationSettingForm do
 
   let(:attributes) do
     {
-      application: "test_app",
+      entity_nif: "B12345678",
       user: "test_user",
       password: "test_password",
       encryption_key: "test_encryption_key"
@@ -19,14 +19,14 @@ RSpec.describe Decidim::System::ParticipandoOrganizationSettingForm do
       it { is_expected.to be_valid }
     end
 
-    context "when application is missing" do
-      before { attributes.delete(:application) }
+    context "when entity_nif is missing" do
+      before { attributes.delete(:entity_nif) }
 
       it { is_expected.to be_invalid }
 
-      it "adds an error for application" do
+      it "adds an error for entity_nif" do
         form.valid?
-        expect(form.errors[:application]).not_to be_empty
+        expect(form.errors[:entity_nif]).not_to be_empty
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe Decidim::System::ParticipandoOrganizationSettingForm do
 
     context "when multiple required attributes are missing" do
       before do
-        attributes.delete(:application)
+        attributes.delete(:entity_nif)
         attributes.delete(:password)
       end
 
@@ -73,15 +73,15 @@ RSpec.describe Decidim::System::ParticipandoOrganizationSettingForm do
 
       it "adds errors for missing attributes" do
         form.valid?
-        expect(form.errors[:application]).not_to be_empty
+        expect(form.errors[:entity_nif]).not_to be_empty
         expect(form.errors[:password]).not_to be_empty
       end
     end
   end
 
   describe "attributes" do
-    it "has application attribute" do
-      expect(form.application).to eq("test_app")
+    it "has entity_nif attribute" do
+      expect(form.entity_nif).to eq("B12345678")
     end
 
     it "has user attribute" do

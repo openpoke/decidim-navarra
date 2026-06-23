@@ -7,7 +7,7 @@
 <%= decidim_form_for(@form, url: decidim_system.participando_organization_setting_path(current_organization), method: :put) do |f| %>
   <div class="form__wrapper">
     <h2 class="h2"><%= organization_name(current_organization) %></h2>
-    <%= f.text_field :application, autofocus: true %>
+    <%= f.text_field :entity_nif, autofocus: true %>
 
     <%= f.text_field :user %>
 

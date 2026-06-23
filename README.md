@@ -42,7 +42,7 @@ The Municipal Census service integration requires environment variables to be co
 ```bash
 # Required
 PARTICIPANDO_URL=https://www.animsa.es/ws/padron/v1
-PARTICIPANDO_ENTITY_NIF=XXXXXXXX
+PARTICIPANDO_APPLICATION=PMH-UDALA
 PARTICIPANDO_ENCRYPTION_VECTOR=XXXXXXXXXXXXXXXX  # 16-byte IV
 
 # Optional
@@ -51,7 +51,7 @@ PARTICIPANDO_SOAP_NAMESPACE=http://tempuri.org/  # Defaults to http://tempuri.or
 
 **Important:** Each tenant organization must be configured individually through the admin panel at `/system/participando_organization_settings` with their own credentials:
 
-- Application identifier
+- Entity NIF (CIFENTIDAD)
 - Username
 - Password
 - Encryption key (32-byte AES-256 key)
