@@ -16,7 +16,7 @@ module Decidim
         @setting = Decidim.traceability.update!(
           setting,
           user,
-          application: form.application,
+          entity_nif: form.entity_nif,
           user: form.user,
           password: form.password,
           encryption_key: form.encryption_key

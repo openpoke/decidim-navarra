@@ -10,11 +10,11 @@ require "digest"
 #
 # Required ENV vars (see .rbenv-vars):
 #   PARTICIPANDO_URL              - webservice endpoint
-#   PARTICIPANDO_ENTITY_NIF       - CIF of the entity (CIFENTIDAD)
+#   PARTICIPANDO_APPLICATION       - application identifier (e.g. PMH-UDALA)
 #   PARTICIPANDO_ENCRYPTION_VECTOR - 16-byte IV provided by ANIMSA
 #
 # Configuration is read from ParticipandoOrganizationSetting:
-#   application      - application identifier (e.g. PMH-UDALA)
+#   entity_nif       - CIF of the entity (CIFENTIDAD)
 #   user             - username provided by ANIMSA
 #   password         - base password provided by ANIMSA
 #   encryption_key   - 32-byte AES-256 key provided by ANIMSA
@@ -41,8 +41,8 @@ class ParticipandoCensusWebservice
     raise I18n.t("decidim.participando_authorization_handler.organization_setting_not_found", organization: organization.host) unless setting
 
     @url = ENV.fetch("PARTICIPANDO_URL")
-    @entity_nif = ENV.fetch("PARTICIPANDO_ENTITY_NIF")
-    @application = setting.application
+    @entity_nif = setting.entity_nif
+    @application = ENV.fetch("PARTICIPANDO_APPLICATION")
     @user = setting.user
     @password = setting.password
     @encryption_key = setting.encryption_key

@@ -24,7 +24,7 @@
         </td>
         <% if organization.participando_organization_setting.present? %>
           <td class="text-left">
-            <%= organization.participando_organization_setting.application %>
+            <%= organization.participando_organization_setting.entity_nif %>
           </td>
           <td class="text-left">
             <%=  l organization.participando_organization_setting&.updated_at, format: :short %>

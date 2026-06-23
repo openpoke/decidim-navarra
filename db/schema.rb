@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_06_19_120000) do
+ActiveRecord::Schema[7.2].define(version: 2026_06_23_101500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "ltree"
   enable_extension "plpgsql"
@@ -907,6 +907,58 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_19_120000) do
     t.index ["decidim_user_group_id"], name: "index_decidim_debates_debates_on_decidim_user_group_id"
     t.index ["deleted_at"], name: "index_decidim_debates_debates_on_deleted_at"
     t.index ["likes_count"], name: "index_decidim_debates_debates_on_likes_count"
+  end
+
+  create_table "decidim_dev_coauthorable_dummy_resources", force: :cascade do |t|
+    t.jsonb "translatable_text"
+    t.string "title"
+    t.string "body"
+    t.text "address"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "published_at"
+    t.datetime "deleted_at"
+    t.integer "coauthorships_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
+    t.bigint "decidim_component_id"
+    t.bigint "decidim_category_id"
+    t.bigint "decidim_scope_id"
+    t.string "reference"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "decidim_dev_dummy_resources", force: :cascade do |t|
+    t.jsonb "translatable_text"
+    t.jsonb "title"
+    t.string "body"
+    t.text "address"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "published_at"
+    t.datetime "deleted_at"
+    t.integer "coauthorships_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
+    t.integer "follows_count", default: 0, null: false
+    t.bigint "decidim_component_id"
+    t.integer "decidim_author_id"
+    t.string "decidim_author_type"
+    t.integer "decidim_user_group_id"
+    t.bigint "decidim_category_id"
+    t.bigint "decidim_scope_id"
+    t.string "reference"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "decidim_dev_nested_dummy_resources", force: :cascade do |t|
+    t.jsonb "translatable_text"
+    t.string "title"
+    t.bigint "dummy_resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "decidim_editor_images", force: :cascade do |t|
@@ -2359,7 +2411,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_19_120000) do
 
   create_table "participando_organization_settings", force: :cascade do |t|
     t.bigint "decidim_organization_id", null: false
-    t.text "application", null: false
+    t.text "entity_nif", null: false
     t.text "user", null: false
     t.text "password", null: false
     t.text "encryption_key", null: false

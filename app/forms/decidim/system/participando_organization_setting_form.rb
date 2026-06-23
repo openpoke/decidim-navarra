@@ -7,12 +7,12 @@ module Decidim
     class ParticipandoOrganizationSettingForm < Form
       mimic :participando_organization_setting
 
-      attribute :application, String
+      attribute :entity_nif, String
       attribute :user, String
       attribute :password, String
       attribute :encryption_key, String
 
-      validates :application, :user, :password, :encryption_key, presence: true
+      validates :entity_nif, :user, :password, :encryption_key, presence: true
     end
   end
 end

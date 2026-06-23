@@ -10,7 +10,7 @@ RSpec.describe ParticipandoCensusWebservice do
   let(:env_values) do
     {
       "PARTICIPANDO_URL" => "https://example.test",
-      "PARTICIPANDO_ENTITY_NIF" => "B00000000",
+      "PARTICIPANDO_APPLICATION" => "PMH-UDALA",
       "PARTICIPANDO_ENCRYPTION_KEY" => "12345678901234567890123456789012",
       "PARTICIPANDO_ENCRYPTION_VECTOR" => "Hello,FromANIMSA"
     }
