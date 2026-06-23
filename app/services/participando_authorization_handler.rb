@@ -33,6 +33,12 @@ class ParticipandoAuthorizationHandler < Decidim::AuthorizationHandler
     }
   end
 
+  def unique_id
+    Digest::MD5.hexdigest(
+      "#{document_type}-#{document_number&.upcase}-#{name&.upcase}-#{first_surname&.upcase}-#{date_of_birth&.strftime("%Y-%m-%d")}-#{Rails.application.secret_key_base}"
+    )
+  end
+
   private
 
   def birthdate
