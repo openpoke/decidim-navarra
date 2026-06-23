@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "Admin participando settings", perform_enqueued: true do
+describe "ManageParticipandoSettings", perform_enqueued: true do
   let(:admin) { Decidim::System::Admin.create!(email: "system-admin@example.org", password: "password123456", password_confirmation: "password123456") }
   let(:organization) { create(:organization) }
 
