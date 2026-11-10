@@ -2,6 +2,7 @@
 
 require "decidim/core/test/factories"
 require "decidim/decidim_awesome/test/factories"
+require "decidim/collaborative_texts/test/factories"
 
 FactoryBot.define do
   factory :participando_organization_setting do

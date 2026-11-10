@@ -3,4 +3,6 @@
 Rails.application.config.to_prepare do
   Decidim::Attachment.include AttachmentRelatedDocumentsActivator
   Decidim::Attachment.scope :documents, -> { where.not("content_type LIKE ?", "image/%") }
+
+  Decidim::CollaborativeTexts::DocumentsController.include(CollaborativeTextsDocumentsControllerOverride)
 end
