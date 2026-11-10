@@ -5,3 +5,7 @@ AllCops:
   Exclude:
     - 'db/**/*.rb'
     - 'vendor/**/*'
+
+Decidim/EnforcePermissionTo:
+  Exclude:
+    - "app/controllers/decidim/system/*.rb"
